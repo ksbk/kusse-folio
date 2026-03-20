@@ -259,6 +259,7 @@ jeannote/
 ├── Makefile
 ├── Procfile                   # gunicorn entry point
 ├── railway.toml               # Railway deployment config
+├── .python-version            # Python version pin (3.13)
 ├── .pre-commit-config.yaml
 └── .env.example
 ```
