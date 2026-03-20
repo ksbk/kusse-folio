@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Lint, type-check, test
+    runs-on: ubuntu-latest
+
+    env:
+      # Required by base.py — value is irrelevant for tests
+      SECRET_KEY: ci-only-not-a-real-secret
+      # dev settings: DEBUG=True, SQLite, console email — no extra env needed
+      DJANGO_SETTINGS_MODULE: config.settings.dev
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Ruff
+        run: uv run ruff check .
+
+      - name: Mypy
+        run: uv run mypy .
+
+      - name: Pytest (with coverage)
+        run: uv run pytest --cov --cov-report=term-missing
+
+      - name: Django system check
+        run: uv run python manage.py check
