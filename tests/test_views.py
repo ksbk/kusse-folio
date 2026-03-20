@@ -124,10 +124,12 @@ def test_project_detail_context_excludes_inactive_testimonials(client, site_sett
 
 
 @pytest.mark.django_db
-def test_sitemap_returns_200(client, site_settings):
+def test_sitemap_returns_200(client, site_settings, project):
+    """Sitemap renders with a project present so ProjectSitemap.lastmod/location are exercised."""
     response = client.get("/sitemap.xml")
     assert response.status_code == 200
     assert b"urlset" in response.content
+    assert project.slug.encode() in response.content
 
 
 @pytest.mark.django_db
@@ -173,3 +175,23 @@ def test_home_all_projects_excludes_featured(client, site_settings, project):
     assert response.status_code == 200
     all_pks = [p.pk for p in response.context["all_projects"]]
     assert project.pk not in all_pks
+
+
+# ---------------------------------------------------------------------------
+# Project detail — og_image fallback to SiteSettings
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_project_detail_og_image_falls_back_to_site_settings(client, site_settings, project):
+    """
+    When a project has no cover_image, og_image in context should come from
+    SiteSettings.og_image if one is set. When neither is set, og_image should
+    not be in the context at all.
+    """
+    # No cover image on the project fixture, no og_image on site_settings:
+    # og_image key should be absent from context.
+    url = reverse("project_detail", kwargs={"slug": project.slug})
+    response = client.get(url)
+    assert response.status_code == 200
+    assert "og_image" not in response.context

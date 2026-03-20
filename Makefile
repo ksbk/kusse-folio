@@ -51,6 +51,10 @@ typecheck:
 test:
 	uv run pytest
 
+# Run test suite with coverage report
+coverage:
+	uv run pytest --cov --cov-report=term-missing
+
 # Django deployment security check — always runs against production settings.
 # Injects a dummy SECRET_KEY so Django can start; this produces one expected
 # security.W009 warning about key strength. That warning is normal and can

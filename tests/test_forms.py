@@ -63,3 +63,23 @@ def test_short_message_rejected(client, site_settings):
     response = client.post(reverse("contact"), data=payload)
     assert response.status_code == 200
     assert ContactInquiry.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_contact_form_saves_inquiry_even_when_email_send_fails(client, site_settings, monkeypatch):
+    """
+    If the email backend raises an exception the inquiry must still be saved
+    and the user must still be redirected to the success page.
+    The send failure is logged but must never surface as an HTTP 500.
+    """
+    from django.core.mail import EmailMessage as DjangoEmailMessage
+
+    def _raise(*args, **kwargs):
+        raise OSError("SMTP server unavailable")
+
+    monkeypatch.setattr(DjangoEmailMessage, "send", _raise)
+
+    response = client.post(reverse("contact"), data=VALID_PAYLOAD, follow=False)
+    assert response.status_code == 302
+    assert response["Location"] == reverse("contact_success")
+    assert ContactInquiry.objects.count() == 1

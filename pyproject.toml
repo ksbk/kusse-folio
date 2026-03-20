@@ -20,6 +20,7 @@ dev = [
     "pytest>=8.3",
     "pytest-django>=4.9",
     "pre-commit>=4.0",
+    "pytest-cov>=7.0.0",
 ]
 
 # ---------------------------------------------------------------------------
@@ -78,4 +79,22 @@ filterwarnings = [
     "ignore::pytest.PytestCollectionWarning",
     # staticfiles/ doesn't exist until collectstatic is run; harmless in tests
     "ignore:No directory at.*staticfiles:UserWarning",
+]
+
+[tool.coverage.run]
+source = ["portfolio", "config"]
+omit = [
+    "*/migrations/*",
+    "portfolio/management/commands/seed_demo.py",
+    "config/asgi.py",
+    "config/wsgi.py",
+    "config/settings/prod.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
 ]
