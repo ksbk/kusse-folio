@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Architectural Services{% endblock %}
+{% block og_title %}Services — {{ site_settings.site_name }}{% endblock %}
+{% block meta_description %}Architecture and design services by Jeannot Tsirenge — residential design, concept development, renovation, interior architecture, and construction administration across South Africa.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <p class="page-hero__label">Capabilities</p>
+    <h1 class="page-hero__title">Services</h1>
+    <p class="page-hero__subtitle">From first sketch to finished building — a complete design service shaped to your project's needs.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% for service in services %}
+    <article class="service-detail" id="{{ service.slug }}">
+      <header class="service-detail__header">
+        <span class="service-detail__number">{{ forloop.counter|stringformat:"02d" }}</span>
+        <h2 class="service-detail__title">{{ service.title }}</h2>
+      </header>
+      <div class="service-detail__body">
+        <p class="service-detail__summary">{{ service.summary }}</p>
+
+        {% if service.description %}
+        <div class="prose">
+          {{ service.description|linebreaks }}
+        </div>
+        {% endif %}
+
+        <div class="service-detail__meta">
+          {% if service.who_for %}
+          <div class="service-meta-block">
+            <h3>Ideal for</h3>
+            <p>{{ service.who_for }}</p>
+          </div>
+          {% endif %}
+
+          {% if service.value_proposition %}
+          <div class="service-meta-block">
+            <h3>What you get</h3>
+            <p>{{ service.value_proposition }}</p>
+          </div>
+          {% endif %}
+
+          {% if service.deliverables_list %}
+          <div class="service-meta-block">
+            <h3>Deliverables</h3>
+            <ul>
+              {% for item in service.deliverables_list %}
+              <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+        </div>
+
+        <a href="{% url 'contact' %}?project_type={{ service.title|urlencode }}" class="btn btn--outline">Enquire about this service</a>
+      </div>
+    </article>
+    {% if not forloop.last %}<hr class="divider">{% endif %}
+    {% empty %}
+    <p class="empty-state">Services information coming soon.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section cta-section">
+  <div class="container container--narrow cta-section__inner">
+    <h2 class="cta-section__title">Not sure which service fits your project?</h2>
+    <p class="cta-section__body">Send a message and let's talk through what you need. No commitment required.</p>
+    <a href="{% url 'contact' %}" class="btn btn--primary btn--large">Get in Touch</a>
+  </div>
+</section>
+
+{% endblock %}

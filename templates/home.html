@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% load static portfolio_tags %}
+
+{% block full_title %}{{ site_settings.site_name }} — Architect{% endblock %}
+{% block body_class %}home{% endblock %}
+
+{% block content %}
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero__media">
+    {% if featured_projects.0.cover_image %}
+      <img src="{{ featured_projects.0.cover_image.url }}" alt="{{ featured_projects.0.title }}" class="hero__bg" loading="eager">
+    {% else %}
+      <div class="hero__bg hero__bg--placeholder"></div>
+    {% endif %}
+    <div class="hero__overlay"></div>
+  </div>
+  <div class="hero__content container">
+    <p class="hero__label">Architect</p>
+    <h1 class="hero__title">{{ site_settings.site_name }}</h1>
+    <p class="hero__subtitle">{{ site_settings.tagline }}</p>
+    <div class="hero__cta">
+      <a href="{% url 'project_list' %}" class="btn btn--primary">View Projects</a>
+      <a href="{% url 'contact' %}" class="btn btn--ghost">Start a Conversation</a>
+    </div>
+  </div>
+  <a href="#featured" class="hero__scroll" aria-label="Scroll to featured work">
+    <span class="hero__scroll-line"></span>
+  </a>
+</section>
+
+<!-- ===== FEATURED WORK ===== -->
+{% if featured_projects %}
+<section class="section" id="featured">
+  <div class="container">
+    <div class="section__header">
+      <span class="section__label">Selected work</span>
+      <h2 class="section__title">Featured Projects</h2>
+    </div>
+    <div class="projects-grid projects-grid--featured">
+      {% for project in featured_projects %}
+      <article class="project-card {% if forloop.first %}project-card--large{% endif %}">
+        <a href="{{ project.get_absolute_url }}" class="project-card__link">
+          <div class="project-card__media">
+            {% if project.cover_image %}
+              <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" loading="lazy">
+            {% else %}
+              <div class="project-card__placeholder"></div>
+            {% endif %}
+          </div>
+          <div class="project-card__info">
+            <span class="project-card__meta">{{ project.get_category_display }} {% if project.year %}· {{ project.year }}{% endif %} {% if project.location %}· {{ project.location }}{% endif %}</span>
+            <h3 class="project-card__title">{{ project.title }}</h3>
+            <p class="project-card__desc">{{ project.short_description }}</p>
+            <span class="project-card__cta">View Project <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+    <div class="section__footer">
+      <a href="{% url 'project_list' %}" class="btn btn--outline">All Projects</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ===== PHILOSOPHY ===== -->
+{% if about.philosophy %}
+<section class="section section--dark">
+  <div class="container container--narrow">
+    <span class="section__label section__label--muted">Design thinking</span>
+    <blockquote class="philosophy">
+      <p>{{ about.philosophy|first_paragraph }}</p>
+    </blockquote>
+    <a href="{% url 'about' %}" class="btn btn--ghost-light">About Jeannot</a>
+  </div>
+</section>
+{% endif %}
+
+<!-- ===== SERVICES ===== -->
+{% if services %}
+<section class="section">
+  <div class="container">
+    <div class="section__header">
+      <span class="section__label">Capabilities</span>
+      <h2 class="section__title">What I Offer</h2>
+    </div>
+    <ul class="services-list">
+      {% for service in services %}
+      <li class="service-item">
+        <a href="{% url 'services' %}#{{ service.slug }}" class="service-item__link">
+          <h3 class="service-item__title">{{ service.title }}</h3>
+          <p class="service-item__summary">{{ service.summary }}</p>
+          <span class="service-item__arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="section__footer">
+      <a href="{% url 'services' %}" class="btn btn--outline">All Services</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ===== MORE PROJECTS ===== -->
+{% if all_projects %}
+<section class="section section--tinted">
+  <div class="container">
+    <div class="section__header">
+      <span class="section__label">Portfolio</span>
+      <h2 class="section__title">More Work</h2>
+    </div>
+    <div class="projects-grid">
+      {% for project in all_projects %}
+      <article class="project-card">
+        <a href="{{ project.get_absolute_url }}" class="project-card__link">
+          <div class="project-card__media">
+            {% if project.cover_image %}
+              <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" loading="lazy">
+            {% else %}
+              <div class="project-card__placeholder"></div>
+            {% endif %}
+          </div>
+          <div class="project-card__info">
+            <span class="project-card__meta">{{ project.get_category_display }} {% if project.year %}· {{ project.year }}{% endif %}</span>
+            <h3 class="project-card__title">{{ project.title }}</h3>
+          </div>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ===== TRUST MARKERS ===== -->
+<section class="section trust-section">
+  <div class="container">
+    <ul class="trust-list">
+      {% if about.experience_years %}
+      <li class="trust-item">
+        <span class="trust-item__number">{{ about.experience_years }}+</span>
+        <span class="trust-item__label">Years of experience</span>
+      </li>
+      {% endif %}
+      <li class="trust-item">
+        <span class="trust-item__number">{{ all_projects|length }}</span>
+        <span class="trust-item__label">Projects completed</span>
+      </li>
+      {% if services %}
+      <li class="trust-item">
+        <span class="trust-item__number">{{ services|length }}</span>
+        <span class="trust-item__label">Service areas</span>
+      </li>
+      {% endif %}
+      {% if site_settings.location %}
+      <li class="trust-item">
+        <span class="trust-item__number">&mdash;</span>
+        <span class="trust-item__label">Based in {{ site_settings.location }}</span>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+{% if testimonials %}
+<section class="section section--tinted">
+  <div class="container container--narrow">
+    <span class="section__label">Clients</span>
+    <div class="testimonials-track">
+      {% for t in testimonials %}
+      <figure class="testimonial {% if not forloop.first %}testimonial--hidden{% endif %}">
+        <blockquote>
+          <p>"{{ t.quote }}"</p>
+        </blockquote>
+        <figcaption>
+          <strong>{{ t.name }}</strong>
+          {% if t.role or t.company %}
+          <span>{{ t.role }}{% if t.role and t.company %}, {% endif %}{{ t.company }}</span>
+          {% endif %}
+        </figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ===== CONTACT CTA ===== -->
+<section class="section cta-section">
+  <div class="container container--narrow cta-section__inner">
+    <h2 class="cta-section__title">Planning a project or looking for a design partner?</h2>
+    <p class="cta-section__body">Architecture begins with a conversation. Get in touch and let's discuss your vision.</p>
+    <a href="{% url 'contact' %}" class="btn btn--primary btn--large">Start a Conversation</a>
+  </div>
+</section>
+
+{% endblock %}

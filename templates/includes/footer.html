@@ -1,0 +1,49 @@
+<footer class="site-footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a href="{% url 'home' %}" class="footer__name">{{ site_settings.site_name }}</a>
+      {% if site_settings.tagline %}
+      <p class="footer__tagline">{{ site_settings.tagline }}</p>
+      {% endif %}
+    </div>
+
+    <nav class="footer__nav" aria-label="Footer navigation">
+      <ul>
+        <li><a href="{% url 'project_list' %}">Projects</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'services' %}">Services</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer__contact">
+      {% if site_settings.contact_email %}
+      <a href="mailto:{{ site_settings.contact_email }}" class="footer__email">{{ site_settings.contact_email }}</a>
+      {% endif %}
+      <div class="footer__social">
+        {% if site_settings.instagram_url %}
+        <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+        {% endif %}
+        {% if site_settings.linkedin_url %}
+        <a href="{{ site_settings.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+        {% endif %}
+        {% if site_settings.facebook_url %}
+        <a href="{{ site_settings.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
+        {% endif %}
+        {% if site_settings.behance_url %}
+        <a href="{{ site_settings.behance_url }}" target="_blank" rel="noopener" aria-label="Behance">Behance</a>
+        {% endif %}
+        {% if site_settings.issuu_url %}
+        <a href="{{ site_settings.issuu_url }}" target="_blank" rel="noopener" aria-label="Issuu">Issuu</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__bottom container">
+    <p>&copy; {% now "Y" %} {{ site_settings.site_name }}. All rights reserved.</p>
+    {% if site_settings.location %}
+    <p>Based in {{ site_settings.location }}</p>
+    {% endif %}
+  </div>
+</footer>

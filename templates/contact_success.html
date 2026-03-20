@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block og_tags %}
+<meta name="robots" content="noindex, follow">
+{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero--short">
+  <div class="container container--narrow">
+    <p class="page-hero__label">Thank you</p>
+    <h1 class="page-hero__title">Enquiry received.</h1>
+    <p class="page-hero__subtitle">I'll be in touch within two working days. I look forward to hearing more about your project.</p>
+    <div class="page-hero__actions">
+      <a href="{% url 'project_list' %}" class="btn btn--outline">Explore Projects</a>
+      <a href="{% url 'home' %}" class="btn btn--ghost">Back to Home</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ project.get_seo_title }}{% endblock %}
+{% block meta_description %}{{ project.get_seo_description }}{% endblock %}
+{% block og_title %}{{ project.title }}{% endblock %}
+{% block og_description %}{{ project.short_description }}{% endblock %}
+{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block content %}
+
+<!-- Project hero -->
+<section class="project-hero">
+  {% if project.cover_image %}
+  <div class="project-hero__media">
+    <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" class="project-hero__img" loading="eager">
+    <div class="project-hero__overlay"></div>
+  </div>
+  {% endif %}
+  <div class="project-hero__content container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'project_list' %}">Projects</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">{{ project.title }}</span>
+    </nav>
+    <p class="project-hero__category">{{ project.get_category_display }}</p>
+    <h1 class="project-hero__title">{{ project.title }}</h1>
+    <p class="project-hero__desc">{{ project.short_description }}</p>
+  </div>
+</section>
+
+<!-- Project metadata -->
+<section class="project-meta-bar">
+  <div class="container">
+    <dl class="project-meta-list">
+      {% if project.location %}
+      <div class="project-meta-item">
+        <dt>Location</dt>
+        <dd>{{ project.location }}</dd>
+      </div>
+      {% endif %}
+      {% if project.year %}
+      <div class="project-meta-item">
+        <dt>Year</dt>
+        <dd>{{ project.year }}</dd>
+      </div>
+      {% endif %}
+      {% if project.status %}
+      <div class="project-meta-item">
+        <dt>Status</dt>
+        <dd>{{ project.get_status_display }}</dd>
+      </div>
+      {% endif %}
+      {% if project.area %}
+      <div class="project-meta-item">
+        <dt>Area</dt>
+        <dd>{{ project.area }}</dd>
+      </div>
+      {% endif %}
+      {% if project.client %}
+      <div class="project-meta-item">
+        <dt>Client</dt>
+        <dd>{{ project.client }}</dd>
+      </div>
+      {% endif %}
+    </dl>
+  </div>
+</section>
+
+<!-- Project story -->
+<article class="project-story container">
+
+  {% if project.overview %}
+  <section class="project-section">
+    <h2 class="project-section__title">Overview</h2>
+    <div class="project-section__body prose">
+      {{ project.overview|linebreaks }}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- First gallery block -->
+  {% with first_gallery=gallery|slice:":3" %}
+  {% if first_gallery %}
+  <div class="gallery gallery--3col">
+    {% for img in first_gallery %}
+    <figure class="gallery__item">
+      <img src="{{ img.image.url }}" alt="{{ img.get_alt_text }}" loading="lazy">
+      {% if img.caption %}<figcaption>{{ img.caption }}</figcaption>{% endif %}
+    </figure>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  {% if project.challenge %}
+  <section class="project-section">
+    <h2 class="project-section__title">Challenge & Context</h2>
+    <div class="project-section__body prose">
+      {{ project.challenge|linebreaks }}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if project.concept %}
+  <section class="project-section project-section--accent">
+    <h2 class="project-section__title">Design Concept</h2>
+    <div class="project-section__body prose">
+      {{ project.concept|linebreaks }}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Main gallery -->
+  {% with main_gallery=gallery|slice:"3:" %}
+  {% if main_gallery %}
+  <div class="gallery gallery--2col">
+    {% for img in main_gallery %}
+    <figure class="gallery__item">
+      <img src="{{ img.image.url }}" alt="{{ img.get_alt_text }}" loading="lazy">
+      {% if img.caption %}<figcaption>{{ img.caption }}</figcaption>{% endif %}
+    </figure>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  {% if project.process %}
+  <section class="project-section">
+    <h2 class="project-section__title">Process</h2>
+    <div class="project-section__body prose">
+      {{ project.process|linebreaks }}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if project.outcome %}
+  <section class="project-section">
+    <h2 class="project-section__title">Outcome</h2>
+    <div class="project-section__body prose">
+      {{ project.outcome|linebreaks }}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Technical drawings -->
+  {% if drawings %}
+  <section class="project-section">
+    <h2 class="project-section__title">Drawings & Plans</h2>
+    <div class="gallery gallery--drawings">
+      {% for img in drawings %}
+      <figure class="gallery__item">
+        <img src="{{ img.image.url }}" alt="{{ img.get_alt_text }}" loading="lazy">
+        {% if img.caption %}<figcaption>{{ img.caption }}</figcaption>{% elif img.image_type != 'gallery' %}<figcaption>{{ img.get_image_type_display }}</figcaption>{% endif %}
+      </figure>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+</article>
+
+<!-- Project navigation -->
+<div class="project-nav container">
+  <a href="{% url 'project_list' %}" class="project-nav__back">← All Projects</a>
+  <a href="{% url 'contact' %}" class="btn btn--primary">Discuss a Similar Project</a>
+</div>
+
+{% if testimonials %}
+<section class="section testimonials-section">
+  <div class="container">
+    <h2 class="section__title">What the Client Said</h2>
+    <div class="testimonials-grid">
+      {% for t in testimonials %}
+      <blockquote class="testimonial-card">
+        <p class="testimonial-card__quote">“{{ t.quote }}”</p>
+        <footer class="testimonial-card__footer">
+          <strong class="testimonial-card__name">{{ t.name }}</strong>
+          {% if t.role or t.company %}
+          <span class="testimonial-card__meta">
+            {{ t.role }}{% if t.role and t.company %}, {% endif %}{{ t.company }}
+          </span>
+          {% endif %}
+        </footer>
+      </blockquote>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Related projects -->
+{% if related %}
+<section class="section section--tinted">
+  <div class="container">
+    <h2 class="section__title">Related Projects</h2>
+    <div class="projects-grid">
+      {% for p in related %}
+      <article class="project-card">
+        <a href="{{ p.get_absolute_url }}" class="project-card__link">
+          <div class="project-card__media">
+            {% if p.cover_image %}
+              <img src="{{ p.cover_image.url }}" alt="{{ p.title }}" loading="lazy">
+            {% else %}
+              <div class="project-card__placeholder"></div>
+            {% endif %}
+          </div>
+          <div class="project-card__info">
+            <span class="project-card__meta">{{ p.get_category_display }} {% if p.year %}· {{ p.year }}{% endif %}</span>
+            <h3 class="project-card__title">{{ p.title }}</h3>
+          </div>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

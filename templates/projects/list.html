@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Projects{% endblock %}
+{% block og_title %}Projects — {{ site_settings.site_name }}{% endblock %}
+{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}
+{% block meta_description %}Jeannot Tsirenge’s architecture portfolio — residential houses, civic and cultural buildings, commercial projects, and interior architecture across South Africa.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--short">
+  <div class="container">
+    <p class="page-hero__label">Portfolio</p>
+    <h1 class="page-hero__title">Projects</h1>
+    <p class="page-hero__subtitle">A curated selection of architectural work shaped by context, clarity, and considered design.</p>
+  </div>
+</section>
+
+<!-- Category filter -->
+<div class="filter-bar">
+  <div class="container">
+    <nav class="filter-bar__nav" aria-label="Filter projects by category">
+      <a href="{% url 'project_list' %}" class="filter-btn {% if not active_category %}filter-btn--active{% endif %}" {% if not active_category %}aria-current="page"{% endif %}>All</a>
+      {% for value, label in categories %}
+      <a href="?category={{ value }}" class="filter-btn {% if active_category == value %}filter-btn--active{% endif %}" {% if active_category == value %}aria-current="page"{% endif %}>{{ label }}</a>
+      {% endfor %}
+    </nav>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    {% if projects %}
+    <div class="projects-grid projects-grid--uniform">
+      {% for project in projects %}
+      <article class="project-card">
+        <a href="{{ project.get_absolute_url }}" class="project-card__link">
+          <div class="project-card__media">
+            {% if project.cover_image %}
+              <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" loading="lazy">
+            {% else %}
+              <div class="project-card__placeholder"></div>
+            {% endif %}
+          </div>
+          <div class="project-card__info">
+            <span class="project-card__meta">
+              {{ project.get_category_display }}
+              {% if project.year %} · {{ project.year }}{% endif %}
+              {% if project.location %} · {{ project.location }}{% endif %}
+            </span>
+            <h2 class="project-card__title">{{ project.title }}</h2>
+            <p class="project-card__desc">{{ project.short_description }}</p>
+            <span class="project-card__cta">View Project <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav class="pagination" aria-label="Project pages">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}{% if active_category %}&category={{ active_category }}{% endif %}" class="pagination__link pagination__link--prev">← Previous</a>
+      {% endif %}
+      <span class="pagination__info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}{% if active_category %}&category={{ active_category }}{% endif %}" class="pagination__link pagination__link--next">Next →</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <p class="empty-state">No projects found in this category.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

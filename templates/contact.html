@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact{% endblock %}
+{% block og_title %}Contact — {{ site_settings.site_name }}{% endblock %}
+{% block meta_description %}Get in touch with Jeannot Tsirenge to discuss your project or collaboration.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--short">
+  <div class="container">
+    <p class="page-hero__label">Get in Touch</p>
+    <h1 class="page-hero__title">Let's Talk</h1>
+    <p class="page-hero__subtitle">Whether you have a clear brief or just a first idea — start here.</p>
+  </div>
+</section>
+
+<section class="contact-layout section">
+  <div class="container">
+
+    <div class="contact-grid">
+
+      <!-- Form -->
+      <div class="contact-form-col">
+        <h2 class="contact-form-col__heading">Send an enquiry</h2>
+        <form method="post" action="{% url 'contact' %}" class="contact-form" novalidate>
+          {% csrf_token %}
+
+          <div class="form-row form-row--2">
+            <div class="form-field {% if form.name.errors %}has-error{% endif %}">
+              <label for="{{ form.name.id_for_label }}">Name <span class="required">*</span></label>
+              {{ form.name }}
+              {% if form.name.errors %}<span id="id_name_error" class="form-error">{{ form.name.errors.0 }}</span>{% endif %}
+            </div>
+            <div class="form-field {% if form.email.errors %}has-error{% endif %}">
+              <label for="{{ form.email.id_for_label }}">Email <span class="required">*</span></label>
+              {{ form.email }}
+              {% if form.email.errors %}<span id="id_email_error" class="form-error">{{ form.email.errors.0 }}</span>{% endif %}
+            </div>
+          </div>
+
+          <div class="form-row form-row--2">
+            <div class="form-field">
+              <label for="{{ form.company.id_for_label }}">Company / Organisation</label>
+              {{ form.company }}
+            </div>
+            <div class="form-field">
+              <label for="{{ form.project_type.id_for_label }}">Project type</label>
+              {{ form.project_type }}
+            </div>
+          </div>
+
+          <div class="form-row form-row--2">
+            <div class="form-field">
+              <label for="{{ form.location.id_for_label }}">Project location</label>
+              {{ form.location }}
+            </div>
+            <div class="form-field">
+              <label for="{{ form.budget_range.id_for_label }}">Budget range</label>
+              {{ form.budget_range }}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="{{ form.timeline.id_for_label }}">Timeline</label>
+              {{ form.timeline }}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field {% if form.message.errors %}has-error{% endif %}">
+              <label for="{{ form.message.id_for_label }}">Message <span class="required">*</span></label>
+              {{ form.message }}
+              {% if form.message.errors %}<span id="id_message_error" class="form-error">{{ form.message.errors.0 }}</span>{% endif %}
+            </div>
+          </div>
+
+          {{ form.website }}
+          <button type="submit" class="btn btn--primary btn--large">Send Enquiry</button>
+        </form>
+      </div>
+
+      <!-- Contact info -->
+      <aside class="contact-info-col">
+        <div class="contact-info">
+          <h2>Direct contact</h2>
+          {% if site_settings.contact_email %}
+          <p>
+            <span class="contact-info__label">Email</span>
+            <a href="mailto:{{ site_settings.contact_email }}">{{ site_settings.contact_email }}</a>
+          </p>
+          {% endif %}
+          {% if site_settings.phone %}
+          <p>
+            <span class="contact-info__label">Phone</span>
+            <a href="tel:{{ site_settings.phone }}">{{ site_settings.phone }}</a>
+          </p>
+          {% endif %}
+          {% if site_settings.location %}
+          <p>
+            <span class="contact-info__label">Studio</span>
+            <span>{{ site_settings.location }}</span>
+          </p>
+          {% endif %}
+        </div>
+
+        <div class="contact-social">
+          {% if site_settings.linkedin_url %}
+          <a href="{{ site_settings.linkedin_url }}" target="_blank" rel="noopener" class="social-link">LinkedIn</a>
+          {% endif %}
+          {% if site_settings.instagram_url %}
+          <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener" class="social-link">Instagram</a>
+          {% endif %}
+          {% if site_settings.behance_url %}
+          <a href="{{ site_settings.behance_url }}" target="_blank" rel="noopener" class="social-link">Behance</a>
+          {% endif %}
+          {% if site_settings.issuu_url %}
+          <a href="{{ site_settings.issuu_url }}" target="_blank" rel="noopener" class="social-link">Issuu</a>
+          {% endif %}
+        </div>
+
+        <div class="contact-note">
+          <p>I typically respond within two working days. For urgent enquiries please call or email directly.</p>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+[project]
+name = "jeannote"
+version = "0.1.0"
+description = "Architecture portfolio platform for Jeannot Tsirenge"
+requires-python = ">=3.13"
+dependencies = [
+    "Django>=5.2,<5.3",
+    "Pillow>=11.0",
+    "django-environ>=0.11",
+    "whitenoise>=6.8",
+    "psycopg[binary]>=3.2",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9",
+    "mypy>=1.13",
+    "django-stubs>=5.1",
+    "pytest>=8.3",
+    "pytest-django>=4.9",
+    "pre-commit>=4.0",
+]
+
+# ---------------------------------------------------------------------------
+# Tool configuration
+# ---------------------------------------------------------------------------
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "DJ",  # flake8-django
+]
+ignore = [
+    "E501",   # line too long — handled by formatter
+    "B008",   # do not perform function calls in default arguments
+]
+
+[tool.ruff.lint.per-file-ignores]
+"*/migrations/*.py" = ["E501", "F401"]
+"*/management/commands/*.py" = ["T201"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.13"
+plugins = ["mypy_django_plugin.main"]
+ignore_missing_imports = true
+warn_unused_ignores = true
+no_implicit_optional = true
+# Start permissive; tighten over time
+disallow_untyped_defs = false
+check_untyped_defs = true
+
+[tool.django-stubs]
+django_settings_module = "config.settings.dev"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.dev"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+filterwarnings = [
+    # pytest sees imported Django model classes (e.g. Testimonial); harmless
+    "ignore::pytest.PytestCollectionWarning",
+    # staticfiles/ doesn't exist until collectstatic is run; harmless in tests
+    "ignore:No directory at.*staticfiles:UserWarning",
+]

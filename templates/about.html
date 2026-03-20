@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About{% endblock %}
+{% block og_title %}About — {{ site_settings.site_name }}{% endblock %}
+{% block meta_description %}Jeannot Tsirenge is a registered architect based in South Africa, practising across residential, cultural, and commercial design. Learn about his philosophy, credentials, and approach to architecture.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <p class="page-hero__label">Architect</p>
+    <h1 class="page-hero__title">{{ profile.headline|default:"About" }}</h1>
+  </div>
+</section>
+
+<section class="about-layout container">
+
+  <!-- Portrait -->
+  <div class="about-portrait">
+    {% if profile.portrait %}
+    <figure>
+      <img src="{{ profile.portrait.url }}" alt="{{ site_settings.site_name }}" loading="lazy">
+    </figure>
+    {% else %}
+    <div class="about-portrait__placeholder"></div>
+    {% endif %}
+
+    {% if profile.cv_file %}
+    <a href="{{ profile.cv_file.url }}" class="btn btn--outline" download>Download CV / Profile</a>
+    {% endif %}
+
+    {% if site_settings.contact_email %}
+    <a href="mailto:{{ site_settings.contact_email }}" class="btn btn--primary">Get in Touch</a>
+    {% endif %}
+  </div>
+
+  <!-- Bio content -->
+  <div class="about-content">
+
+    {% if profile.intro %}
+    <p class="about-intro">{{ profile.intro }}</p>
+    {% endif %}
+
+    {% if profile.biography %}
+    <div class="prose about-bio">
+      {{ profile.biography|linebreaks }}
+    </div>
+    {% endif %}
+
+    {% if profile.philosophy %}
+    <div class="about-philosophy">
+      <h2>Design Philosophy</h2>
+      <div class="prose">
+        {{ profile.philosophy|linebreaks }}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if profile.credentials %}
+    <div class="about-credentials">
+      <h2>Education &amp; Credentials</h2>
+      <ul>
+        {% for line in profile.credentials.splitlines %}
+        {% if line.strip %}
+        <li>{{ line }}</li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {% if profile.experience_years %}
+    <div class="about-stats">
+      <div class="stat">
+        <span class="stat__number">{{ profile.experience_years }}+</span>
+        <span class="stat__label">Years of practice</span>
+      </div>
+      {% if site_settings.location %}
+      <div class="stat">
+        <span class="stat__number">—</span>
+        <span class="stat__label">Based in {{ site_settings.location }}</span>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta-section">
+  <div class="container container--narrow cta-section__inner">
+    <h2 class="cta-section__title">Interested in working together?</h2>
+    <p class="cta-section__body">Every project begins with a conversation. I'd be glad to hear about yours.</p>
+    <div class="cta-section__actions">
+      <a href="{% url 'contact' %}" class="btn btn--primary btn--large">Contact Jeannot</a>
+      <a href="{% url 'project_list' %}" class="btn btn--outline btn--large">View Projects</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
