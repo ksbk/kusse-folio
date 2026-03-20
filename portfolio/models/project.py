@@ -127,6 +127,7 @@ class ProjectImage(models.Model):
     alt_text = models.CharField(
         max_length=200,
         blank=True,
+        default="",
         help_text="Descriptive alt text for screen readers. Falls back to caption if empty.",
     )
     order = models.PositiveIntegerField(default=0)
