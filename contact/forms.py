@@ -40,8 +40,7 @@ class ContactForm(forms.ModelForm):
     budget_range = forms.ChoiceField(choices=BUDGET_CHOICES, required=False)
     timeline = forms.ChoiceField(choices=TIMELINE_CHOICES, required=False)
 
-    # Honeypot: must remain empty; automated bots typically fill every field.
-    # Hidden from real users via HiddenInput widget.
+    # Honeypot anti-spam field
     website = forms.CharField(required=False, widget=forms.HiddenInput())
 
     class Meta:
@@ -57,17 +56,28 @@ class ContactForm(forms.ModelForm):
             "message",
         ]
         widgets = {
-            "name": forms.TextInput(attrs={"placeholder": "Your name", "aria-describedby": "id_name_error"}),
-            "email": forms.EmailInput(attrs={"placeholder": "Email address", "aria-describedby": "id_email_error"}),
-            "company": forms.TextInput(attrs={"placeholder": "Company or organisation (optional)"}),
-            "location": forms.TextInput(attrs={"placeholder": "Project location (optional)"}),
+            "name": forms.TextInput(
+                attrs={"placeholder": "Your name", "aria-describedby": "id_name_error"}
+            ),
+            "email": forms.EmailInput(
+                attrs={"placeholder": "Email address", "aria-describedby": "id_email_error"}
+            ),
+            "company": forms.TextInput(
+                attrs={"placeholder": "Company or organisation (optional)"}
+            ),
+            "location": forms.TextInput(
+                attrs={"placeholder": "Project location (optional)"}
+            ),
             "message": forms.Textarea(
-                attrs={"rows": 6, "placeholder": "Briefly describe your project or enquiry…", "aria-describedby": "id_message_error"}
+                attrs={
+                    "rows": 6,
+                    "placeholder": "Briefly describe your project or enquiry…",
+                    "aria-describedby": "id_message_error",
+                }
             ),
         }
 
     def clean_website(self) -> str:
-        """Reject the submission if the honeypot field is filled."""
         value = self.cleaned_data.get("website", "")
         if value:
             raise forms.ValidationError("Invalid submission.")

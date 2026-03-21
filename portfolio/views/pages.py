@@ -1,6 +1,8 @@
 from django.views.generic import ListView, TemplateView
 
-from ..models import AboutProfile, Project, Service, SiteSettings, Testimonial
+from projects.models import Project, Testimonial
+
+from ..models import AboutProfile, Service, SiteSettings
 
 # ---------------------------------------------------------------------------
 # Home
@@ -8,7 +10,7 @@ from ..models import AboutProfile, Project, Service, SiteSettings, Testimonial
 
 
 class HomeView(TemplateView):
-    template_name = "home.html"
+    template_name = "portfolio/home.html"
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -30,7 +32,7 @@ class HomeView(TemplateView):
 
 
 class AboutView(TemplateView):
-    template_name = "about.html"
+    template_name = "portfolio/about.html"
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -48,6 +50,6 @@ class AboutView(TemplateView):
 
 class ServicesView(ListView):
     model = Service
-    template_name = "services.html"
+    template_name = "portfolio/services.html"
     context_object_name = "services"
     queryset = Service.objects.filter(active=True)

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from ..models import Project, ProjectImage, Testimonial
+from .models import Project, ProjectImage, Testimonial
 
 # ---------------------------------------------------------------------------
 # Project + inline images

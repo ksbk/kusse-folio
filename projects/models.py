@@ -97,7 +97,7 @@ class Project(models.Model):
     def get_absolute_url(self):
         from django.urls import reverse
 
-        return reverse("portfolio:project_detail", kwargs={"slug": self.slug})
+        return reverse("projects:detail", kwargs={"slug": self.slug})
 
     def get_seo_title(self):
         return self.seo_title or self.title
@@ -152,10 +152,6 @@ class ProjectImage(models.Model):
 
 
 class Testimonial(models.Model):
-    name = models.CharField(max_length=120)
-    role = models.CharField(max_length=120, blank=True)
-    company = models.CharField(max_length=120, blank=True)
-    quote = models.TextField()
     project = models.ForeignKey(
         Project,
         on_delete=models.SET_NULL,
@@ -163,6 +159,10 @@ class Testimonial(models.Model):
         blank=True,
         related_name="testimonials",
     )
+    name = models.CharField(max_length=120)
+    role = models.CharField(max_length=120, blank=True)
+    company = models.CharField(max_length=120, blank=True)
+    quote = models.TextField()
     order = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=True)
 
@@ -172,4 +172,4 @@ class Testimonial(models.Model):
         verbose_name_plural = "Testimonials"
 
     def __str__(self):
-        return f"{self.name} — {self.company}"
+        return f"{self.name} — {self.role or 'Client'}"

@@ -13,10 +13,10 @@
     </button>
 
     <ul class="nav__links">
-      <li><a href="{% url 'portfolio:project_list' %}" class="nav__link {% if request.resolver_match.url_name == 'project_list' or request.resolver_match.url_name == 'project_detail' %}is-active{% endif %}">Projects</a></li>
+      <li><a href="{% url 'projects:list' %}" class="nav__link {% if request.resolver_match.app_name == 'projects' %}is-active{% endif %}">Projects</a></li>
       <li><a href="{% url 'portfolio:about' %}" class="nav__link {% if request.resolver_match.url_name == 'about' %}is-active{% endif %}">About</a></li>
       <li><a href="{% url 'portfolio:services' %}" class="nav__link {% if request.resolver_match.url_name == 'services' %}is-active{% endif %}">Services</a></li>
-      <li><a href="{% url 'portfolio:contact' %}" class="nav__link nav__cta {% if request.resolver_match.url_name == 'contact' %}is-active{% endif %}">Contact</a></li>
+      <li><a href="{% url 'contact:contact' %}" class="nav__link nav__cta {% if request.resolver_match.app_name == 'contact' %}is-active{% endif %}">Contact</a></li>
     </ul>
   </nav>
 </header>

@@ -1,9 +1,5 @@
 from django.db import models
 
-# ---------------------------------------------------------------------------
-# ContactInquiry
-# ---------------------------------------------------------------------------
-
 
 class ContactInquiry(models.Model):
     STATUS_CHOICES = [

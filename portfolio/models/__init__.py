@@ -1,5 +1,3 @@
-from .contact import ContactInquiry
-from .project import Project, ProjectImage, Testimonial
 from .site import AboutProfile, Service, SingletonModel, SiteSettings
 
 __all__ = [
@@ -7,8 +5,4 @@ __all__ = [
     "SiteSettings",
     "AboutProfile",
     "Service",
-    "Project",
-    "ProjectImage",
-    "Testimonial",
-    "ContactInquiry",
 ]

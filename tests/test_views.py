@@ -6,7 +6,7 @@ The contact form POST is tested separately in test_forms.py.
 import pytest
 from django.urls import reverse
 
-from portfolio.models import Testimonial
+from projects.models import Testimonial
 
 # ---------------------------------------------------------------------------
 # Pages that need no database content to render (gracefully handle empty DB)
@@ -21,27 +21,27 @@ def test_home_page(client, site_settings):
 
 @pytest.mark.django_db
 def test_project_list_page(client, site_settings):
-    response = client.get(reverse("portfolio:project_list"))
+    response = client.get(reverse("projects:list"))
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 def test_project_list_with_category_filter(client, site_settings, project):
-    url = reverse("portfolio:project_list") + "?category=residential"
+    url = reverse("projects:list") + "?category=residential"
     response = client.get(url)
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 def test_project_detail_page(client, site_settings, project):
-    url = reverse("portfolio:project_detail", kwargs={"slug": project.slug})
+    url = reverse("projects:detail", kwargs={"slug": project.slug})
     response = client.get(url)
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 def test_project_detail_404_for_unknown_slug(client, site_settings):
-    url = reverse("portfolio:project_detail", kwargs={"slug": "does-not-exist"})
+    url = reverse("projects:detail", kwargs={"slug": "does-not-exist"})
     response = client.get(url)
     assert response.status_code == 404
 
@@ -60,13 +60,13 @@ def test_services_page(client, site_settings):
 
 @pytest.mark.django_db
 def test_contact_page_get(client, site_settings):
-    response = client.get(reverse("portfolio:contact"))
+    response = client.get(reverse("contact:contact"))
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 def test_contact_success_page(client, site_settings):
-    response = client.get(reverse("portfolio:contact_success"))
+    response = client.get(reverse("contact:success"))
     assert response.status_code == 200
 
 
@@ -84,7 +84,7 @@ def test_admin_login_page_resolves(client):
 
 @pytest.mark.django_db
 def test_project_detail_context_has_testimonials_key(client, site_settings, project):
-    url = reverse("portfolio:project_detail", kwargs={"slug": project.slug})
+    url = reverse("projects:detail", kwargs={"slug": project.slug})
     response = client.get(url)
     assert response.status_code == 200
     assert "testimonials" in response.context
@@ -99,7 +99,7 @@ def test_project_detail_context_shows_linked_testimonials(client, site_settings,
         order=1,
         active=True,
     )
-    url = reverse("portfolio:project_detail", kwargs={"slug": project.slug})
+    url = reverse("projects:detail", kwargs={"slug": project.slug})
     response = client.get(url)
     assert response.context["testimonials"].count() == 1
 
@@ -113,7 +113,7 @@ def test_project_detail_context_excludes_inactive_testimonials(client, site_sett
         order=1,
         active=False,
     )
-    url = reverse("portfolio:project_detail", kwargs={"slug": project.slug})
+    url = reverse("projects:detail", kwargs={"slug": project.slug})
     response = client.get(url)
     assert response.context["testimonials"].count() == 0
 
@@ -147,7 +147,7 @@ def test_robots_txt_returns_200(client, site_settings):
 
 @pytest.mark.django_db
 def test_contact_prefills_project_type_from_query_param(client, site_settings):
-    response = client.get(reverse("portfolio:contact") + "?project_type=Residential+Design")
+    response = client.get(reverse("contact:contact") + "?project_type=Residential+Design")
     assert response.status_code == 200
     form = response.context["form"]
     assert form.initial.get("project_type") == "Residential Design"
@@ -155,7 +155,7 @@ def test_contact_prefills_project_type_from_query_param(client, site_settings):
 
 @pytest.mark.django_db
 def test_contact_ignores_invalid_project_type_query_param(client, site_settings):
-    response = client.get(reverse("portfolio:contact") + "?project_type=MaliciousValue")
+    response = client.get(reverse("contact:contact") + "?project_type=MaliciousValue")
     assert response.status_code == 200
     form = response.context["form"]
     assert form.initial.get("project_type", "") == ""
@@ -203,7 +203,7 @@ def test_project_detail_query_count(client, site_settings, project, django_asser
       7. testimonials
       8. SiteSettings.load() og_image fallback (no cover_image)
     """
-    url = reverse("portfolio:project_detail", kwargs={"slug": project.slug})
+    url = reverse("projects:detail", kwargs={"slug": project.slug})
     with django_assert_num_queries(8):
         client.get(url)
 
@@ -217,7 +217,7 @@ def test_project_detail_og_image_falls_back_to_site_settings(client, site_settin
     """
     # No cover image on the project fixture, no og_image on site_settings:
     # og_image key should be absent from context.
-    url = reverse("portfolio:project_detail", kwargs={"slug": project.slug})
+    url = reverse("projects:detail", kwargs={"slug": project.slug})
     response = client.get(url)
     assert response.status_code == 200
     assert "og_image" not in response.context

@@ -1,6 +1,7 @@
 from django.views.generic import DetailView, ListView
 
-from ..models import Project, SiteSettings
+from .models import Project
+from portfolio.models import SiteSettings
 
 # ---------------------------------------------------------------------------
 # Project list
@@ -9,7 +10,7 @@ from ..models import Project, SiteSettings
 
 class ProjectListView(ListView):
     model = Project
-    template_name = "portfolio/projects/list.html"
+    template_name = "projects/list.html"
     context_object_name = "projects"
     paginate_by = 12
 
@@ -34,7 +35,7 @@ class ProjectListView(ListView):
 
 class ProjectDetailView(DetailView):
     model = Project
-    template_name = "portfolio/projects/detail.html"
+    template_name = "projects/detail.html"
     context_object_name = "project"
 
     def get_context_data(self, **kwargs):

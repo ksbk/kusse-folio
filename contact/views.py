@@ -4,7 +4,7 @@ from django.conf import settings as django_settings
 from django.core.mail import EmailMessage
 from django.shortcuts import redirect, render
 
-from ..forms import PROJECT_TYPE_CHOICES, ContactForm
+from .forms import PROJECT_TYPE_CHOICES, ContactForm
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +41,7 @@ def contact_view(request):
                 msg.send()
             except Exception:
                 logger.exception("Contact email failed for inquiry pk=%s", inquiry.pk)
-            return redirect("portfolio:contact_success")
+            return redirect("contact:success")
     else:
         initial: dict[str, str] = {}
         project_type = request.GET.get("project_type", "").strip()
@@ -50,8 +50,8 @@ def contact_view(request):
             if project_type in valid_types:
                 initial["project_type"] = project_type
         form = ContactForm(initial=initial)
-    return render(request, "portfolio/contact.html", {"form": form})
+    return render(request, "contact/contact.html", {"form": form})
 
 
 def contact_success_view(request):
-    return render(request, "portfolio/contact_success.html")
+    return render(request, "contact/contact_success.html")

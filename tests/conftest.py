@@ -5,7 +5,8 @@ Shared pytest fixtures for the jeannote test suite.
 import pytest
 from django.test import Client
 
-from portfolio.models import Project, Service, SiteSettings
+from portfolio.models import Service, SiteSettings
+from projects.models import Project
 
 
 @pytest.fixture

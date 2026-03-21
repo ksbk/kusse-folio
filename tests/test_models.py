@@ -4,15 +4,9 @@ Model unit tests — instantiation, basic relations, and singleton behaviour.
 
 import pytest
 
-from portfolio.models import (
-    AboutProfile,
-    ContactInquiry,
-    Project,
-    ProjectImage,
-    Service,
-    SiteSettings,
-    Testimonial,
-)
+from contact.models import ContactInquiry
+from portfolio.models import AboutProfile, Service, SiteSettings
+from projects.models import Project, ProjectImage, Testimonial
 
 # ---------------------------------------------------------------------------
 # SiteSettings singleton
