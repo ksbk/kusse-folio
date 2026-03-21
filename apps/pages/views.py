@@ -1,17 +1,12 @@
 from django.views.generic import TemplateView
 
+from apps.core.models import AboutProfile
 from apps.projects.models import Project, Testimonial
 from apps.services.models import Service
 
-from ..models import AboutProfile
-
-# ---------------------------------------------------------------------------
-# Home
-# ---------------------------------------------------------------------------
-
 
 class HomeView(TemplateView):
-    template_name = "core/home.html"
+    template_name = "pages/home.html"
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -24,13 +19,8 @@ class HomeView(TemplateView):
         return ctx
 
 
-# ---------------------------------------------------------------------------
-# About
-# ---------------------------------------------------------------------------
-
-
 class AboutView(TemplateView):
-    template_name = "core/about.html"
+    template_name = "pages/about.html"
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)

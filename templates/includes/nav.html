@@ -1,6 +1,6 @@
 <header class="site-header" id="site-header">
   <nav class="nav container">
-    <a href="{% url 'core:home' %}" class="nav__brand">
+    <a href="{% url 'pages:home' %}" class="nav__brand">
       {% if site_settings.logo %}
         <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_name }}" class="nav__logo">
       {% else %}
@@ -14,7 +14,7 @@
 
     <ul class="nav__links">
       <li><a href="{% url 'projects:list' %}" class="nav__link {% if request.resolver_match.app_name == 'projects' %}is-active{% endif %}">Projects</a></li>
-      <li><a href="{% url 'core:about' %}" class="nav__link {% if request.resolver_match.url_name == 'about' %}is-active{% endif %}">About</a></li>
+      <li><a href="{% url 'pages:about' %}" class="nav__link {% if request.resolver_match.url_name == 'about' %}is-active{% endif %}">About</a></li>
       <li><a href="{% url 'services:list' %}" class="nav__link {% if request.resolver_match.app_name == 'services' %}is-active{% endif %}">Services</a></li>
       <li><a href="{% url 'contact:contact' %}" class="nav__link nav__cta {% if request.resolver_match.app_name == 'contact' %}is-active{% endif %}">Contact</a></li>
     </ul>

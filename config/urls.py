@@ -42,7 +42,7 @@ urlpatterns = [
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
     ),
-    path("", include("apps.core.urls")),
+    path("", include("apps.pages.urls")),
     path("projects/", include("apps.projects.urls")),
     path("contact/", include("apps.contact.urls")),
     path("services/", include("apps.services.urls")),
