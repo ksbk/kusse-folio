@@ -39,6 +39,14 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])  # pyright: 
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 # ---------------------------------------------------------------------------
+# Media storage — Cloudinary
+# ---------------------------------------------------------------------------
+# Overrides the local-filesystem default from base.py.
+# Requires CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET
+# to be set in the environment.
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
+# ---------------------------------------------------------------------------
 # Logging — surface warnings and errors in the hosting platform's log stream
 # ---------------------------------------------------------------------------
 

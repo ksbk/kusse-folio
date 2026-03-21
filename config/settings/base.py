@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     "django.contrib.sitemaps",
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
+    "cloudinary_storage",
+    "cloudinary",
     "portfolio",
 ]
 
@@ -121,14 +123,19 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# MEDIA_STORAGE_INTEGRATION_POINT
-# By default media files are written to the local filesystem (MEDIA_ROOT).
-# On ephemeral platforms (Heroku, Render, Fly.io, Railway) these files are
-# wiped on every deploy. Before uploading real images, switch to persistent
-# storage by installing django-storages and setting DEFAULT_FILE_STORAGE in
-# the environment.  See the README for the required environment variables.
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# ---------------------------------------------------------------------------
+# Cloudinary — persistent media storage for production
+# ---------------------------------------------------------------------------
+# Credentials are read from the environment; left empty here so dev continues
+# to use the local filesystem. Set DEFAULT_FILE_STORAGE in prod.py to activate.
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": env.str("CLOUDINARY_CLOUD_NAME", default=""),
+    "API_KEY": env.str("CLOUDINARY_API_KEY", default=""),
+    "API_SECRET": env.str("CLOUDINARY_API_SECRET", default=""),
+}
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

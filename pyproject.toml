@@ -10,6 +10,8 @@ dependencies = [
     "whitenoise>=6.8",
     "psycopg[binary]>=3.2",
     "gunicorn>=25.1.0",
+    "cloudinary>=1.44.1",
+    "django-cloudinary-storage>=0.3.0",
 ]
 
 [dependency-groups]
