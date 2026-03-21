@@ -154,15 +154,20 @@ Tests live in `tests/` organised by domain, mirroring the `apps/` layout:
 tests/
   conftest.py          # shared fixtures (site_settings, project, service)
   core/
+    test_admin.py      # singleton admin guardrails
     test_checks.py     # core.W001 system check (email backend guard)
     test_models.py     # SiteSettings and AboutProfile singletons
     test_templatetags.py  # first_paragraph filter
-    test_views.py      # home, about, admin, sitemap, robots.txt
+    test_views.py      # admin, sitemap, robots.txt
   contact/
+    test_admin.py      # no-add permission for inquiries
     test_forms.py      # form validation, POST, email-failure resilience
     test_models.py     # ContactInquiry default status
     test_views.py      # contact GET, success page, query param prefill
+  pages/
+    test_views.py      # home/about pages and featured-project exclusion
   projects/
+    test_admin.py      # admin thumbnail helpers
     test_models.py     # Project, ProjectImage, Testimonial
     test_views.py      # list, detail, context, query count, og_image fallback
   services/
@@ -184,7 +189,7 @@ make coverage
 # or: uv run pytest --cov --cov-report=term-missing
 ```
 
-Current baseline (at time of writing): **97 % coverage** (455 statements, 15 missed).
+Current baseline (at time of writing): **99 % coverage** (480 statements, 1 missed).
 The number may shift as features are added; run `make coverage` to see the current figure.
 Coverage is also reported in CI on every push.
 
@@ -255,12 +260,9 @@ jeannote/
 │   ├── wsgi.py
 │   └── asgi.py
 ├── apps/                      # all first-party Django apps
-│   ├── core/                  # site-wide glue: settings models, page views, checks, context processor
+│   ├── core/                  # site-wide glue: global models, checks, context processor, sitemaps
 │   │   ├── admin/
 │   │   ├── models/            # SiteSettings, AboutProfile (singletons)
-│   │   ├── views/             # HomeView, AboutView
-│   │   ├── templates/
-│   │   │   └── core/
 │   │   ├── templatetags/
 │   │   │   └── core_tags.py   # first_paragraph filter
 │   │   ├── management/commands/
@@ -269,7 +271,12 @@ jeannote/
 │   │   ├── checks.py          # core.W001 — email backend guard
 │   │   ├── context_processors.py
 │   │   ├── sitemaps.py
-│   │   └── urls.py
+│   ├── pages/                 # static content pages (home + about)
+│   │   ├── apps.py
+│   │   ├── views.py           # HomeView, AboutView
+│   │   ├── urls.py
+│   │   ├── templates/
+│   │   │   └── pages/
 │   ├── projects/              # portfolio projects domain
 │   │   ├── admin.py
 │   │   ├── models.py
@@ -310,6 +317,7 @@ jeannote/
 │   ├── conftest.py
 │   ├── core/
 │   ├── contact/
+│   ├── pages/
 │   ├── projects/
 │   └── services/
 ├── scripts/
@@ -336,7 +344,7 @@ Templates are split across two locations with distinct ownership:
 | Location | Owns | Purpose |
 | --- | --- | --- |
 | `templates/` | Project level | Shell and global chrome — `base.html`, nav, footer, `robots.txt` |
-| `apps/core/templates/core/` | `core` app | Home and about page templates |
+| `apps/pages/templates/pages/` | `pages` app | Home and about page templates |
 | `apps/projects/templates/projects/` | `projects` app | Project list and detail |
 | `apps/contact/templates/contact/` | `contact` app | Contact form and success page |
 | `apps/services/templates/services/` | `services` app | Services listing |
