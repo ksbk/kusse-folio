@@ -93,6 +93,7 @@ Site at **<http://127.0.0.1:8000>** · Admin at **<http://127.0.0.1:8000/admin>*
 See [SETUP.md](SETUP.md) for the full phase-by-phase guide from first run to live site.
 See [DEMO.md](DEMO.md) to stand up a preview instance or share a demo URL.
 See [CHANGELOG.md](CHANGELOG.md) for what's included in this release.
+See [LICENSE.md](LICENSE.md) for purchase terms.
 
 ---
 
