@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{# 500 pages are rendered without RequestContext — context processors do not run.  #}
+{# site_settings will be absent; use |default filters for any user-visible copy.   #}
+
+{% block full_title %}Server error — {{ site_settings.site_name|default:"Jeannot Tsirenge" }}{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero--short">
+  <div class="container">
+    <p class="page-hero__label">500</p>
+    <h1 class="page-hero__title">Something went wrong</h1>
+    <p class="page-hero__subtitle">
+      An unexpected error occurred on our end. The issue has been noted.
+      Please try again, or return to the homepage.
+    </p>
+    <div class="page-hero__actions">
+      <a href="/" class="btn btn--primary">Back to home</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

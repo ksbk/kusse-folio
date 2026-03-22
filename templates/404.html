@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block full_title %}Page not found — {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero--short">
+  <div class="container">
+    <p class="page-hero__label">404</p>
+    <h1 class="page-hero__title">Page not found</h1>
+    <p class="page-hero__subtitle">
+      The page you're looking for may have been moved, renamed, or no longer exists.
+    </p>
+    <div class="page-hero__actions">
+      <a href="{% url 'pages:home' %}" class="btn btn--primary">Back to home</a>
+      <a href="{% url 'projects:list' %}" class="btn btn--ghost">View projects</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
