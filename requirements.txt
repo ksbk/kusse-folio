@@ -6,6 +6,7 @@ certifi==2026.2.25
     # via
     #   cloudinary
     #   requests
+    #   sentry-sdk
 charset-normalizer==3.4.6
     # via requests
 cloudinary==1.44.1
@@ -32,6 +33,8 @@ psycopg-binary==3.3.3 ; implementation_name != 'pypy'
     # via psycopg
 requests==2.32.5
     # via django-cloudinary-storage
+sentry-sdk==2.55.0
+    # via jeannote
 six==1.17.0
     # via cloudinary
 sqlparse==0.5.5
@@ -44,5 +47,6 @@ urllib3==2.6.3
     # via
     #   cloudinary
     #   requests
+    #   sentry-sdk
 whitenoise==6.12.0
     # via jeannote

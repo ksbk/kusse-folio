@@ -124,6 +124,8 @@ check-deploy:
 	  CLOUDINARY_CLOUD_NAME=dummy-cloud \
 	  CLOUDINARY_API_KEY=dummy-key \
 	  CLOUDINARY_API_SECRET=dummy-secret \
+	  SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0 \
+	  SENTRY_ENVIRONMENT=production \
 	  uv run python manage.py check --deploy
 
 # ---------------------------------------------------------------------------

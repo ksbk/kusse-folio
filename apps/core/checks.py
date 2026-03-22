@@ -144,3 +144,24 @@ def check_production_media_storage_credentials(app_configs, **kwargs):
             )
         )
     return errors
+
+
+@register()
+def check_production_sentry_dsn(app_configs, **kwargs):
+    """Warn when production error reporting has not been configured."""
+    errors: list[Warning] = []
+    if settings.DEBUG:
+        return errors
+
+    if not getattr(settings, "SENTRY_DSN", ""):
+        errors.append(
+            Warning(
+                "DEBUG=False (production mode) but SENTRY_DSN is empty.",
+                hint=(
+                    "Set SENTRY_DSN to your Sentry project's DSN so uncaught production "
+                    "exceptions are captured outside the hosting platform logs."
+                ),
+                id="core.W005",
+            )
+        )
+    return errors

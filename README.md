@@ -503,6 +503,11 @@ the complete annotated list.
 | `DEFAULT_FROM_EMAIL` | No | = `CONTACT_EMAIL` | "From" address on outgoing mail |
 | `CONTACT_EMAIL` | No | `contact@jeannot-tsirenge.com` | Receives contact form notifications |
 | `CSRF_TRUSTED_ORIGINS` | **Prod** | `[]` | Required behind HTTPS reverse proxies |
+| `SENTRY_DSN` | Recommended | — | Enables Sentry exception capture in production |
+| `SENTRY_ENVIRONMENT` | No | `production` | Environment name reported to Sentry |
+| `SENTRY_RELEASE` | No | — | Release/commit identifier shown on Sentry events |
+| `SENTRY_TRACES_SAMPLE_RATE` | No | `0.0` | Performance tracing sample rate from `0.0` to `1.0` |
+| `SENTRY_SEND_DEFAULT_PII` | No | `False` | Leave off unless you explicitly want request/user PII |
 
 ---
 
@@ -529,6 +534,7 @@ ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
 DATABASE_URL=postgres://user:password@host:5432/dbname
 CONTACT_EMAIL=contact@jeannot-tsirenge.com
 CSRF_TRUSTED_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
+SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
 ```
 
 ### 3. Email — must configure before launch ⚠️
@@ -548,6 +554,20 @@ DEFAULT_FROM_EMAIL=Jeannot Tsirenge <contact@jeannot-tsirenge.com>
 ```
 
 Recommended providers: SendGrid, Mailgun, Postmark, Amazon SES.
+
+### 3a. Error visibility — enable before launch
+
+Sentry is now supported in `config.settings.prod` and initializes only when
+`SENTRY_DSN` is present. The smallest correct production setup is:
+
+```dotenv
+SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
+SENTRY_ENVIRONMENT=production
+SENTRY_RELEASE=<git-sha-or-release-name>
+```
+
+`SENTRY_TRACES_SAMPLE_RATE` defaults to `0.0`, so this starts with exception
+monitoring only. Increase tracing later only if you want performance data.
 
 ### 4. Media file persistence — must resolve before uploading real content ⚠️
 
@@ -620,6 +640,7 @@ from the local shell. If it warns, fix the underlying production setting.
 - [ ] SMTP email backend configured and tested
 - [ ] `CONTACT_EMAIL` set to a monitored inbox
 - [ ] Cloudinary credentials set for production media uploads
+- [ ] `SENTRY_DSN` set for production exception visibility
 - [ ] `collectstatic` and `migrate` run
 - [ ] Admin superuser created
 - [ ] Real portrait and OG image uploaded in admin

@@ -9,6 +9,7 @@ from apps.core.checks import (
     check_production_csrf_trusted_origins,
     check_production_email_backend,
     check_production_media_storage_credentials,
+    check_production_sentry_dsn,
 )
 
 _CONSOLE = "django.core.mail.backends.console.EmailBackend"
@@ -101,4 +102,17 @@ def test_check_warns_when_cloudinary_credentials_missing():
 )
 def test_check_silent_when_cloudinary_credentials_present():
     errors = check_production_media_storage_credentials(None)
+    assert errors == []
+
+
+@override_settings(DEBUG=False, SENTRY_DSN="")
+def test_check_warns_when_sentry_dsn_missing():
+    errors = check_production_sentry_dsn(None)
+    assert len(errors) == 1
+    assert errors[0].id == "core.W005"
+
+
+@override_settings(DEBUG=False, SENTRY_DSN="https://examplePublicKey@o0.ingest.sentry.io/0")
+def test_check_silent_when_sentry_dsn_present():
+    errors = check_production_sentry_dsn(None)
     assert errors == []
