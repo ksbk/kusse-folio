@@ -13,6 +13,7 @@ class HomeView(TemplateView):
         ctx["featured_projects"] = Project.objects.filter(featured=True).order_by("order")[:6]
         # Exclude featured projects to avoid showing the same work twice on the homepage.
         ctx["all_projects"] = Project.objects.filter(featured=False).order_by("order")[:9]
+        ctx["project_count"] = Project.objects.filter(status="completed").count()
         ctx["services"] = Service.objects.filter(active=True)
         ctx["testimonials"] = Testimonial.objects.filter(active=True)
         ctx["about"] = AboutProfile.load()

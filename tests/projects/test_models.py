@@ -76,6 +76,16 @@ def test_testimonial_optional_project_fk(db, project):
     assert t.project == project
 
 
+@pytest.mark.django_db
+def test_testimonial_inactive_excluded_from_active_filter(db):
+    Testimonial.objects.create(name="Visible", quote="Good work.", order=1, active=True)
+    Testimonial.objects.create(name="Hidden", quote="Not shown.", order=2, active=False)
+    active = list(Testimonial.objects.filter(active=True))
+    names = [t.name for t in active]
+    assert "Visible" in names
+    assert "Hidden" not in names
+
+
 # ---------------------------------------------------------------------------
 # ProjectImage.get_alt_text
 # ---------------------------------------------------------------------------
