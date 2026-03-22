@@ -16,12 +16,8 @@ class Project(models.Model):
         ("residential", "Residential"),
         ("commercial", "Commercial"),
         ("cultural", "Cultural"),
-        ("mixed_use", "Mixed Use"),
-        ("interior", "Interior Architecture"),
-        ("concept", "Conceptual"),
-        ("renovation", "Renovation & Adaptive Reuse"),
-        ("competition", "Competition"),
-        ("other", "Other"),
+        ("interior", "Interiors"),
+        ("renovation", "Renovation"),
     ]
     STATUS_CHOICES = [
         ("completed", "Completed"),
@@ -36,7 +32,7 @@ class Project(models.Model):
         max_length=300,
         help_text="One or two clear sentences shown on project cards and in search results. Under 160 characters is ideal.",
     )
-    category = models.CharField(max_length=40, choices=CATEGORY_CHOICES, default="other")
+    category = models.CharField(max_length=40, choices=CATEGORY_CHOICES, default="residential")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="completed")
 
     # Location & metadata
