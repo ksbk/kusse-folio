@@ -1,0 +1,222 @@
+/* ---------------------------------------------------------
+   7. Section headers
+   --------------------------------------------------------- */
+.section__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-block-end: var(--space-lg);
+}
+
+.section__label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+
+.section__label--muted { color: var(--c-mid-grey); }
+
+.section--dark .section__label { color: var(--c-accent-lt); }
+
+.section__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 300;
+  max-width: 560px;
+}
+
+.section--dark .section__title { color: var(--c-white); }
+
+.section__footer {
+  margin-block-start: var(--space-lg);
+  display: flex;
+  justify-content: center;
+}
+
+
+
+/* ---------------------------------------------------------
+   9. Philosophy block
+   --------------------------------------------------------- */
+.philosophy {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  font-weight: 300;
+  line-height: 1.45;
+  font-style: italic;
+  color: var(--c-white);
+  border-inline-start: 3px solid var(--c-accent);
+  padding-inline-start: 2rem;
+  margin-block: var(--space-md) var(--space-lg);
+  max-width: 680px;
+}
+
+.section--dark .btn--ghost-light { margin-block-start: 0.5rem; }
+
+
+/* ---------------------------------------------------------
+   10. Services list (home)
+   --------------------------------------------------------- */
+.services-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  gap: 0;
+  border-block-start: 1px solid var(--c-warm-grey);
+}
+
+.service-item {
+  border-block-end: 1px solid var(--c-warm-grey);
+}
+
+.service-item__link {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.75rem var(--space-sm);
+  transition: background-color var(--dur-sm);
+}
+
+.service-item__link:hover { background-color: var(--c-stone); }
+
+.service-item__title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-block-end: 0.3rem;
+}
+
+.service-item__summary {
+  font-size: 0.875rem;
+  color: var(--c-text-muted);
+}
+
+.service-item__arrow {
+  font-size: 1.25rem;
+  color: var(--c-accent);
+  flex-shrink: 0;
+  transition: transform var(--dur-sm);
+}
+
+.service-item__link:hover .service-item__arrow { transform: translateX(4px); }
+
+
+
+/* ---------------------------------------------------------
+   11. Trust section
+   --------------------------------------------------------- */
+.trust-section { padding-block: var(--space-lg); }
+
+.trust-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg) var(--space-xl);
+  justify-content: center;
+}
+
+.trust-item {
+  text-align: center;
+}
+
+.trust-item__number {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 300;
+  color: var(--c-accent);
+  line-height: 1;
+}
+
+.trust-item__label {
+  display: block;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-mid-grey);
+  margin-block-start: 0.5rem;
+}
+
+
+/* ---------------------------------------------------------
+   12. Testimonials
+   --------------------------------------------------------- */
+.testimonials-track {
+  position: relative;
+  min-height: 160px;
+  margin-block-start: var(--space-md);
+}
+
+.testimonial {
+  animation: fade-in var(--dur-md) var(--ease);
+}
+
+.testimonial--hidden { display: none; }
+
+.testimonial blockquote p {
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--c-text);
+  margin-block-end: var(--space-md);
+}
+
+.testimonials-track .testimonial blockquote p::before { content: '"'; }
+.testimonials-track .testimonial blockquote p::after  { content: '"'; }
+
+.testimonial figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.testimonial figcaption strong {
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+.testimonial figcaption span {
+  font-size: 0.8rem;
+  color: var(--c-text-muted);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ---------------------------------------------------------
+   13. CTA section
+   --------------------------------------------------------- */
+.cta-section { text-align: center; }
+
+.cta-section__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.cta-section__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  font-weight: 300;
+}
+
+.cta-section__body {
+  color: var(--c-text-muted);
+  max-width: 480px;
+  margin-block-end: var(--space-sm);
+}
+
+.cta-section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}

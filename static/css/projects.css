@@ -1,0 +1,370 @@
+/* ---------------------------------------------------------
+   8. Project cards & grid
+   --------------------------------------------------------- */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.projects-grid--featured {
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.projects-grid--featured .project-card { grid-column: span 4; }
+.projects-grid--featured .project-card--large { grid-column: span 8; }
+
+.projects-grid--uniform {
+  grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
+}
+
+.project-card {
+  overflow: hidden;
+}
+
+.project-card__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.project-card__media {
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background-color: var(--c-warm-grey);
+  position: relative;
+}
+
+.project-card--large .project-card__media { aspect-ratio: 16/9; }
+
+.project-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-lg) var(--ease);
+}
+
+.project-card__link:hover .project-card__media img {
+  transform: scale(1.04);
+}
+
+.project-card__placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--c-warm-grey), var(--c-stone));
+}
+
+.project-card__info {
+  padding: 1.25rem 0 0;
+}
+
+.project-card__meta {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+  display: block;
+  margin-block-end: 0.4rem;
+}
+
+.project-card__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  font-weight: 400;
+  margin-block-end: 0.5rem;
+  transition: color var(--dur-sm);
+}
+
+.project-card__link:hover .project-card__title { color: var(--c-accent); }
+
+.project-card__desc {
+  font-size: 0.9rem;
+  color: var(--c-text-muted);
+  margin-block-end: 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.project-card__cta {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  opacity: 0;
+  transition: opacity var(--dur-sm);
+}
+
+.project-card__link:hover .project-card__cta { opacity: 1; }
+
+@media (max-width: 1024px) {
+  .projects-grid { grid-template-columns: repeat(2, 1fr); }
+  .projects-grid--featured { grid-template-columns: repeat(2, 1fr); }
+  .projects-grid--featured .project-card { grid-column: span 1; }
+  .projects-grid--featured .project-card--large { grid-column: span 2; }
+}
+
+@media (max-width: 640px) {
+  .projects-grid,
+  .projects-grid--featured,
+  .projects-grid--uniform { grid-template-columns: 1fr; }
+  .projects-grid--featured .project-card,
+  .projects-grid--featured .project-card--large { grid-column: span 1; }
+}
+
+
+
+/* ---------------------------------------------------------
+   15. Filter bar
+   --------------------------------------------------------- */
+.filter-bar {
+  background-color: var(--c-white);
+  border-block-end: 1px solid var(--c-warm-grey);
+  position: sticky;
+  top: 4.5rem;
+  z-index: 50;
+}
+
+.filter-bar__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  padding-block: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filter-bar__nav::-webkit-scrollbar { display: none; }
+
+.filter-btn {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+  padding: 1rem 1.25rem;
+  border-block-end: 2px solid transparent;
+  white-space: nowrap;
+  transition: color var(--dur-sm), border-color var(--dur-sm);
+  flex-shrink: 0;
+}
+
+.filter-btn:hover { color: var(--c-text); }
+
+.filter-btn--active {
+  color: var(--c-text);
+  border-block-end-color: var(--c-accent);
+}
+
+
+/* ---------------------------------------------------------
+   16. Pagination
+   --------------------------------------------------------- */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  padding-block-start: var(--space-lg);
+}
+
+.pagination__link {
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  transition: color var(--dur-sm);
+}
+
+.pagination__link:hover { color: var(--c-text); }
+
+.pagination__info {
+  font-size: 0.8rem;
+  color: var(--c-text-muted);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--c-text-muted);
+  font-style: italic;
+}
+
+
+
+/* ---------------------------------------------------------
+   18. Project metadata bar
+   --------------------------------------------------------- */
+.project-meta-bar {
+  background-color: var(--c-stone);
+  padding-block: 1.5rem;
+  border-block-end: 1px solid var(--c-warm-grey);
+}
+
+.project-meta-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-lg);
+}
+
+.project-meta-item dt {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-mid-grey);
+  margin-block-end: 0.2rem;
+}
+
+.project-meta-item dd {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--c-text);
+}
+
+
+/* ---------------------------------------------------------
+   19. Project story
+   --------------------------------------------------------- */
+.project-story {
+  padding-block: var(--space-xl);
+}
+
+.project-section {
+  max-width: 720px;
+  margin-block-end: var(--space-xl);
+}
+
+.project-section--accent {
+  border-inline-start: 3px solid var(--c-accent);
+  padding-inline-start: var(--space-md);
+}
+
+.project-section__title {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-block-end: 1rem;
+}
+
+.prose p { margin-block-end: 1.25em; }
+.prose p:last-child { margin-block-end: 0; }
+
+/* Gallery */
+.gallery { margin-block: var(--space-lg); }
+
+.gallery--3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.gallery--2col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.gallery--drawings {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.gallery__item img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--dur-md) var(--ease);
+}
+
+.gallery--drawings .gallery__item img { aspect-ratio: auto; }
+
+.gallery__item:hover img { transform: scale(1.02); }
+
+.gallery__item { overflow: hidden; }
+
+.gallery__item figcaption {
+  font-size: 0.8rem;
+  color: var(--c-mid-grey);
+  padding: 0.5rem 0 0;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .gallery--3col { grid-template-columns: repeat(2, 1fr); }
+  .gallery--2col { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .gallery--3col { grid-template-columns: 1fr; }
+}
+
+
+/* Project navigation */
+.project-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-block: var(--space-md);
+  border-block-start: 1px solid var(--c-warm-grey);
+}
+
+.project-nav__back {
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-mid-grey);
+  transition: color var(--dur-sm);
+}
+
+.project-nav__back:hover { color: var(--c-text); }
+
+/* Project-level testimonials — shown below navigation on the detail page */
+.testimonials-section { padding-block: var(--space-xl); }
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+  gap: var(--space-md);
+  margin-block-start: var(--space-md);
+}
+
+.testimonial-card {
+  background: var(--c-white);
+  border: 1px solid var(--c-warm-grey);
+  border-radius: 4px;
+  padding: var(--space-md);
+  margin: 0;
+}
+
+.testimonial-card__quote {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--c-text);
+  margin-block-end: var(--space-sm);
+}
+
+.testimonial-card__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.testimonial-card__name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.testimonial-card__meta {
+  font-size: 0.78rem;
+  color: var(--c-text-muted);
+}

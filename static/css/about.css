@@ -1,0 +1,117 @@
+/* ---------------------------------------------------------
+   20. About page
+   --------------------------------------------------------- */
+.about-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--space-xl);
+  padding-block: var(--space-xl);
+  align-items: start;
+}
+
+.about-portrait figure img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  display: block;
+}
+
+.about-portrait__placeholder {
+  aspect-ratio: 3/4;
+  background-color: var(--c-warm-grey);
+}
+
+.about-portrait {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  position: sticky;
+  top: 5.5rem;
+  max-width: 300px;
+}
+
+.about-intro {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 300;
+  line-height: 1.45;
+  color: var(--c-text);
+  margin-block-end: var(--space-md);
+}
+
+.about-bio { margin-block-end: var(--space-lg); }
+
+.about-philosophy {
+  margin-block: var(--space-lg);
+  padding: var(--space-md);
+  background-color: var(--c-stone);
+  border-inline-start: 3px solid var(--c-accent);
+}
+
+.about-philosophy h2,
+.about-credentials h2 {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-block-end: 1rem;
+}
+
+.about-credentials { margin-block: var(--space-lg); }
+
+.about-credentials ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.about-credentials li {
+  padding-inline-start: 1.25rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.about-credentials li::before {
+  content: '—';
+  position: absolute;
+  inset-inline-start: 0;
+  color: var(--c-accent);
+}
+
+.about-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  margin-block-top: var(--space-lg);
+  padding-block-start: var(--space-lg);
+  border-block-start: 1px solid var(--c-warm-grey);
+}
+
+.stat__number {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  font-weight: 300;
+  color: var(--c-accent);
+  line-height: 1;
+}
+
+.stat__label {
+  display: block;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-mid-grey);
+  margin-block-start: 0.4rem;
+}
+
+@media (max-width: 900px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+  .about-portrait { position: static; max-width: 380px; }
+}
