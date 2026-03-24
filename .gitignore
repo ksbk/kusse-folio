@@ -43,6 +43,10 @@ htmlcov/
 .coverage
 coverage.xml
 
+# Visual audit output (screenshots are large binaries — keep locally only)
+artifacts/
+screenshots/
+
 # uv
 .uv/
 
