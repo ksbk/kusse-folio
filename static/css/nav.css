@@ -144,7 +144,7 @@
   }
 
   .nav__links {
-    display: none;
+    display: flex;
     position: fixed;
     inset: 0;
     background-color: var(--c-black);
@@ -153,9 +153,19 @@
     align-items: center;
     gap: var(--space-md);
     z-index: 99;
+    /* Animatable closed state — transitions on opacity/visibility, not display */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--dur-sm) var(--ease),
+                visibility var(--dur-sm) var(--ease);
   }
 
-  .nav__links.is-open { display: flex; }
+  .nav__links.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
 
   .nav__link {
     font-family: var(--font-serif);

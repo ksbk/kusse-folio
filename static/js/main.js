@@ -22,34 +22,50 @@
   const navLinks = document.querySelector('.nav__links');
 
   if (toggle && navLinks) {
+    // Escape handler — added on open, removed on close so it never leaks
+    const onEscape = e => {
+      if (e.key === 'Escape') {
+        closeMenu();
+        toggle.focus();
+      }
+    };
+
+    const openMenu = () => {
+      navLinks.classList.add('is-open');
+      toggle.classList.add('is-open');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      navLinks.querySelector('a')?.focus();
+      document.addEventListener('keydown', onEscape);
+    };
+
+    const closeMenu = () => {
+      navLinks.classList.remove('is-open');
+      toggle.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onEscape);
+    };
+
+    // Sync aria-expanded from real DOM state on init (handles bfcache restores)
+    toggle.setAttribute('aria-expanded', String(navLinks.classList.contains('is-open')));
+
     toggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('is-open');
-      toggle.classList.toggle('is-open', isOpen);
-      toggle.setAttribute('aria-expanded', String(isOpen));
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-      if (isOpen) navLinks.querySelector('a')?.focus();
+      navLinks.classList.contains('is-open') ? closeMenu() : openMenu();
     });
 
     // Close on link click
     navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('is-open');
-        toggle.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
+      link.addEventListener('click', closeMenu);
     });
 
-    // Close on Escape
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && navLinks.classList.contains('is-open')) {
-        navLinks.classList.remove('is-open');
-        toggle.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-        toggle.focus();
-      }
-    });
+    // Close when viewport crosses into desktop — prevents stuck scroll lock
+    // on device rotation or DevTools breakpoint crossing
+    const mq = window.matchMedia('(max-width: 768px)');
+    const onBreakpoint = e => {
+      if (!e.matches) closeMenu();
+    };
+    mq.addEventListener('change', onBreakpoint);
   }
 
   // ---------------------------------------------------------
