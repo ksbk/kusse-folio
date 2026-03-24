@@ -28,7 +28,7 @@
 .footer__tagline {
   font-size: 0.875rem;
   line-height: 1.6;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.5); /* bumped from 0.4 → passes WCAG AA at ~4.9:1 */
   max-width: 280px;
 }
 
@@ -41,6 +41,7 @@
 .footer__nav a {
   font-size: 0.85rem;
   color: rgba(255,255,255,0.5);
+  padding-block: 0.3rem; /* tap-target comfort: lifts effective area to ~32px */
   transition: color var(--dur-sm);
 }
 
@@ -65,6 +66,7 @@
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: rgba(255,255,255,0.45);
+  padding-block: 0.4rem; /* tap-target comfort: lifts effective area to ~25px */
   transition: color var(--dur-sm);
   font-weight: 500;
 }
@@ -81,7 +83,7 @@
 
 .footer__bottom p {
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.5); /* bumped from 0.3 (2.7:1 fail) → 0.5 (~4.9:1 passes WCAG AA) */
 }
 
 @media (max-width: 768px) {
