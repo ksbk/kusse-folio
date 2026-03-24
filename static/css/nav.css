@@ -183,9 +183,11 @@
     justify-content: center;
     align-items: center;
     gap: var(--space-sm); /* tightened from space-md (2rem) → space-sm (1rem) */
-    /* Offset the header height so justify-content:center computes relative
-       to the visible dark area below the nav bar, not the full viewport */
-    padding-block-start: 4.5rem;
+    /* 4.5rem = exact header height; using 3rem gives a 0.75rem upward shift
+       so the group sits at ~48% of the visible dark area rather than 50%,
+       correcting the optical illusion that makes mathematically centred
+       content read as too low. */
+    padding-block-start: 3rem;
     z-index: 99;
     /* Animatable closed state — transitions on opacity/visibility, not display */
     opacity: 0;
