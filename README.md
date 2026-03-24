@@ -4,7 +4,7 @@ A professional, content-driven portfolio platform for architecture practices, bu
 
 > **New here?** See [SETUP.md](SETUP.md) for the buyer-facing setup and customisation checklist.
 >
-> **Current stable version:** `v1.0.0`\
+> **Current stable version:** `v1.0.1`\
 > **Status:** Stable\
 > **Stack:** Python `3.13` · Django `5.2 LTS`\
 > **Docs:** [SETUP.md](SETUP.md) · [DEMO.md](DEMO.md) · [CHANGELOG.md](CHANGELOG.md) · [LICENSE.md](LICENSE.md)\
