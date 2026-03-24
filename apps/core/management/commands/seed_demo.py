@@ -155,6 +155,7 @@ SERVICES = [
 
 PROJECTS = [
     {
+        "slug": "house-on-the-hillside",
         "title": "House on the Hillside",
         "short_description": "A private residence that uses the natural topography of its sloping site to create a sequence of connected levels, each framing a distinct view of the landscape.",
         "category": "residential",
@@ -170,6 +171,7 @@ PROJECTS = [
         "order": 1,
     },
     {
+        "slug": "community-library-pavilion",
         "title": "Community Library Pavilion",
         "short_description": "A lightweight civic pavilion housing a branch library, reading rooms, and flexible community space — designed to be both a landmark and a welcoming public threshold.",
         "category": "cultural",
@@ -185,6 +187,7 @@ PROJECTS = [
         "order": 2,
     },
     {
+        "slug": "urban-apartment-retrofit",
         "title": "Urban Apartment Retrofit",
         "short_description": "The interior transformation of a 1970s apartment block unit — stripping back decades of poor alterations to reveal strong bones and reorganise the plan for contemporary urban living.",
         "category": "interior",
@@ -200,6 +203,7 @@ PROJECTS = [
         "order": 3,
     },
     {
+        "slug": "commercial-office-conversion",
         "title": "Commercial Office Conversion",
         "short_description": "The transformation of a decommissioned warehouse into a flexible co-working campus — preserving industrial character while introducing contemporary amenity and environmental performance.",
         "category": "commercial",
@@ -255,7 +259,7 @@ TESTIMONIALS = [
             "a signature style, and kept us informed at every stage. The house exceeded "
             "what we thought was possible on our budget and timeline."
         ),
-        "project_title": "House on the Hillside",
+        "project_slug": "house-on-the-hillside",
         "order": 1,
     },
     {
@@ -268,7 +272,7 @@ TESTIMONIALS = [
             "The quality of the space seems to put people at ease. Usage numbers in the "
             "first year were double our projections."
         ),
-        "project_title": "Community Library Pavilion",
+        "project_slug": "community-library-pavilion",
         "order": 2,
     },
     {
@@ -281,7 +285,7 @@ TESTIMONIALS = [
             "occupancy inside fourteen months — reflects design quality as much as market "
             "conditions. We will work with them again."
         ),
-        "project_title": "Commercial Office Conversion",
+        "project_slug": "commercial-office-conversion",
         "order": 3,
     },
 ]
@@ -415,33 +419,28 @@ class Command(BaseCommand):
             self.stdout.write(f"  {action} Service: {obj.title}")
 
     def _seed_projects(self):
-        from django.utils.text import slugify
-
         for data in PROJECTS:
-            slug = slugify(data["title"])
+            slug = data["slug"]
             obj, created = Project.objects.get_or_create(slug=slug, defaults={"title": data["title"]})
             for key, value in data.items():
-                if key != "title":
+                if key != "slug":
                     setattr(obj, key, value)
-            # Always ensure title stays in sync
-            obj.title = data["title"]
             obj.save()
             action = "Created" if created else "Updated"
             self.stdout.write(f"  {action} Project: {obj.title} (slug={obj.slug})")
 
     def _seed_testimonials(self):
         for data in TESTIMONIALS:
-            project_title = data.get("project_title")
+            project_slug = data.get("project_slug")
             project = None
-            if project_title:
-                from django.utils.text import slugify
-                project = Project.objects.filter(slug=slugify(project_title)).first()
+            if project_slug:
+                project = Project.objects.filter(slug=project_slug).first()
             obj, created = Testimonial.objects.get_or_create(
                 name=data["name"],
                 defaults={"project": project},
             )
             for key, value in data.items():
-                if key not in ("name", "project_title"):
+                if key not in ("name", "project_slug"):
                     setattr(obj, key, value)
             obj.project = project
             obj.save()
