@@ -140,7 +140,9 @@
   }
 
   /* Brand must be visible on the dark open-state header.
-   * Text name: color override. Logo image: invert to white. */
+   * Text name: color override. Logo image: invert to white.
+   * Brand raised above the overlay (z-index 99) same as the toggle. */
+  .site-header.nav-open .nav__brand { position: relative; z-index: 101; }
   .site-header.nav-open .nav__name { color: var(--c-white); }
   .site-header.nav-open .nav__logo { filter: brightness(0) invert(1); }
 
