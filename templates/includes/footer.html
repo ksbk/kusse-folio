@@ -16,6 +16,7 @@
       </ul>
     </nav>
 
+    {% if site_settings.contact_email or site_settings.instagram_url or site_settings.linkedin_url or site_settings.facebook_url or site_settings.behance_url or site_settings.issuu_url %}
     <div class="footer__contact">
       {% if site_settings.contact_email %}
       <a href="mailto:{{ site_settings.contact_email }}" class="footer__email">{{ site_settings.contact_email }}</a>
@@ -38,6 +39,7 @@
         {% endif %}
       </div>
     </div>
+    {% endif %}
   </div>
 
   <div class="footer__bottom container">

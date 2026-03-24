@@ -137,6 +137,7 @@
 {% endif %}
 
 <!-- ===== TRUST MARKERS ===== -->
+{% if about.experience_years or project_count or services or site_settings.location %}
 <section class="section trust-section">
   <div class="container">
     <ul class="trust-list">
@@ -146,10 +147,12 @@
         <span class="trust-item__label">Years of experience</span>
       </li>
       {% endif %}
+      {% if project_count %}
       <li class="trust-item">
         <span class="trust-item__number">{{ project_count }}</span>
         <span class="trust-item__label">Projects completed</span>
       </li>
+      {% endif %}
       {% if services %}
       <li class="trust-item">
         <span class="trust-item__number">{{ services|length }}</span>
@@ -165,6 +168,7 @@
     </ul>
   </div>
 </section>
+{% endif %}
 
 <!-- ===== TESTIMONIALS ===== -->
 {% if testimonials %}
