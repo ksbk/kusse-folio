@@ -155,6 +155,17 @@
     transform: translateY(-6.5px) rotate(-45deg);
   }
 
+  /*
+   * Force white × bars whenever the menu is open.
+   * The toggle is z-index:101, above the black overlay (z-index:99), so it
+   * always paints against the dark overlay — white is always correct here.
+   * Without this, the home-page top state leaves white spans against the
+   * light nav-open header background, making the × invisible.
+   */
+  .site-header.nav-open .nav__toggle span {
+    background-color: var(--c-white);
+  }
+
   .nav__links {
     display: flex;
     position: fixed;
