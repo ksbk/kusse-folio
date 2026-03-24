@@ -174,7 +174,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: var(--space-md);
+    gap: var(--space-sm); /* tightened from space-md (2rem) → space-sm (1rem) */
     z-index: 99;
     /* Animatable closed state — transitions on opacity/visibility, not display */
     opacity: 0;
@@ -199,10 +199,21 @@
   .nav__link:hover,
   .nav__link.is-active { color: var(--c-white) !important; }
 
+  /* On the overlay, Contact reads as part of the same serif link system.
+   * Reset all desktop CTA chrome: border, sans-serif, small size.
+   * Desktop .nav__cta rules are unaffected (outside this MQ). */
   .nav__cta {
-    font-family: var(--font-sans);
-    font-size: 0.9rem;
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    color: var(--c-warm-grey) !important;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+  }
+
+  .nav__cta:hover {
+    background-color: transparent;
     color: var(--c-white) !important;
-    border-color: rgba(250,250,248,0.4) !important;
   }
 }
