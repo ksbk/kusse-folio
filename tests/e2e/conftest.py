@@ -63,7 +63,7 @@ def project_factory(transactional_db) -> Callable[..., Project]:
         defaults = {
             "title": f"Test Project {counter}",
             "short_description": "A test project for browser coverage.",
-            "category": "residential",
+            "category": "housing",
             "status": "completed",
             "year": 2024,
             "location": "Dublin",

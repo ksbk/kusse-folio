@@ -25,7 +25,7 @@ def project(db):
         title="Test House",
         slug="test-house",
         short_description="A test project.",
-        category="residential",
+        category="housing",
         status="completed",
         year=2024,
         location="Dublin",

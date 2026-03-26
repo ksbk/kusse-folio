@@ -18,9 +18,71 @@ def test_project_list_page(client, site_settings):
 
 @pytest.mark.django_db
 def test_project_list_with_category_filter(client, site_settings, project):
-    url = reverse("projects:list") + "?category=residential"
+    url = reverse("projects:list") + "?category=housing"
     response = client.get(url)
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_project_list_only_shows_populated_sector_filters(client, site_settings, project):
+    Project.objects.create(
+        title="Civic Hall",
+        slug="civic-hall",
+        short_description="Public-sector project.",
+        category="civic",
+        status="completed",
+    )
+    Project.objects.create(
+        title="Studio Workplace",
+        slug="studio-workplace",
+        short_description="Workplace project.",
+        category="workplace",
+        status="completed",
+    )
+
+    response = client.get(reverse("projects:list"))
+
+    assert response.status_code == 200
+    assert response.context["categories"] == [
+        ("housing", "Housing"),
+        ("civic", "Civic"),
+        ("workplace", "Workplace"),
+    ]
+    assert response.context["show_category_filters"] is True
+
+
+@pytest.mark.django_db
+def test_project_list_hides_filter_bar_when_only_one_sector_exists(client, site_settings, project):
+    response = client.get(reverse("projects:list"))
+
+    assert response.status_code == 200
+    assert response.context["categories"] == [("housing", "Housing")]
+    assert response.context["show_category_filters"] is False
+    assert b"Filter projects by category" not in response.content
+
+
+@pytest.mark.django_db
+def test_project_list_redirects_legacy_category_param_to_canonical(client, site_settings, project):
+    response = client.get(reverse("projects:list") + "?category=residential")
+
+    assert response.status_code == 302
+    assert response["Location"] == reverse("projects:list") + "?category=housing"
+
+
+@pytest.mark.django_db
+def test_project_list_redirects_removed_category_param_to_unfiltered_page(client, site_settings, project):
+    response = client.get(reverse("projects:list") + "?category=interior")
+
+    assert response.status_code == 302
+    assert response["Location"] == reverse("projects:list")
+
+
+@pytest.mark.django_db
+def test_project_list_redirects_unknown_category_param_to_unfiltered_page(client, site_settings, project):
+    response = client.get(reverse("projects:list") + "?category=competition")
+
+    assert response.status_code == 302
+    assert response["Location"] == reverse("projects:list")
 
 
 @pytest.mark.django_db

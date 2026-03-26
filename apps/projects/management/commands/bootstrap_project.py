@@ -10,15 +10,15 @@ Usage examples
 --------------
 Dry run — title + category only:
     python manage.py bootstrap_project \\
-        --title "Residential Housing — Reykjavík" \\
-        --category residential \\
+        --title "Harbour Housing — Reykjavík" \\
+        --category housing \\
         --dry-run
 
 Dry run — full:
     python manage.py bootstrap_project \\
-        --title "Residential Housing — Reykjavík" \\
-        --category residential \\
-        --short-description "Multi-family residential housing project." \\
+        --title "Harbour Housing — Reykjavík" \\
+        --category housing \\
+        --short-description "Multi-family housing project." \\
         --cover path/to/cover.jpg \\
         --gallery path/to/gallery-01.jpg \\
                   path/to/gallery-02.jpg \\
@@ -28,8 +28,8 @@ Dry run — full:
 
 Live run (remove --dry-run when satisfied):
     python manage.py bootstrap_project \\
-        --title "Residential Housing — Reykjavík" \\
-        --category residential \\
+        --title "Harbour Housing — Reykjavík" \\
+        --category housing \\
         --cover path/to/cover.jpg \\
         --gallery path/to/gallery-01.jpg \\
                   path/to/gallery-02.jpg \\

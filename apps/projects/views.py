@@ -1,3 +1,5 @@
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
 from .models import Project
@@ -13,17 +15,60 @@ class ProjectListView(ListView):
     context_object_name = "projects"
     paginate_by = 12
 
+    def get_public_queryset(self):
+        return Project.objects.all().order_by("order", "-year")
+
+    def get_available_categories(self, queryset):
+        available_values = set(queryset.values_list("category", flat=True))
+        return [
+            (value, label)
+            for value, label in Project.CATEGORY_CHOICES
+            if value in available_values
+        ]
+
+    def build_category_redirect(self, category=""):
+        base_url = reverse("projects:list")
+        if not category:
+            return HttpResponseRedirect(base_url)
+
+        params = self.request.GET.copy()
+        params["category"] = category
+        return HttpResponseRedirect(f"{base_url}?{params.urlencode()}")
+
+    def dispatch(self, request, *args, **kwargs):
+        self.public_projects = self.get_public_queryset()
+        self.available_categories = self.get_available_categories(self.public_projects)
+        self.available_category_values = {value for value, _ in self.available_categories}
+
+        requested_category = request.GET.get("category", "")
+        if requested_category in Project.LEGACY_CATEGORY_REDIRECTS:
+            canonical_category = Project.LEGACY_CATEGORY_REDIRECTS[requested_category]
+            if canonical_category in self.available_category_values:
+                return self.build_category_redirect(canonical_category)
+            return self.build_category_redirect()
+
+        if requested_category:
+            if requested_category in Project.REMOVED_CATEGORY_PARAMS:
+                return self.build_category_redirect()
+            if requested_category not in Project.CANONICAL_CATEGORY_VALUES:
+                return self.build_category_redirect()
+            if requested_category not in self.available_category_values:
+                return self.build_category_redirect()
+
+        self.active_category = requested_category
+        return super().dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
-        qs = Project.objects.all().order_by("order", "-year")
-        category = self.request.GET.get("category")
-        if category:
-            qs = qs.filter(category=category)
+        qs = self.public_projects.all()
+        if self.active_category:
+            qs = qs.filter(category=self.active_category)
         return qs
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["categories"] = Project.CATEGORY_CHOICES
-        ctx["active_category"] = self.request.GET.get("category", "")
+        ctx["categories"] = self.available_categories
+        ctx["active_category"] = self.active_category
+        ctx["show_category_filters"] = len(self.available_categories) > 1
         return ctx
 
 

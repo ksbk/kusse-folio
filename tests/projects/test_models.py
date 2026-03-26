@@ -17,6 +17,7 @@ def test_project_str(project):
 def test_project_slug_auto_generated():
     p = Project.objects.create(title="My New House")
     assert p.slug == "my-new-house"
+    assert p.category == "housing"
 
 
 @pytest.mark.django_db

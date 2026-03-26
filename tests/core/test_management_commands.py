@@ -143,7 +143,7 @@ def test_warns_when_demo_projects_exist(site_settings):
     Project.objects.create(
         title="House on the Hillside",
         short_description="Starter project.",
-        category="residential",
+        category="housing",
         status="completed",
     )
     warnings = collect_warnings()
