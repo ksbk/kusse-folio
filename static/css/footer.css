@@ -86,6 +86,25 @@
   color: rgba(255,255,255,0.5); /* bumped from 0.3 (2.7:1 fail) → 0.5 (~4.9:1 passes WCAG AA) */
 }
 
+.footer__bottom a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(255,255,255,0.2);
+  text-underline-offset: 0.18em;
+  transition:
+    color var(--dur-sm),
+    text-decoration-color var(--dur-sm);
+}
+
+.footer__bottom a:hover {
+  color: var(--c-white);
+  text-decoration-color: rgba(255,255,255,0.45);
+}
+
+.footer__bottom a:focus-visible {
+  outline-offset: 0.18em;
+}
+
 @media (max-width: 768px) {
   .footer__inner {
     grid-template-columns: 1fr 1fr;
@@ -99,6 +118,8 @@
 @media (max-width: 480px) {
   /* Phone portrait: tighten vertical rhythm — footer was drawing 19rem of whitespace */
   .site-footer { padding-block-start: var(--space-lg); }   /* 7rem → 4rem */
+  .footer__nav a,
+  .footer__email { padding-block: 0.4rem; }
   .footer__inner {
     grid-template-columns: 1fr;
     gap: var(--space-md);                /* row-gap 4rem → 2rem, halves inter-block space */
@@ -106,5 +127,4 @@
   }
   .footer__brand { grid-column: auto; }
 }
-
 

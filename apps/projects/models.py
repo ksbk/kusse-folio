@@ -3,12 +3,25 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from django.db import models
+from django.db.models import Prefetch
 from django.urls import reverse
+from django.utils.functional import cached_property
 from django.utils.text import slugify
 
 # ---------------------------------------------------------------------------
 # Project
 # ---------------------------------------------------------------------------
+
+
+class ProjectQuerySet(models.QuerySet):
+    def with_preview_media(self):
+        return self.prefetch_related(
+            Prefetch(
+                "images",
+                queryset=ProjectImage.objects.filter(image_type="gallery").order_by("order"),
+                to_attr="_preview_gallery_images",
+            )
+        )
 
 
 class Project(models.Model):
@@ -82,6 +95,8 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = ProjectQuerySet.as_manager()
+
     class Meta:
         ordering = ["order", "-year", "title"]
         verbose_name = "Project"
@@ -103,6 +118,27 @@ class Project(models.Model):
 
     def get_seo_description(self):
         return self.seo_description or self.short_description
+
+    @cached_property
+    def preview_gallery_image(self):
+        prefetched = getattr(self, "_preview_gallery_images", None)
+        if prefetched is not None:
+            return prefetched[0] if prefetched else None
+        return self.images.filter(image_type="gallery").order_by("order").first()
+
+    @cached_property
+    def preview_image(self):
+        if self.cover_image:
+            return self.cover_image
+        preview_gallery = self.preview_gallery_image
+        return preview_gallery.image if preview_gallery else None
+
+    @cached_property
+    def preview_image_alt(self):
+        if self.cover_image:
+            return self.title
+        preview_gallery = self.preview_gallery_image
+        return preview_gallery.get_alt_text() if preview_gallery else self.title
 
     if TYPE_CHECKING:
         from django.db.models import Manager

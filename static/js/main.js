@@ -22,10 +22,48 @@
   const navLinks = document.querySelector('.nav__links');
 
   if (toggle && navLinks) {
-    // Escape handler — added on open, removed on close so it never leaks
-    const onEscape = e => {
+    let ignoreToggleClick = false;
+    let keyboardToggleKey = null;
+    const menuItems = () => Array.from(navLinks.querySelectorAll('a'));
+    const focusFirstMenuLink = () => {
+      window.setTimeout(() => {
+        menuItems()[0]?.focus();
+      }, 80);
+    };
+
+    const onMenuKeydown = e => {
       if (e.key === 'Escape') {
-        closeMenu();
+        closeMenu({ restoreFocus: true });
+        return;
+      }
+
+      if (e.key !== 'Tab' || !navLinks.classList.contains('is-open')) {
+        return;
+      }
+
+      const links = menuItems();
+      if (!links.length) {
+        return;
+      }
+
+      const firstLink = links[0];
+      const lastLink = links[links.length - 1];
+      const current = document.activeElement;
+
+      if (current === toggle) {
+        e.preventDefault();
+        (e.shiftKey ? lastLink : firstLink)?.focus();
+        return;
+      }
+
+      if (e.shiftKey && current === firstLink) {
+        e.preventDefault();
+        toggle.focus();
+        return;
+      }
+
+      if (!e.shiftKey && current === lastLink) {
+        e.preventDefault();
         toggle.focus();
       }
     };
@@ -38,23 +76,53 @@
       // Disable backdrop-filter on header so the fixed overlay fills the
       // viewport on Safari/iOS (backdrop-filter containment bug)
       header?.classList.add('nav-open');
-      navLinks.querySelector('a')?.focus();
-      document.addEventListener('keydown', onEscape);
+      focusFirstMenuLink();
+      document.addEventListener('keydown', onMenuKeydown);
     };
 
-    const closeMenu = () => {
+    const closeMenu = ({ restoreFocus = false } = {}) => {
       navLinks.classList.remove('is-open');
       toggle.classList.remove('is-open');
       toggle.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
       header?.classList.remove('nav-open');
-      document.removeEventListener('keydown', onEscape);
+      document.removeEventListener('keydown', onMenuKeydown);
+      if (restoreFocus) {
+        toggle.focus();
+      }
     };
 
     // Sync aria-expanded from real DOM state on init (handles bfcache restores)
     toggle.setAttribute('aria-expanded', String(navLinks.classList.contains('is-open')));
 
+    toggle.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') {
+        return;
+      }
+
+      e.preventDefault();
+      keyboardToggleKey = e.key;
+    });
+
+    toggle.addEventListener('keyup', e => {
+      if (!keyboardToggleKey || e.key !== keyboardToggleKey) {
+        return;
+      }
+
+      e.preventDefault();
+      ignoreToggleClick = true;
+      keyboardToggleKey = null;
+      navLinks.classList.contains('is-open')
+        ? closeMenu({ restoreFocus: true })
+        : openMenu();
+    });
+
     toggle.addEventListener('click', () => {
+      if (ignoreToggleClick) {
+        ignoreToggleClick = false;
+        return;
+      }
+
       navLinks.classList.contains('is-open') ? closeMenu() : openMenu();
     });
 
@@ -65,7 +133,7 @@
 
     // Close when viewport crosses into desktop — prevents stuck scroll lock
     // on device rotation or DevTools breakpoint crossing
-    const mq = window.matchMedia('(max-width: 768px)');
+    const mq = window.matchMedia('(max-width: 767px)');
     const onBreakpoint = e => {
       if (!e.matches) closeMenu();
     };

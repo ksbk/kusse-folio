@@ -10,10 +10,18 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["featured_projects"] = Project.objects.filter(featured=True).order_by("order")[:6]
-        # Exclude featured projects to avoid showing the same work twice on the homepage.
-        ctx["all_projects"] = Project.objects.filter(featured=False).order_by("order")[:9]
-        ctx["project_count"] = Project.objects.filter(status="completed").count()
+        featured_projects = list(
+            Project.objects.with_preview_media().filter(featured=True).order_by("order")[:4]
+        )
+        remaining_slots = max(0, 4 - len(featured_projects))
+        supporting_projects = list(
+            Project.objects.with_preview_media()
+            .filter(featured=False)
+            .order_by("order")[:remaining_slots]
+        )
+        homepage_projects = featured_projects + supporting_projects
+        ctx["homepage_projects"] = homepage_projects
+        ctx["hero_project"] = homepage_projects[0] if homepage_projects else None
         ctx["services"] = Service.objects.filter(active=True)
         ctx["testimonials"] = Testimonial.objects.filter(active=True)
         ctx["about"] = AboutProfile.load()
@@ -27,3 +35,7 @@ class AboutView(TemplateView):
         ctx = super().get_context_data(**kwargs)
         ctx["profile"] = AboutProfile.load()
         return ctx
+
+
+class PrivacyView(TemplateView):
+    template_name = "pages/privacy.html"

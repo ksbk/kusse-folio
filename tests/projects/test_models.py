@@ -3,6 +3,7 @@ Model tests for apps.projects: Project, ProjectImage, Testimonial.
 """
 
 import pytest
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 from apps.projects.models import Project, ProjectImage, Testimonial
 
@@ -46,6 +47,52 @@ def test_project_image_fk(project):
     )
     assert img.project == project
     assert project.images.count() == 1
+
+
+@pytest.mark.django_db
+def test_project_preview_image_prefers_cover(project):
+    project.cover_image = SimpleUploadedFile("cover.jpg", b"cover-bytes", content_type="image/jpeg")
+    project.save()
+    gallery = ProjectImage.objects.create(
+        project=project,
+        image=SimpleUploadedFile("gallery.jpg", b"gallery-bytes", content_type="image/jpeg"),
+        alt_text="Gallery alt",
+        order=1,
+        image_type="gallery",
+    )
+
+    assert project.preview_image.name == project.cover_image.name
+    assert project.preview_image_alt == project.title
+    assert project.preview_gallery_image == gallery
+
+
+@pytest.mark.django_db
+def test_project_preview_image_falls_back_to_first_gallery(project):
+    first = ProjectImage.objects.create(
+        project=project,
+        image=SimpleUploadedFile("first.jpg", b"first-gallery", content_type="image/jpeg"),
+        alt_text="First gallery alt",
+        order=1,
+        image_type="gallery",
+    )
+    ProjectImage.objects.create(
+        project=project,
+        image=SimpleUploadedFile("second.jpg", b"second-gallery", content_type="image/jpeg"),
+        alt_text="Second gallery alt",
+        order=2,
+        image_type="gallery",
+    )
+
+    assert project.preview_gallery_image == first
+    assert project.preview_image.name == first.image.name
+    assert project.preview_image_alt == "First gallery alt"
+
+
+@pytest.mark.django_db
+def test_project_preview_image_is_none_without_cover_or_gallery(project):
+    assert project.preview_gallery_image is None
+    assert project.preview_image is None
+    assert project.preview_image_alt == project.title
 
 
 # ---------------------------------------------------------------------------

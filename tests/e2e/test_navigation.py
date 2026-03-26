@@ -35,3 +35,42 @@ def test_mobile_navigation_opens_closes_and_navigates(
 
     expect(page).to_have_url(f"{app_url}/projects/")
     expect(toggle).to_have_attribute("aria-expanded", "false")
+
+
+def test_mobile_navigation_keyboard_focus_moves_into_menu_and_returns_on_escape(
+    mobile_page, open_page, site_settings
+):
+    page = mobile_page
+    open_page("/")
+
+    toggle = page.get_by_role("button", name="Toggle menu")
+    projects_link = page.locator("header").get_by_role("link", name="Projects")
+
+    toggle.focus()
+    page.keyboard.press("Enter")
+
+    expect(toggle).to_have_attribute("aria-expanded", "true")
+    expect(projects_link).to_be_focused()
+    assert page.evaluate("() => document.body.style.overflow") == "hidden"
+
+    page.keyboard.press("Shift+Tab")
+    expect(toggle).to_be_focused()
+
+    page.keyboard.press("Escape")
+
+    expect(toggle).to_have_attribute("aria-expanded", "false")
+    expect(toggle).to_be_focused()
+    assert page.evaluate("() => document.body.style.overflow") == ""
+
+
+def test_tablet_navigation_uses_inline_links(open_page, page, site_settings):
+    page.set_viewport_size({"width": 768, "height": 1024})
+    open_page("/")
+
+    toggle = page.get_by_role("button", name="Toggle menu")
+    projects_link = page.locator("header").get_by_role("link", name="Projects")
+    contact_link = page.locator("header").get_by_role("link", name="Contact")
+
+    expect(toggle).not_to_be_visible()
+    expect(projects_link).to_be_visible()
+    expect(contact_link).to_be_visible()

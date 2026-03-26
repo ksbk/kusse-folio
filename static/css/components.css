@@ -29,6 +29,11 @@
 
 .section--dark .section__title { color: var(--c-white); }
 
+.section__subheading {
+  color: var(--c-text-muted);
+  max-width: 640px;
+}
+
 .section__footer {
   margin-block-start: var(--space-lg);
   display: flex;
@@ -105,37 +110,38 @@
 
 
 /* ---------------------------------------------------------
-   11. Trust section
+   11. Homepage fit strip
    --------------------------------------------------------- */
-.trust-section { padding-block: var(--space-lg); }
+.fit-strip {
+  padding-block: var(--space-lg);
+  background-color: var(--c-stone);
+}
 
-.trust-list {
+.fit-strip__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+.fit-strip__item {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-lg) var(--space-xl);
-  justify-content: center;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
-.trust-item {
-  text-align: center;
-}
-
-.trust-item__number {
-  display: block;
-  font-family: var(--font-serif);
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 300;
-  color: var(--c-accent);
-  line-height: 1;
-}
-
-.trust-item__label {
-  display: block;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
+.fit-strip__title {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--c-mid-grey);
-  margin-block-start: 0.5rem;
+}
+
+.fit-strip__body {
+  color: var(--c-text-muted);
+  max-width: 32ch;
+}
+
+@media (max-width: 900px) {
+  .fit-strip__list { grid-template-columns: 1fr; }
 }
 
 

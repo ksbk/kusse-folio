@@ -9,8 +9,8 @@
 <!-- ===== HERO ===== -->
 <section class="hero">
   <div class="hero__media">
-    {% if featured_projects.0.cover_image %}
-      <img src="{{ featured_projects.0.cover_image.url }}" alt="{{ featured_projects.0.title }}" class="hero__bg" loading="eager">
+    {% if hero_project and hero_project.cover_image %}
+      <img src="{{ hero_project.cover_image.url }}" alt="{{ hero_project.title }}" class="hero__bg" loading="eager">
     {% else %}
       <div class="hero__bg hero__bg--placeholder"></div>
     {% endif %}
@@ -30,21 +30,22 @@
   </a>
 </section>
 
-<!-- ===== FEATURED WORK ===== -->
-{% if featured_projects %}
+<!-- ===== SELECTED PROJECTS ===== -->
+{% if homepage_projects %}
 <section class="section" id="featured">
   <div class="container">
     <div class="section__header">
-      <span class="section__label">Selected work</span>
-      <h2 class="section__title">Featured Projects</h2>
+      <span class="section__label">Portfolio</span>
+      <h2 class="section__title">Selected Projects</h2>
+      <p class="section__subheading">Housing, civic, and workplace projects from the studio&rsquo;s recent work.</p>
     </div>
     <div class="projects-grid projects-grid--featured">
-      {% for project in featured_projects %}
+      {% for project in homepage_projects %}
       <article class="project-card {% if forloop.first %}project-card--large{% endif %}">
         <a href="{{ project.get_absolute_url }}" class="project-card__link">
           <div class="project-card__media">
-            {% if project.cover_image %}
-              <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" loading="lazy">
+            {% if project.preview_image %}
+              <img src="{{ project.preview_image.url }}" alt="{{ project.preview_image_alt }}" loading="lazy">
             {% else %}
               <div class="project-card__placeholder"></div>
             {% endif %}
@@ -105,70 +106,25 @@
 </section>
 {% endif %}
 
-<!-- ===== MORE PROJECTS ===== -->
-{% if all_projects %}
-<section class="section section--tinted">
+<!-- ===== FIT / START ===== -->
+<section class="section fit-strip">
   <div class="container">
-    <div class="section__header">
-      <span class="section__label">Portfolio</span>
-      <h2 class="section__title">More Work</h2>
-    </div>
-    <div class="projects-grid">
-      {% for project in all_projects %}
-      <article class="project-card">
-        <a href="{{ project.get_absolute_url }}" class="project-card__link">
-          <div class="project-card__media">
-            {% if project.cover_image %}
-              <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" loading="lazy">
-            {% else %}
-              <div class="project-card__placeholder"></div>
-            {% endif %}
-          </div>
-          <div class="project-card__info">
-            <span class="project-card__meta">{{ project.get_category_display }} {% if project.year %}· {{ project.year }}{% endif %}</span>
-            <h3 class="project-card__title">{{ project.title }}</h3>
-          </div>
-        </a>
-      </article>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-{% endif %}
-
-<!-- ===== TRUST MARKERS ===== -->
-{% if about.experience_years or project_count or services or site_settings.location %}
-<section class="section trust-section">
-  <div class="container">
-    <ul class="trust-list">
-      {% if about.experience_years %}
-      <li class="trust-item">
-        <span class="trust-item__number">{{ about.experience_years }}+</span>
-        <span class="trust-item__label">Years of experience</span>
+    <ul class="fit-strip__list">
+      <li class="fit-strip__item">
+        <h2 class="fit-strip__title">Who We Work With</h2>
+        <p class="fit-strip__body">Clients planning housing, civic, and workplace projects.</p>
       </li>
-      {% endif %}
-      {% if project_count %}
-      <li class="trust-item">
-        <span class="trust-item__number">{{ project_count }}</span>
-        <span class="trust-item__label">Projects completed</span>
+      <li class="fit-strip__item">
+        <h2 class="fit-strip__title">Project Types</h2>
+        <p class="fit-strip__body">Work includes new buildings, housing, civic projects, and office interiors.</p>
       </li>
-      {% endif %}
-      {% if services %}
-      <li class="trust-item">
-        <span class="trust-item__number">{{ services|length }}</span>
-        <span class="trust-item__label">Service areas</span>
+      <li class="fit-strip__item">
+        <h2 class="fit-strip__title">How Work Starts</h2>
+        <p class="fit-strip__body">Most enquiries start with a site, a brief in progress, or an early question about scope. A short note is enough.</p>
       </li>
-      {% endif %}
-      {% if site_settings.location %}
-      <li class="trust-item">
-        <span class="trust-item__number">&mdash;</span>
-        <span class="trust-item__label">Based in {{ site_settings.location }}</span>
-      </li>
-      {% endif %}
     </ul>
   </div>
 </section>
-{% endif %}
 
 <!-- ===== TESTIMONIALS ===== -->
 {% if testimonials %}
@@ -197,9 +153,9 @@
 <!-- ===== CONTACT CTA ===== -->
 <section class="section cta-section">
   <div class="container container--narrow cta-section__inner">
-    <h2 class="cta-section__title">Have a project in mind?</h2>
-    <p class="cta-section__body">Get in touch with a brief outline of what you're planning — or just an initial question. No formal brief required.</p>
-    <a href="{% url 'contact:contact' %}" class="btn btn--primary btn--large">Get in Touch</a>
+    <h2 class="cta-section__title">Start a Conversation</h2>
+    <p class="cta-section__body">If you have a site, a project in progress, or an early question, we can start there.</p>
+    <a href="{% url 'contact:contact' %}" class="btn btn--primary btn--large">Start a Conversation</a>
   </div>
 </section>
 

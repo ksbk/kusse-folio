@@ -6,8 +6,15 @@
   inset-block-start: 0;
   inset-inline: 0;
   z-index: 100;
+  background-color: rgba(250, 250, 248, 0.88);
+  box-shadow: 0 1px 0 rgba(221, 217, 211, 0.85);
   transition: background-color var(--dur-sm) var(--ease),
               box-shadow var(--dur-sm) var(--ease);
+}
+
+.home .site-header:not(.scrolled):not(.nav-open) {
+  background-color: transparent;
+  box-shadow: none;
 }
 
 .site-header.scrolled {
@@ -36,8 +43,7 @@
   transition: color var(--dur-sm);
 }
 
-.home .nav__name,
-.home .site-header:not(.scrolled) .nav__name { color: var(--c-white); }
+.home .site-header:not(.scrolled):not(.nav-open) .nav__name { color: var(--c-white); }
 
 .nav__logo { height: 2.5rem; width: auto; }
 
@@ -75,9 +81,9 @@
 .nav__link:hover::after,
 .nav__link.is-active::after { transform: scaleX(1); }
 
-.home .site-header:not(.scrolled) .nav__link { color: rgba(250,250,248,0.75); }
-.home .site-header:not(.scrolled) .nav__link:hover,
-.home .site-header:not(.scrolled) .nav__link.is-active { color: var(--c-white); }
+.home .site-header:not(.scrolled):not(.nav-open) .nav__link { color: rgba(250,250,248,0.75); }
+.home .site-header:not(.scrolled):not(.nav-open) .nav__link:hover,
+.home .site-header:not(.scrolled):not(.nav-open) .nav__link.is-active { color: var(--c-white); }
 
 .nav__cta {
   color: var(--c-text) !important;
@@ -94,12 +100,12 @@
 
 .nav__cta::after { display: none; }
 
-.home .site-header:not(.scrolled) .nav__cta {
+.home .site-header:not(.scrolled):not(.nav-open) .nav__cta {
   color: var(--c-white) !important;
   border-color: rgba(250,250,248,0.5);
 }
 
-.home .site-header:not(.scrolled) .nav__cta:hover {
+.home .site-header:not(.scrolled):not(.nav-open) .nav__cta:hover {
   background-color: rgba(250,250,248,0.15);
 }
 
@@ -123,9 +129,9 @@
   transition: transform var(--dur-sm), opacity var(--dur-sm);
 }
 
-.home .site-header:not(.scrolled) .nav__toggle span { background-color: var(--c-white); }
+.home .site-header:not(.scrolled):not(.nav-open) .nav__toggle span { background-color: var(--c-white); }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   /*
    * Safari/iOS: backdrop-filter creates a stacking context that clips
    * fixed-position descendants to the header height instead of the viewport.
