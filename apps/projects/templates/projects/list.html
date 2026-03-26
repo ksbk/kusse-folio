@@ -33,13 +33,13 @@
 <section class="section">
   <div class="container">
     {% if projects %}
-    <div class="projects-grid projects-grid--uniform">
+    <div class="projects-grid projects-grid--uniform{% if projects|length == 4 %} projects-grid--count-4{% endif %}">
       {% for project in projects %}
       <article class="project-card">
         <a href="{{ project.get_absolute_url }}" class="project-card__link">
           <div class="project-card__media">
-            {% if project.cover_image %}
-              <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" loading="lazy">
+            {% if project.preview_image %}
+              <img src="{{ project.preview_image.url }}" alt="{{ project.preview_image_alt }}" loading="lazy">
             {% else %}
               <div class="project-card__placeholder"></div>
             {% endif %}

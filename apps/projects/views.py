@@ -16,7 +16,7 @@ class ProjectListView(ListView):
     paginate_by = 12
 
     def get_public_queryset(self):
-        return Project.objects.all().order_by("order", "-year")
+        return Project.objects.with_preview_media().all().order_by("order", "-year")
 
     def get_available_categories(self, queryset):
         available_values = set(queryset.values_list("category", flat=True))

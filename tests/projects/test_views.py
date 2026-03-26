@@ -5,9 +5,10 @@ View tests for apps.projects: list and detail pages.
 from unittest.mock import MagicMock, PropertyMock, patch
 
 import pytest
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 
-from apps.projects.models import Project, Testimonial
+from apps.projects.models import Project, ProjectImage, Testimonial
 
 
 @pytest.mark.django_db
@@ -21,6 +22,30 @@ def test_project_list_with_category_filter(client, site_settings, project):
     url = reverse("projects:list") + "?category=housing"
     response = client.get(url)
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_project_list_cards_fall_back_to_first_gallery_image(client, site_settings):
+    project = Project.objects.create(
+        title="Gallery Fallback Project",
+        slug="gallery-fallback-project",
+        short_description="Uses gallery preview.",
+        category="housing",
+        status="completed",
+    )
+    gallery_image = ProjectImage.objects.create(
+        project=project,
+        image=SimpleUploadedFile("list-preview.jpg", b"list-preview", content_type="image/jpeg"),
+        alt_text="List preview image",
+        order=1,
+        image_type="gallery",
+    )
+
+    response = client.get(reverse("projects:list"))
+
+    assert response.status_code == 200
+    assert gallery_image.image.url.encode() in response.content
+    assert b"project-card__placeholder" not in response.content
 
 
 @pytest.mark.django_db
@@ -49,6 +74,36 @@ def test_project_list_only_shows_populated_sector_filters(client, site_settings,
         ("workplace", "Workplace"),
     ]
     assert response.context["show_category_filters"] is True
+
+
+@pytest.mark.django_db
+def test_project_list_adds_four_card_grid_class_for_wide_layout(client, site_settings, project):
+    Project.objects.create(
+        title="Civic Hall",
+        slug="civic-hall",
+        short_description="Public-sector project.",
+        category="civic",
+        status="completed",
+    )
+    Project.objects.create(
+        title="Studio Workplace",
+        slug="studio-workplace",
+        short_description="Workplace project.",
+        category="workplace",
+        status="completed",
+    )
+    Project.objects.create(
+        title="Housing Block",
+        slug="housing-block",
+        short_description="Housing project.",
+        category="housing",
+        status="completed",
+    )
+
+    response = client.get(reverse("projects:list"))
+
+    assert response.status_code == 200
+    assert b"projects-grid--count-4" in response.content
 
 
 @pytest.mark.django_db
