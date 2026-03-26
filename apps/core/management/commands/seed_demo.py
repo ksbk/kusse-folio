@@ -72,84 +72,34 @@ def _list_images(directory: Path) -> list[Path]:
 
 SERVICES = [
     {
-        "title": "Architectural Design",
-        "summary": "Full architectural services from first sketch to planning submission and construction.",
-        "description": (
-            "Complete end-to-end architectural design covering brief development, "
-            "concept design, developed design, technical documentation, planning "
-            "application, building regulations, and construction administration."
-        ),
-        "who_for": "Private clients, developers, property owners planning new builds or significant extensions.",
-        "value_proposition": "A design partner through every stage — ensuring spatial quality, regulatory compliance, and delivery within brief.",
-        "deliverables": "Concept sketches and diagrams\nDeveloped design drawings\nPlanning and building regulations submissions\nConstruction drawings and specifications\nSite visit reports",
+        "title": "Housing",
+        "slug": "housing",
+        "summary": "Apartment buildings, housing blocks, and residential projects designed for clear planning, durable use, and long-term liveability.",
+        "description": "",
+        "who_for": "Developers, housing associations, institutions, and private clients delivering apartment buildings, infill housing, or residential work.",
+        "value_proposition": "Clear housing design that balances site conditions, planning constraints, and day-to-day use without overstatement.",
+        "deliverables": "Site and massing studies\nPlanning package\nDeveloped design\nTechnical coordination\nConstruction information",
         "order": 1,
     },
     {
-        "title": "Residential Design",
-        "summary": "Thoughtful homes designed around the way people live — from family houses to urban apartments.",
-        "description": (
-            "Residential architecture requires a deep understanding of how people inhabit "
-            "space. Every project begins with listening — to the client's life, aspirations, "
-            "and the specific character of the site — before any line is drawn."
-        ),
-        "who_for": "Families, individuals, and developers seeking residential design with genuine character and spatial quality.",
-        "value_proposition": "Homes that are both beautiful and practical — designed to last and to grow with the people who live in them.",
-        "deliverables": "Site and brief analysis\nConcept design options\nFull architectural drawings\nInterior layout and specification",
+        "title": "Civic",
+        "slug": "civic",
+        "summary": "Public-facing buildings shaped by threshold, circulation, durability, and a clear relationship between civic use and context.",
+        "description": "",
+        "who_for": "Municipal bodies, trusts, cultural organisations, and public-sector clients commissioning libraries, community facilities, and civic buildings.",
+        "value_proposition": "Buildings that support everyday public use with clarity, resilience, and a calm architectural presence.",
+        "deliverables": "Brief development\nConcept design\nPublic consultation support\nTechnical package\nConsultant coordination",
         "order": 2,
     },
     {
-        "title": "Concept Development",
-        "summary": "Strategic early-stage design thinking to establish direction, test ideas, and build confidence before committing to full development.",
-        "description": (
-            "The concept stage is where the most important decisions are made. "
-            "This service provides rigorous early-stage design exploration — "
-            "spatial strategy, massing studies, precedent research, and a clearly "
-            "communicated design direction ready for next steps."
-        ),
-        "who_for": "Clients at the early stages of a project who need clarity before engaging a full design team.",
-        "value_proposition": "Reduce risk, sharpen brief, and arrive at a defensible design direction before significant investment.",
-        "deliverables": "Spatial strategy document\nConcept diagrams and sketches\nMassing and site studies\nDesign direction presentation",
+        "title": "Workplace",
+        "slug": "workplace",
+        "summary": "Workplace projects where frontage, efficiency, envelope performance, and spatial legibility need to work together.",
+        "description": "",
+        "who_for": "Commercial clients and development teams delivering office buildings, service buildings, or mixed-use workplace environments.",
+        "value_proposition": "A design process that keeps the building useful, robust, and recognisable without forcing an unnecessary brand layer onto the architecture.",
+        "deliverables": "Feasibility and frontage studies\nDeveloped design\nEnvelope coordination\nTechnical documentation",
         "order": 3,
-    },
-    {
-        "title": "Renovation & Adaptive Reuse",
-        "summary": "Transforming existing buildings with care, intelligence, and respect for their character and history.",
-        "description": (
-            "Existing buildings contain value — structural, material, contextual, and cultural. "
-            "Renovation and adaptive reuse projects require a particular kind of design "
-            "intelligence: the ability to read what is already there, identify what must be "
-            "preserved, and find the precise interventions that unlock new life."
-        ),
-        "who_for": "Property owners, developers, and institutions working with existing buildings of any age.",
-        "value_proposition": "A more sustainable approach that maximises the value of what exists while creating spaces fit for today's needs.",
-        "deliverables": "Existing building survey and analysis\nConservation statement if required\nRenovation design package\nMaterials and finishes specification",
-        "order": 4,
-    },
-    {
-        "title": "Interior Architecture",
-        "summary": "Interior environments designed with the same rigour and spatial intelligence as the architecture itself.",
-        "description": (
-            "Interior architecture is not decoration — it is the design of space from the "
-            "inside out. Light, proportion, material, sequence, and detail combine to create "
-            "interiors that feel considered, coherent, and specific to their purpose and occupant."
-        ),
-        "who_for": "Clients seeking interior design that is architecturally considered, not trend-led.",
-        "value_proposition": "Interiors with lasting quality — spatial logic, material integrity, and a clear design language.",
-        "deliverables": "Interior layout and spatial design\nMaterials and finishes palette\nLighting concept\nFurniture and fitout coordination",
-        "order": 5,
-    },
-    {
-        "title": "Design Consultation",
-        "summary": "Expert architectural advice for projects at any stage — planning, design review, feasibility, or procurement.",
-        "description": (
-            "Not every project requires a full architectural appointment. Sometimes what "
-            "is needed is the perspective of an experienced architect to review options, "
-            "assess feasibility, challenge assumptions, or provide a second opinion."
-        ),
-        "who_for": "Clients, developers, and other consultants who need focused expert input without a full commission.",
-        "value_proposition": "Clear, honest architectural advice that adds value quickly and reduces costly mistakes.",
-        "deliverables": "Consultation report\nFeasibility assessment\nDesign review notes\nRecommendations and next steps",
-        "order": 6,
     },
 ]
 
@@ -420,9 +370,12 @@ class Command(BaseCommand):
 
     def _seed_services(self):
         for data in SERVICES:
-            obj, created = Service.objects.get_or_create(title=data["title"])
+            obj, created = Service.objects.get_or_create(
+                slug=data["slug"],
+                defaults={"title": data["title"]},
+            )
             for key, value in data.items():
-                if key != "title":
+                if key != "slug":
                     setattr(obj, key, value)
             obj.save()
             action = "Created" if created else "Updated"

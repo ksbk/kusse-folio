@@ -17,9 +17,9 @@ def test_services_page(client, site_settings):
 @pytest.mark.django_db
 def test_services_page_uses_mapped_contact_project_type_query_param(client, site_settings):
     Service.objects.create(
-        title="Concept Design",
-        slug="concept-design",
-        summary="Early-stage design thinking.",
+        title="Workplace",
+        slug="workplace",
+        summary="Workplace projects.",
         order=1,
         active=True,
     )
@@ -27,4 +27,4 @@ def test_services_page_uses_mapped_contact_project_type_query_param(client, site
     response = client.get(reverse("services:list"))
 
     assert response.status_code == 200
-    assert b"?project_type=Concept%20Development" in response.content
+    assert b"?project_type=Workplace" in response.content

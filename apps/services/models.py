@@ -2,10 +2,15 @@ from django.db import models
 from django.utils.text import slugify
 
 CONTACT_PROJECT_TYPE_MAP = {
-    "residential-design": "Residential Design",
+    "housing": "Housing",
+    "residential-design": "Housing",
+    "civic": "Civic",
+    "civic-community-buildings": "Civic",
+    "workplace": "Workplace",
+    "workplace-commercial-buildings": "Workplace",
     "renovation-adaptive-reuse": "Renovation / Adaptive Reuse",
-    "interior-architecture": "Interior Architecture",
-    "concept-design": "Concept Development",
+    "interior-architecture": "Other",
+    "concept-design": "Other",
 }
 
 

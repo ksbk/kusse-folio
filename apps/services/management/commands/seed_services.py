@@ -17,105 +17,71 @@ from apps.services.models import Service
 
 SERVICES = [
     {
-        "title": "Residential Design",
-        "slug": "residential-design",
+        "title": "Housing",
+        "slug": "housing",
         "summary": (
-            "New homes, extensions, and outbuildings — "
-            "designed from site analysis through to construction documentation."
+            "Housing projects shaped by site conditions, planning constraints, and long-term liveability."
         ),
         "description": "",
         "who_for": (
-            "Homeowners planning a new build, extension, or outbuilding on "
-            "an existing property."
+            "Developers, housing associations, institutions, and private clients delivering apartment buildings, infill housing, or residential work."
         ),
         "value_proposition": (
-            "A complete design that responds to your site, your programme, and "
-            "your budget — developed with enough detail to build from with confidence."
+            "Clear housing design that balances site conditions, planning constraints, and day-to-day use without overstatement."
         ),
         "deliverables": (
-            "Site and context analysis\n"
-            "Concept design options\n"
-            "Design development drawings\n"
-            "Construction documentation\n"
-            "Local authority submission package"
+            "Site and massing studies\n"
+            "Planning package\n"
+            "Developed design\n"
+            "Technical coordination\n"
+            "Construction information"
         ),
         "order": 1,
         "active": True,
     },
     {
-        "title": "Renovation & Adaptive Reuse",
-        "slug": "renovation-adaptive-reuse",
+        "title": "Civic",
+        "slug": "civic",
         "summary": (
-            "Existing buildings brought up to date — restructured, extended, "
-            "or repurposed without losing what makes them worth keeping."
+            "Public-facing buildings shaped by threshold, circulation, durability, and a clear relationship between civic use and context."
         ),
         "description": "",
         "who_for": (
-            "Owners of existing buildings that need structural, spatial, or "
-            "functional improvement — including heritage-adjacent work."
+            "Municipal bodies, trusts, cultural organisations, and public-sector clients commissioning libraries, community facilities, and civic buildings."
         ),
         "value_proposition": (
-            "A considered design process that works with the existing structure "
-            "rather than against it, identifying the right interventions "
-            "for the right reasons."
+            "Buildings that support everyday public use with clarity, resilience, and a calm architectural presence."
         ),
         "deliverables": (
-            "Condition and feasibility assessment\n"
-            "Design proposals with phasing options\n"
-            "Construction documentation"
+            "Brief development\n"
+            "Concept design\n"
+            "Public consultation support\n"
+            "Technical package\n"
+            "Consultant coordination"
         ),
         "order": 2,
         "active": True,
     },
     {
-        "title": "Interior Architecture",
-        "slug": "interior-architecture",
+        "title": "Workplace",
+        "slug": "workplace",
         "summary": (
-            "Interior spatial design for residential and selected commercial "
-            "projects — from layout and materiality through to specification."
+            "Workplace projects where frontage, efficiency, envelope performance, and spatial legibility need to work together."
         ),
         "description": "",
         "who_for": (
-            "Clients who have a shell or existing space and need the interior "
-            "resolved with the same rigour as the architecture."
+            "Commercial clients and development teams delivering office buildings, service buildings, or mixed-use workplace environments."
         ),
         "value_proposition": (
-            "Interior design that is spatially coherent, "
-            "not decorative — built on the same thinking as the architecture."
+            "A design process that keeps the building useful, robust, and recognisable without forcing an unnecessary brand layer onto the architecture."
         ),
         "deliverables": (
-            "Spatial layout and planning\n"
-            "Materials and finishes schedule\n"
-            "Joinery and fixture design\n"
-            "Specification drawings"
+            "Feasibility and frontage studies\n"
+            "Developed design\n"
+            "Envelope coordination\n"
+            "Technical documentation"
         ),
         "order": 3,
-        "active": True,
-    },
-    {
-        "title": "Concept Design",
-        "slug": "concept-design",
-        "summary": (
-            "Early-stage design thinking for projects that are not yet fully "
-            "defined — to test feasibility, establish direction, and sharpen the brief."
-        ),
-        "description": "",
-        "who_for": (
-            "Clients with a site or rough idea who need help testing what is "
-            "possible before committing to a full design process."
-        ),
-        "value_proposition": (
-            "A clear, documented concept that gives you something concrete to "
-            "take to a bank, planning authority, or building committee — "
-            "and a stronger brief to proceed with."
-        ),
-        "deliverables": (
-            "Site feasibility study\n"
-            "Concept sketches and diagrams\n"
-            "Programme outline\n"
-            "Summary report"
-        ),
-        "order": 4,
         "active": True,
     },
 ]

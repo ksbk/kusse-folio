@@ -33,28 +33,28 @@ def test_service_deliverables_list(db):
 
 @pytest.mark.django_db
 def test_service_contact_project_type_mapping():
-    concept = Service.objects.create(
-        title="Concept Design",
-        slug="concept-design",
-        summary="Early-stage design thinking.",
+    housing = Service.objects.create(
+        title="Housing",
+        slug="housing",
+        summary="Housing projects.",
         order=1,
         active=True,
     )
-    renovation = Service.objects.create(
-        title="Renovation & Adaptive Reuse",
-        slug="renovation-adaptive-reuse",
-        summary="Existing building work.",
+    civic = Service.objects.create(
+        title="Civic",
+        slug="civic-community-buildings",
+        summary="Public-facing building work.",
         order=2,
         active=True,
     )
-    custom = Service.objects.create(
-        title="Feasibility Review",
-        slug="feasibility-review",
-        summary="A custom service.",
+    workplace = Service.objects.create(
+        title="Workplace",
+        slug="workplace",
+        summary="Workplace projects.",
         order=3,
         active=True,
     )
 
-    assert concept.contact_project_type == "Concept Development"
-    assert renovation.contact_project_type == "Renovation / Adaptive Reuse"
-    assert custom.contact_project_type == "Other"
+    assert housing.contact_project_type == "Housing"
+    assert civic.contact_project_type == "Civic"
+    assert workplace.contact_project_type == "Workplace"

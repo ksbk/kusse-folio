@@ -14,16 +14,18 @@ def test_services_page_uses_seeded_services_and_prefills_contact_form(
     open_page("/services/")
 
     expect(page.get_by_role("heading", name="Services", level=1)).to_be_visible()
-    expect(page.get_by_role("heading", name="Concept Design")).to_be_visible()
+    expect(page.get_by_role("heading", name="Housing")).to_be_visible()
+    expect(page.get_by_role("heading", name="Civic")).to_be_visible()
+    expect(page.get_by_role("heading", name="Workplace")).to_be_visible()
 
-    concept_service = page.locator("article").filter(
-        has=page.get_by_role("heading", name="Concept Design")
+    housing_service = page.locator("article").filter(
+        has=page.get_by_role("heading", name="Housing")
     )
     expect(
-        concept_service.get_by_text("Early-stage design thinking")
+        housing_service.get_by_text("Housing projects shaped by site conditions")
     ).to_be_visible()
 
-    concept_service.get_by_role("link", name="Enquire about this service").click()
+    housing_service.get_by_role("link", name="Enquire about this service").click()
 
-    expect(page).to_have_url(re.compile(r"/contact/\?project_type=Concept(?:%20|\+)Development$"))
-    expect(page.get_by_label("Project type")).to_have_value("Concept Development")
+    expect(page).to_have_url(re.compile(r"/contact/\?project_type=Housing$"))
+    expect(page.get_by_label("Project type")).to_have_value("Housing")
