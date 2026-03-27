@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Architecture portfolio share image</title>
+  <desc id="desc">Neutral default social share image for the reusable architecture portfolio template.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f1ece4"/>
+      <stop offset="100%" stop-color="#e2d7c8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="72" y="72" width="1056" height="486" rx="12" fill="none" stroke="#8d6f4e" stroke-width="2"/>
+  <path d="M132 430L360 292L528 378L738 216L924 318L1068 230" fill="none" stroke="#8d6f4e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M132 474H1068" fill="none" stroke="#8d6f4e" stroke-width="2" stroke-linecap="round"/>
+  <text x="132" y="178" fill="#2c241d" font-family="'Cormorant Garamond', Georgia, serif" font-size="74" font-weight="500" letter-spacing="-1">Architecture Portfolio</text>
+  <text x="132" y="230" fill="#6c5b4b" font-family="'DM Sans', Arial, sans-serif" font-size="22" letter-spacing="5" text-transform="uppercase">Reusable Template Share Image</text>
+  <text x="132" y="520" fill="#6c5b4b" font-family="'DM Sans', Arial, sans-serif" font-size="24">Add a custom site share image before launch for branded previews.</text>

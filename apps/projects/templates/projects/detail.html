@@ -4,6 +4,7 @@
 {% block meta_description %}{{ project.get_seo_description }}{% endblock %}
 {% block og_title %}{{ project.title }}{% endblock %}
 {% block og_description %}{{ project.short_description }}{% endblock %}
+{% block twitter_description %}{{ project.get_seo_description }}{% endblock %}
 {% block og_url %}{{ request.build_absolute_uri }}{% endblock %}
 {% block og_type %}article{% endblock %}
 
@@ -205,8 +206,8 @@
       <article class="project-card">
         <a href="{{ p.get_absolute_url }}" class="project-card__link">
           <div class="project-card__media">
-            {% if p.cover_image %}
-              <img src="{{ p.cover_image.url }}" alt="{{ p.title }}" loading="lazy">
+            {% if p.preview_image %}
+              <img src="{{ p.preview_image.url }}" alt="{{ p.preview_image_alt }}" loading="lazy">
             {% else %}
               <div class="project-card__placeholder"></div>
             {% endif %}

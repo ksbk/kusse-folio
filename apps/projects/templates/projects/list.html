@@ -4,7 +4,9 @@
 {% block og_title %}Projects — {{ site_settings.site_name }}{% endblock %}
 {% block canonical %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}
 {% block og_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}
-{% block meta_description %}{{ site_settings.projects_meta_description }}{% endblock %}
+{% block meta_description %}{{ site_settings.projects_meta_description|default:site_settings.meta_description }}{% endblock %}
+{% block og_description %}{{ site_settings.projects_meta_description|default:site_settings.meta_description }}{% endblock %}
+{% block twitter_description %}{{ site_settings.projects_meta_description|default:site_settings.meta_description }}{% endblock %}
 
 {% block content %}
 

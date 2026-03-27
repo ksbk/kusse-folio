@@ -148,6 +148,31 @@ def test_project_detail_page(client, site_settings, project):
 
 
 @pytest.mark.django_db
+def test_project_detail_related_cards_fall_back_to_first_gallery_image(client, site_settings, project):
+    related = Project.objects.create(
+        title="Related Housing",
+        slug="related-housing",
+        short_description="Related housing project.",
+        category=project.category,
+        status="completed",
+    )
+    gallery_image = ProjectImage.objects.create(
+        project=related,
+        image=SimpleUploadedFile("related-preview.jpg", b"related-preview", content_type="image/jpeg"),
+        alt_text="Related preview image",
+        order=1,
+        image_type="gallery",
+    )
+
+    url = reverse("projects:detail", kwargs={"slug": project.slug})
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert gallery_image.image.url.encode() in response.content
+    assert b"project-card__placeholder" not in response.content
+
+
+@pytest.mark.django_db
 def test_project_detail_404_for_unknown_slug(client, site_settings):
     url = reverse("projects:detail", kwargs={"slug": "does-not-exist"})
     response = client.get(url)

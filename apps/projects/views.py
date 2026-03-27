@@ -88,7 +88,8 @@ class ProjectDetailView(DetailView):
         ctx["gallery"] = project.images.filter(image_type="gallery")
         ctx["drawings"] = project.images.exclude(image_type="gallery")
         ctx["related"] = (
-            Project.objects.filter(category=project.category)
+            Project.objects.with_preview_media()
+            .filter(category=project.category)
             .exclude(pk=project.pk)
             .order_by("order")[:3]
         )

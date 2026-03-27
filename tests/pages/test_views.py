@@ -14,12 +14,23 @@ from apps.projects.models import Project, ProjectImage
 def test_home_page(client, site_settings):
     response = client.get(reverse("pages:home"))
     assert response.status_code == 200
+    assert b"Architecture Practice" in response.content
+    assert b"/static/images/og-default.svg" in response.content
+
+
+@pytest.mark.django_db
+def test_home_page_title_uses_template_neutral_practice_language(client, site_settings):
+    response = client.get(reverse("pages:home"))
+
+    assert response.status_code == 200
+    assert b"<title>Test Site \xe2\x80\x94 Architecture Practice</title>" in response.content
 
 
 @pytest.mark.django_db
 def test_about_page(client, site_settings):
     response = client.get(reverse("pages:about"))
     assert response.status_code == 200
+    assert b'<meta name="description" content="">' in response.content
 
 
 def _populate_minimum_about(site_settings, **overrides):
@@ -113,6 +124,27 @@ def test_privacy_page(client, site_settings):
     response = client.get(reverse("pages:privacy"))
     assert response.status_code == 200
     assert b"Privacy" in response.content
+
+
+@pytest.mark.django_db
+def test_about_page_falls_back_to_site_meta_description_when_page_meta_blank(client, site_settings):
+    site_settings.meta_description = "Default site description."
+    site_settings.save()
+
+    response = client.get(reverse("pages:about"))
+
+    assert response.status_code == 200
+    assert b'Default site description.' in response.content
+
+
+@pytest.mark.django_db
+def test_homepage_fit_strip_uses_updated_taxonomy_language(client, site_settings):
+    response = client.get(reverse("pages:home"))
+
+    assert response.status_code == 200
+    assert b"office interiors" not in response.content
+    assert b"workplaces, and adaptive reuse" in response.content
+    assert b"the practice can start there" in response.content
 
 
 @pytest.mark.django_db

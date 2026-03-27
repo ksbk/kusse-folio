@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load core_tags %}
 
-{% block full_title %}{{ site_settings.site_name|default:"Studio Name" }} — Architect{% endblock %}
+{% block full_title %}{{ site_settings.site_name|default:"Studio Name" }} — Architecture Practice{% endblock %}
 {% block body_class %}home{% endblock %}
 
 {% block content %}
@@ -116,7 +116,7 @@
       </li>
       <li class="fit-strip__item">
         <h2 class="fit-strip__title">Project Types</h2>
-        <p class="fit-strip__body">Work includes new buildings, housing, civic projects, and office interiors.</p>
+        <p class="fit-strip__body">Work includes housing, civic buildings, workplaces, and adaptive reuse.</p>
       </li>
       <li class="fit-strip__item">
         <h2 class="fit-strip__title">How Work Starts</h2>
@@ -154,7 +154,7 @@
 <section class="section cta-section">
   <div class="container container--narrow cta-section__inner">
     <h2 class="cta-section__title">Start a Conversation</h2>
-    <p class="cta-section__body">If you have a site, a project in progress, or an early question, we can start there.</p>
+    <p class="cta-section__body">If you have a site, a project in progress, or an early question, the practice can start there.</p>
     <a href="{% url 'contact:contact' %}" class="btn btn--primary btn--large">Start a Conversation</a>
   </div>
 </section>
