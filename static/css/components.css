@@ -142,7 +142,33 @@
 
 @media (max-width: 900px) {
   .fit-strip__list { grid-template-columns: 1fr; }
-  .home .services-list--home { grid-template-columns: 1fr; }
+
+  /* Match the desktop serif style — the base 0.78rem caps is a different
+     typographic register entirely and reads as spreadsheet headers, not
+     editorial section introductions. */
+  .fit-strip__title {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.2;
+  }
+}
+
+/* Services: 2-col on tablets (closes the 901–959px fall-through hole left by
+   the former ≤900px override, and gives tablets better density than 1-col). */
+@media (max-width: 959px) {
+  .home .services-list--home {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Services: 1-col only on phones */
+@media (max-width: 600px) {
+  .home .services-list--home {
+    grid-template-columns: 1fr;
+  }
 }
 
 
@@ -196,6 +222,56 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Testimonial dot navigation */
+.testimonials-nav {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+  margin-block-start: var(--space-md);
+}
+
+.testimonials-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.testimonials-dot::after {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--c-warm-grey);
+  transition: background-color var(--dur-sm);
+}
+
+.testimonials-dot--active::after { background-color: var(--c-accent); }
+
+@media (hover: hover) {
+  .testimonials-dot:hover::after { background-color: var(--c-accent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonial { animation: none; }
+}
+
+
+/* ---------------------------------------------------------
+   12b. Philosophy gap fallback
+   When the philosophy section is absent the projects section flows directly
+   into services — both on the same light background with no break. Add a
+   rule-thin separator so the rhythm doesn’t collapse entirely.
+   --------------------------------------------------------- */
+.homepage-projects + .homepage-services {
+  border-block-start: 1px solid var(--c-warm-grey);
+}
+
 
 /* ---------------------------------------------------------
    13. CTA section
@@ -226,6 +302,12 @@
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
+}
+
+/* CTA border applies at all widths — the testimonials/CTA colour transition
+   (#F2EEE9 → #FAFAF8) is too subtle to register without a hard edge. */
+.home .homepage-cta {
+  border-block-start: 1px solid var(--c-warm-grey);
 }
 
 
@@ -346,7 +428,7 @@
 
   .home .homepage-cta {
     padding-block: 4rem 5.5rem;
-    border-block-start: 1px solid var(--c-warm-grey);
+    /* border-block-start set in base rule above — desktop only adjusts padding */
   }
 
   .home .homepage-cta .cta-section__inner {

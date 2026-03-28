@@ -68,7 +68,7 @@
 
 <!-- ===== PHILOSOPHY ===== -->
 {% if about.approach %}
-<section class="section section--dark homepage-philosophy">
+<section class="section section--dark homepage-philosophy reveal">
   <div class="container container--narrow">
     <span class="section__label section__label--muted">Design thinking</span>
     <blockquote class="philosophy">
@@ -81,7 +81,7 @@
 
 <!-- ===== SERVICES ===== -->
 {% if services %}
-<section class="section homepage-services">
+<section class="section homepage-services reveal">
   <div class="container">
     <div class="section__header">
       <span class="section__label">Capabilities</span>
@@ -106,7 +106,7 @@
 {% endif %}
 
 <!-- ===== FIT / START ===== -->
-<section class="section fit-strip homepage-fit">
+<section class="section fit-strip homepage-fit reveal">
   <div class="container">
     <ul class="fit-strip__list">
       <li class="fit-strip__item">
@@ -127,10 +127,10 @@
 
 <!-- ===== TESTIMONIALS ===== -->
 {% if testimonials %}
-<section class="section section--tinted">
+<section class="section section--tinted reveal" aria-label="Client testimonials">
   <div class="container container--narrow">
     <span class="section__label">Clients</span>
-    <div class="testimonials-track">
+    <div class="testimonials-track" aria-live="polite" aria-atomic="true">
       {% for t in testimonials %}
       <figure class="testimonial {% if not forloop.first %}testimonial--hidden{% endif %}">
         <blockquote>
@@ -145,12 +145,21 @@
       </figure>
       {% endfor %}
     </div>
+    {% if testimonials|length > 1 %}
+    <div class="testimonials-nav" role="group" aria-label="Testimonial navigation">
+      {% for t in testimonials %}
+      <button class="testimonials-dot {% if forloop.first %}testimonials-dot--active{% endif %}"
+              aria-label="Testimonial {{ forloop.counter }} of {{ testimonials|length }}"
+              data-index="{{ forloop.counter0 }}"></button>
+      {% endfor %}
+    </div>
+    {% endif %}
   </div>
 </section>
 {% endif %}
 
 <!-- ===== CONTACT CTA ===== -->
-<section class="section cta-section homepage-cta">
+<section class="section cta-section homepage-cta reveal">
   <div class="container container--narrow cta-section__inner">
     <h2 class="cta-section__title">Start a Conversation</h2>
     <p class="cta-section__body">If you have a site, a project in progress, or an early question, the practice can start there.</p>

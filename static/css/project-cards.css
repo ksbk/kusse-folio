@@ -14,7 +14,12 @@
 .projects-grid--featured .project-card { grid-column: span 4; }
 .projects-grid--featured .project-card--large { grid-column: span 8; }
 
-@media (min-width: 1025px) {
+@media (min-width: 960px) {
+  /* Restore 12-col for the home 4-card layout — overrides the ≤1024px 2-col fallback */
+  .projects-grid--featured-home-4 {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
   .projects-grid--featured-home-4 .project-card:nth-child(1),
   .projects-grid--featured-home-4 .project-card:nth-child(4) {
     grid-column: span 7;
@@ -65,8 +70,10 @@
   transition: transform var(--dur-lg) var(--ease);
 }
 
-.project-card__link:hover .project-card__media img {
-  transform: scale(1.04);
+@media (hover: hover) {
+  .project-card__link:hover .project-card__media img {
+    transform: scale(1.04);
+  }
 }
 
 .project-card__placeholder {
@@ -118,6 +125,11 @@
 }
 
 .project-card__link:hover .project-card__cta { opacity: 1; }
+
+/* Show the CTA label unconditionally on touch — hover-reveal is meaningless there */
+@media (hover: none) {
+  .project-card__cta { opacity: 1; }
+}
 
 @media (max-width: 1024px) {
   .projects-grid { grid-template-columns: repeat(2, 1fr); }

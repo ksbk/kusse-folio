@@ -105,6 +105,13 @@
   outline-offset: 0.18em;
 }
 
+/* When the contact column is absent (no email, no socials set in admin)
+   the 3-col footer__inner would show a prominent dead zone on the right.
+   Reset to 2-col so brand + nav fill the space evenly. */
+.footer__inner:not(:has(.footer__contact)) {
+  grid-template-columns: 1fr 1fr;
+}
+
 @media (max-width: 768px) {
   .footer__inner {
     grid-template-columns: 1fr 1fr;
@@ -126,5 +133,7 @@
     padding-block-end: var(--space-md);  /* 4rem → 2rem before divider */
   }
   .footer__brand { grid-column: auto; }
+  /* Social links: lift to a more usable 44px-ish tap target */
+  .footer__social a { padding-block: 0.75rem; }
 }
 

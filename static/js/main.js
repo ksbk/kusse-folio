@@ -167,15 +167,52 @@
   // ---------------------------------------------------------
   const track = document.querySelector('.testimonials-track');
   if (track) {
-    const testimonials = Array.from(track.querySelectorAll('.testimonial'));
-    if (testimonials.length > 1) {
+    const items = Array.from(track.querySelectorAll('.testimonial'));
+    const dots = Array.from(document.querySelectorAll('.testimonials-dot'));
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (items.length > 1) {
       let current = 0;
+      let timer = null;
+
       const show = idx => {
-        testimonials[current].classList.add('testimonial--hidden');
-        current = (idx + testimonials.length) % testimonials.length;
-        testimonials[current].classList.remove('testimonial--hidden');
+        items[current].classList.add('testimonial--hidden');
+        dots[current]?.classList.remove('testimonials-dot--active');
+        current = (idx + items.length) % items.length;
+        items[current].classList.remove('testimonial--hidden');
+        dots[current]?.classList.add('testimonials-dot--active');
       };
-      setInterval(() => show(current + 1), 5500);
+
+      const start = () => {
+        if (!prefersReducedMotion && !timer) {
+          timer = setInterval(() => show(current + 1), 5500);
+        }
+      };
+
+      const stop = () => {
+        clearInterval(timer);
+        timer = null;
+      };
+
+      start();
+
+      // Pause when the user is interacting with the section
+      const section = track.closest('section');
+      if (section) {
+        section.addEventListener('mouseenter', stop, { passive: true });
+        section.addEventListener('mouseleave', start, { passive: true });
+        section.addEventListener('focusin', stop, { passive: true });
+        section.addEventListener('focusout', start, { passive: true });
+      }
+
+      // Dot navigation
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          stop();
+          show(i);
+          start();
+        });
+      });
     }
   }
 

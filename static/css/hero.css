@@ -22,8 +22,6 @@
   transition: transform 8s var(--ease);
 }
 
-.hero:hover .hero__bg { transform: scale(1.02); }
-
 .hero__bg--placeholder {
   background: linear-gradient(135deg, #2a2520 0%, #1a1917 100%);
 }
@@ -156,20 +154,13 @@
    Match the page-hero--short rhythm at this size.
    Also prevent buttons from overflowing their containers: at 320 px the
    content area is only ~272 px wide, too narrow for long labels with
-   white-space:nowrap. The hero CTA stacks full-width; other standalone
-   buttons are capped at container width and allowed to wrap. */
+   white-space:nowrap. Do not force hero CTAs full-width — at 390px there is
+   room for the pair to sit inline; full-width stacking is a native-app
+   convention that undercuts the editorial register here. Standalone buttons
+   in other sections are capped at container width and allowed to wrap. */
 @media (max-width: 480px) {
   .page-hero:not(.page-hero--short) {
     padding-block: calc(4.5rem + var(--space-lg)) var(--space-lg);
-  }
-
-  .hero__cta {
-    flex-direction: column;
-  }
-
-  .hero__cta .btn {
-    width: 100%;
-    justify-content: center;
   }
 
   /* Standalone buttons outside the hero CTA (e.g. philosophy section "About…")
@@ -178,4 +169,13 @@
     max-width: 100%;
     white-space: normal;
   }
+}
+
+@media (hover: hover) {
+  .hero:hover .hero__bg { transform: scale(1.02); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__scroll-line { animation: none; opacity: 0.5; }
+  .hero__bg { transition: none; }
 }
