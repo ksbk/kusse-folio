@@ -67,3 +67,74 @@ def test_site_settings_str():
 def test_about_profile_str():
     a = AboutProfile.load()
     assert str(a) == "About Profile"
+
+
+# ---------------------------------------------------------------------------
+# SiteSettings — homepage project count fields
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_site_settings_homepage_project_count_defaults():
+    s = SiteSettings.load()
+    assert s.homepage_projects_mobile_count == 3
+    assert s.homepage_projects_tablet_count == 4
+    assert s.homepage_projects_desktop_count == 6
+
+
+@pytest.mark.django_db
+def test_site_settings_homepage_project_count_rejects_out_of_range():
+    from django.core.exceptions import ValidationError
+
+    s = SiteSettings.load()
+    s.homepage_projects_mobile_count = 0
+    with pytest.raises(ValidationError) as exc_info:
+        s.clean()
+    assert "homepage_projects_mobile_count" in exc_info.value.message_dict
+
+    s2 = SiteSettings.load()
+    s2.homepage_projects_desktop_count = 7
+    with pytest.raises(ValidationError) as exc_info2:
+        s2.clean()
+    assert "homepage_projects_desktop_count" in exc_info2.value.message_dict
+
+
+@pytest.mark.django_db
+def test_site_settings_homepage_project_count_rejects_mobile_greater_than_tablet():
+    from django.core.exceptions import ValidationError
+
+    s = SiteSettings.load()
+    s.homepage_projects_mobile_count = 5
+    s.homepage_projects_tablet_count = 3
+    s.homepage_projects_desktop_count = 6
+    with pytest.raises(ValidationError) as exc_info:
+        s.clean()
+    assert "homepage_projects_mobile_count" in exc_info.value.message_dict
+
+
+@pytest.mark.django_db
+def test_site_settings_homepage_project_count_rejects_tablet_greater_than_desktop():
+    from django.core.exceptions import ValidationError
+
+    s = SiteSettings.load()
+    s.homepage_projects_mobile_count = 2
+    s.homepage_projects_tablet_count = 5
+    s.homepage_projects_desktop_count = 3
+    with pytest.raises(ValidationError) as exc_info:
+        s.clean()
+    assert "homepage_projects_tablet_count" in exc_info.value.message_dict
+
+
+@pytest.mark.django_db
+def test_site_settings_homepage_project_count_accepts_valid_values():
+    from django.core.exceptions import ValidationError
+
+    s = SiteSettings.load()
+    s.homepage_projects_mobile_count = 2
+    s.homepage_projects_tablet_count = 4
+    s.homepage_projects_desktop_count = 6
+    # Should not raise
+    try:
+        s.clean()
+    except ValidationError:
+        pytest.fail("clean() raised ValidationError for valid counts 2/4/6")

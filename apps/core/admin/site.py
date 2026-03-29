@@ -53,6 +53,20 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                 )
             },
         ),
+        (
+            "Homepage — Featured Projects",
+            {
+                "fields": (
+                    "homepage_projects_mobile_count",
+                    "homepage_projects_tablet_count",
+                    "homepage_projects_desktop_count",
+                ),
+                "description": (
+                    "Controls how many featured projects are shown at each screen size. "
+                    "Mobile \u2264 Tablet \u2264 Desktop. Each value must be between 1 and 6."
+                ),
+            },
+        ),
     )
 
     def changeform_view(self, request, object_id=None, form_url="", extra_context=None):

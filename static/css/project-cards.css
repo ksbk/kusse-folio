@@ -158,6 +158,28 @@
   }
 }
 
+/* ------------------------------------------------------------------
+   Homepage per-breakpoint project count limits (set via SiteSettings)
+   CSS custom properties cannot be used inside :nth-child() selectors,
+   so counts are signalled via hp-mob-N / hp-tab-N classes on the grid.
+   hp-mob-6 / hp-tab-6 need no rule — they show all cards.
+   ------------------------------------------------------------------ */
+@media (max-width: 639px) {
+  .hp-mob-1 .project-card:nth-child(n+2) { display: none; }
+  .hp-mob-2 .project-card:nth-child(n+3) { display: none; }
+  .hp-mob-3 .project-card:nth-child(n+4) { display: none; }
+  .hp-mob-4 .project-card:nth-child(n+5) { display: none; }
+  .hp-mob-5 .project-card:nth-child(n+6) { display: none; }
+}
+
+@media (min-width: 640px) and (max-width: 959px) {
+  .hp-tab-1 .project-card:nth-child(n+2) { display: none; }
+  .hp-tab-2 .project-card:nth-child(n+3) { display: none; }
+  .hp-tab-3 .project-card:nth-child(n+4) { display: none; }
+  .hp-tab-4 .project-card:nth-child(n+5) { display: none; }
+  .hp-tab-5 .project-card:nth-child(n+6) { display: none; }
+}
+
 
 
 /* ---------------------------------------------------------

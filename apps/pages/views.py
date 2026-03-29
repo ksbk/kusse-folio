@@ -9,20 +9,25 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
+        site = SiteSettings.load()
+        desktop_max = site.homepage_projects_desktop_count
         featured = list(
             Project.objects.with_preview_media()
             .filter(featured=True)
-            .order_by("order")[:6]
+            .order_by("order")[:desktop_max]
         )
         if featured:
             homepage_projects = featured
         else:
             homepage_projects = list(
                 Project.objects.with_preview_media()
-                .order_by("order")[:6]
+                .order_by("order")[:desktop_max]
             )
         ctx["homepage_projects"] = homepage_projects
         ctx["homepage_projects_count"] = len(homepage_projects)
+        ctx["hp_mobile"] = site.homepage_projects_mobile_count
+        ctx["hp_tablet"] = site.homepage_projects_tablet_count
+        ctx["hp_desktop"] = site.homepage_projects_desktop_count
         ctx["hero_project"] = homepage_projects[0] if homepage_projects else None
         ctx["about"] = AboutProfile.load()
         return ctx

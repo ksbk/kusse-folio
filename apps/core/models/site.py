@@ -85,6 +85,40 @@ class SiteSettings(SingletonModel):
         help_text="GA4 Measurement ID, e.g. G-XXXXXXXXXX.",
     )
 
+    # Homepage featured projects — per-breakpoint visibility limits
+    homepage_projects_mobile_count = models.PositiveSmallIntegerField(
+        default=3,
+        help_text="Max featured projects shown on mobile (up to 639px). Between 1 and 6.",
+    )
+    homepage_projects_tablet_count = models.PositiveSmallIntegerField(
+        default=4,
+        help_text="Max featured projects shown on tablet (640–959px). Between 1 and 6, at least mobile count.",
+    )
+    homepage_projects_desktop_count = models.PositiveSmallIntegerField(
+        default=6,
+        help_text="Max featured projects shown on desktop (960px+). Between 1 and 6, at least tablet count.",
+    )
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+        errors = {}
+        for field in (
+            "homepage_projects_mobile_count",
+            "homepage_projects_tablet_count",
+            "homepage_projects_desktop_count",
+        ):
+            v = getattr(self, field)
+            if not (1 <= v <= 6):
+                errors[field] = "Must be between 1 and 6."
+        if not errors:
+            if self.homepage_projects_mobile_count > self.homepage_projects_tablet_count:
+                errors["homepage_projects_mobile_count"] = "Mobile count cannot exceed tablet count."
+            if self.homepage_projects_tablet_count > self.homepage_projects_desktop_count:
+                errors["homepage_projects_tablet_count"] = "Tablet count cannot exceed desktop count."
+        if errors:
+            raise ValidationError(errors)
+
     class Meta:
         verbose_name = "Site Settings"
         verbose_name_plural = "Site Settings"

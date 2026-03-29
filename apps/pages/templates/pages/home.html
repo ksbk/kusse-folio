@@ -38,7 +38,7 @@
       <h2 class="section__title">Featured Projects</h2>
       <a href="{% url 'projects:list' %}" class="section__header-link">View All →</a>
     </div>
-    <div class="projects-grid projects-grid--home projects-grid--home-n{{ homepage_projects_count }}">
+    <div class="projects-grid projects-grid--home projects-grid--home-n{{ homepage_projects_count }} hp-mob-{{ hp_mobile }} hp-tab-{{ hp_tablet }}">
       {% for project in homepage_projects %}
       <article class="project-card">
         <a href="{{ project.get_absolute_url }}" class="project-card__link">

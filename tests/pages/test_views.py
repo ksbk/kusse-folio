@@ -329,3 +329,61 @@ def test_footer_includes_privacy_link(client, site_settings):
     assert response.status_code == 200
     assert reverse("pages:privacy").encode() in response.content
     assert b"Privacy" in response.content
+
+
+# ---------------------------------------------------------------------------
+# Homepage — admin-editable per-breakpoint project counts
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_homepage_context_exposes_hp_counts(client, site_settings):
+    """View must expose hp_mobile, hp_tablet, hp_desktop context variables."""
+    response = client.get(reverse("pages:home"))
+
+    assert response.status_code == 200
+    assert "hp_mobile" in response.context
+    assert "hp_tablet" in response.context
+    assert "hp_desktop" in response.context
+    # Defaults from SiteSettings model
+    assert response.context["hp_mobile"] == 3
+    assert response.context["hp_tablet"] == 4
+    assert response.context["hp_desktop"] == 6
+
+
+@pytest.mark.django_db
+def test_homepage_query_respects_desktop_count(client, site_settings):
+    """When desktop count is set to 4, only 4 featured projects are returned."""
+    site_settings.homepage_projects_desktop_count = 4
+    site_settings.save()
+
+    for i in range(6):
+        Project.objects.create(
+            title=f"Featured {i}", slug=f"feat-dc-{i}", short_description=".",
+            category="housing", status="completed", featured=True, order=i,
+        )
+
+    response = client.get(reverse("pages:home"))
+
+    assert response.status_code == 200
+    assert len(response.context["homepage_projects"]) == 4
+
+
+@pytest.mark.django_db
+def test_homepage_grid_has_breakpoint_count_classes(client, site_settings):
+    """Grid container must carry hp-mob-N and hp-tab-N classes matching SiteSettings values."""
+    site_settings.homepage_projects_mobile_count = 2
+    site_settings.homepage_projects_tablet_count = 3
+    site_settings.homepage_projects_desktop_count = 6
+    site_settings.save()
+
+    Project.objects.create(
+        title="Grid Class Project", slug="grid-class-proj", short_description=".",
+        category="housing", status="completed", featured=True, order=1,
+    )
+
+    response = client.get(reverse("pages:home"))
+
+    assert response.status_code == 200
+    assert b"hp-mob-2" in response.content
+    assert b"hp-tab-3" in response.content
