@@ -338,22 +338,23 @@
 .homepage-coda {
   background-color: var(--c-stone);
   border-block-start: 1px solid var(--c-warm-grey);
-  padding-block: var(--space-lg);
+  padding-block: var(--space-md);
 }
 
-.homepage-coda__bar {
+.homepage-coda__inner {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-lg);
+  gap: 2rem;
+  text-align: center;
 }
 
 .homepage-coda__title {
   font-family: var(--font-serif);
-  font-size: clamp(1.75rem, 2.8vw, 2.6rem);
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
   font-weight: 300;
-  line-height: 1.15;
-  max-width: 26ch;
+  line-height: 1.25;
+  max-width: 42ch;
 }
 
 
@@ -563,11 +564,6 @@
 }
 
 @media (max-width: 900px) {
-  .homepage-coda__bar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   .privacy-note__inner,
   .privacy-note__text {
     max-width: none;
