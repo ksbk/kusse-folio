@@ -137,6 +137,41 @@ PROJECTS = [
         "order": 2,
     },
     {
+        "slug": "ridgeline-housing",
+        "title": "Ridgeline Housing",
+        "short_description": "Medium-density housing on an exposed hillside — four blocks stepping with the topography, oriented to maximise solar gain while managing weather exposure and communal access.",
+        "category": "housing",
+        "status": "completed",
+        "location": "Hillside District",
+        "year": 2023,
+        "area": "1 650 m²",
+        "overview": (
+            "Four housing blocks arranged along a ridge were commissioned by a housing "
+            "association seeking a robust, low-maintenance solution for a difficult site. "
+            "The topography — a long south-facing slope with significant wind exposure — "
+            "defined both the opportunity and the constraint."
+        ),
+        "challenge": (
+            "The site's orientation offered good solar access but also severe weather "
+            "exposure. The challenge was to create housing that felt sheltered and domestic "
+            "while meeting the passive solar and ventilation requirements of the brief."
+        ),
+        "concept": (
+            "Each block steps down the slope in section, creating a roofscape that breaks "
+            "wind at the communal path level while allowing maximum solar penetration to "
+            "south-facing living rooms. Shared access is organised along the upper contour, "
+            "keeping vehicles and pedestrians clearly separated."
+        ),
+        "outcome": (
+            "The development was delivered within programme and has performed well in "
+            "post-occupancy monitoring. Residents report that the solar design makes the "
+            "flats feel significantly warmer than comparable housing in the area, reducing "
+            "heating demand noticeably in the first winter of occupancy."
+        ),
+        "featured": True,
+        "order": 3,
+    },
+    {
         "slug": "urban-apartment-retrofit",
         "title": "Urban Apartment Retrofit",
         "short_description": "The interior transformation of a 1970s apartment block unit — stripping back decades of poor alterations to reveal strong bones and reorganise the plan for contemporary urban living.",
@@ -150,7 +185,7 @@ PROJECTS = [
         "concept": "The design consolidates circulation to free up living, creates a contained kitchen core that frees the main space entirely, and uses a consistent material language — white plaster, dark-stained timber, exposed concrete — to give the apartment coherence and a sense of deliberateness it had never had.",
         "outcome": "The apartment now reads as a confident, well-proportioned urban dwelling. The living area, which previously felt fragmented, now functions as a single continuous room with direct daylight from two aspects.",
         "featured": False,
-        "order": 3,
+        "order": 7,
     },
     {
         "slug": "commercial-office-conversion",
@@ -302,7 +337,7 @@ PROJECTS = [
             "for science lessons and informal outdoor learning in all but the coldest weather."
         ),
         "featured": False,
-        "order": 7,
+        "order": 8,
     },
 ]
 
@@ -550,9 +585,14 @@ class Command(BaseCommand):
         """Attach covers for the projects that should have one.
         Returns (count_attached_or_skipped, warning_count)."""
         covers_dir = media_dir / "covers"
+        gallery_dir = media_dir / "gallery"
         attached = 0
         warnings = 0
+        # Projects with a dedicated cover file in covers/<slug>.*
         cover_slugs = ["house-on-the-hillside", "commercial-office-conversion"]
+        # Projects whose cover should be derived from the first gallery image
+        # (no dedicated cover file in the demo media package)
+        gallery_cover_slugs = ["ridgeline-housing"]
 
         for slug in cover_slugs:
             cover_file = _find_file(covers_dir, slug) if covers_dir.is_dir() else None
@@ -581,6 +621,33 @@ class Command(BaseCommand):
             self.stdout.write(f"  Attached cover for '{slug}' → {project.cover_image.name}")
             attached += 1
 
+        # Attach covers derived from gallery images for projects without a dedicated cover file
+        for slug in gallery_cover_slugs:
+            project_gallery_dir = gallery_dir / slug if gallery_dir.is_dir() else Path("/nonexistent")
+            gallery_files = _list_images(project_gallery_dir) if project_gallery_dir.is_dir() else []
+            if not gallery_files:
+                warnings += self._warn(
+                    f"no gallery images found to derive cover for '{slug}': {project_gallery_dir}"
+                )
+                continue
+            cover_file = gallery_files[0]
+            try:
+                project = Project.objects.get(slug=slug)
+            except Project.DoesNotExist:
+                warnings += self._warn(f"Project with slug '{slug}' not found — skipping gallery-derived cover")
+                continue
+            if (
+                project.cover_image
+                and _stem_clean(project.cover_image.name) == _stem_clean(cover_file.name)
+            ):
+                self.stdout.write(f"  SKIP cover for '{slug}' (already attached): {cover_file.name}")
+                attached += 1
+                continue
+            with cover_file.open("rb") as fh:
+                project.cover_image.save(cover_file.name, File(fh), save=True)
+            self.stdout.write(f"  Attached gallery-derived cover for '{slug}' → {project.cover_image.name}")
+            attached += 1
+
         return attached, warnings
 
     def _attach_galleries(self, media_dir: Path) -> tuple[int, int]:
@@ -589,7 +656,7 @@ class Command(BaseCommand):
         gallery_dir = media_dir / "gallery"
         total_added = 0
         warnings = 0
-        gallery_slugs = ["community-library-pavilion", "commercial-office-conversion"]
+        gallery_slugs = ["ridgeline-housing", "community-library-pavilion", "commercial-office-conversion"]
 
         for slug in gallery_slugs:
             project_gallery_dir = gallery_dir / slug if gallery_dir.is_dir() else Path("/nonexistent")
