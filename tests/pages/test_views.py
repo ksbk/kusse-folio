@@ -491,7 +491,7 @@ def test_nav_name_absent_renders_site_name(client, site_settings):
 
 
 # ---------------------------------------------------------------------------
-# Navbar brand — monogram fallback (spec v2)
+# Navbar brand — monogram fallback (spec v3)
 # ---------------------------------------------------------------------------
 
 @pytest.mark.django_db
@@ -507,7 +507,7 @@ def test_nav_renders_full_text_when_site_name_fits(client, site_settings):
 
 @pytest.mark.django_db
 def test_nav_renders_monogram_when_site_name_too_long(client, site_settings):
-    """site_name > 24 chars, no logo, no nav_name → monogram span rendered."""
+    """site_name > 18 chars, no logo, no nav_name → monogram span rendered."""
     site_settings.site_name = "Beaumont Whitfield Kellerman Partnership"
     site_settings.nav_name = ""
     site_settings.save()

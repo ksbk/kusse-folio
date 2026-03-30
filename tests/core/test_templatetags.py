@@ -87,28 +87,28 @@ def test_nav_needs_monogram_none():
 # ---------------------------------------------------------------------------
 
 def test_monogram_two_founder_names():
-    # "Beaumont Whitfield" → stop-list filtered: none; descriptor filtered: none → BW
-    assert _compute_monogram("Beaumont Whitfield Architects") == "BW"
+    # v3: "Architects" is kept → 3 tokens B, W, A → BWA
+    assert _compute_monogram("Beaumont Whitfield Architects") == "BWA"
 
 
 def test_monogram_three_founders():
+    # 4 tokens (no descriptor stripping) → first 3 = BWK
     assert _compute_monogram("Beaumont Whitfield Kellerman Architects") == "BWK"
 
 
-def test_monogram_four_plus_tokens_first_second_last():
-    # Beaumont Whitfield Kellerman Adeyemi Architects → BWKA after descriptor strip
-    # 4 tokens → first(B) + second(W) + last(A)
-    assert _compute_monogram("Beaumont Whitfield Kellerman Adeyemi Architects") == "BWA"
+def test_monogram_four_plus_tokens_first_three():
+    # 5 tokens (descriptor kept) → first 3 = BWK
+    assert _compute_monogram("Beaumont Whitfield Kellerman Adeyemi Architects") == "BWK"
 
 
-def test_monogram_one_meaningful_token():
-    # Hopkins Architects → strip "Architects" → ["Hopkins"] → "H"
-    assert _compute_monogram("Hopkins Architects") == "H"
+def test_monogram_keeps_descriptor_words():
+    # v3: profession word initial counts → Hopkins, Architects → HA
+    assert _compute_monogram("Hopkins Architects") == "HA"
 
 
 def test_monogram_strips_stop_words():
-    # "Foster and Partners" → strip "and", "Partners" → ["Foster"] → "F"
-    assert _compute_monogram("Foster and Partners") == "F"
+    # "Foster and Partners" → strip "and" (stop word); keep "Partners" → FP
+    assert _compute_monogram("Foster and Partners") == "FP"
 
 
 def test_monogram_strips_ampersand():
@@ -120,19 +120,20 @@ def test_monogram_strips_ampersand():
 
 
 def test_monogram_strips_plus():
-    # "Foster + Partners" — '+' is both a token boundary and stop word
-    # tokens after split: ["Foster", "Partners"] → strip "Partners" → ["Foster"] → "F"
-    assert _compute_monogram("Foster + Partners") == "F"
+    # '+' is a token boundary; residual '+' token filtered by stop-word list (defensive)
+    # ["Foster", "Partners"] → both kept → FP
+    assert _compute_monogram("Foster + Partners") == "FP"
 
 
 def test_monogram_hyphen_single_initial_only():
     # Hyphen is NOT a token boundary; "Zaha-Hadid" is one token → initial "Z"
-    assert _compute_monogram("Zaha-Hadid Architects") == "Z"
+    # v3: "Architects" kept → [Zaha-Hadid, Architects] → ZA
+    assert _compute_monogram("Zaha-Hadid Architects") == "ZA"
 
 
 def test_monogram_preserves_particle():
-    # "De Graaf Architects" — "De" is NOT in stop list (conservative policy)
-    assert _compute_monogram("De Graaf Architects") == "DG"
+    # "De" is NOT in stop list (conservative policy); "Architects" kept → DGA
+    assert _compute_monogram("De Graaf Architects") == "DGA"
 
 
 def test_monogram_short_acronym_not_triggered():
@@ -150,14 +151,14 @@ def test_monogram_none_equivalent():
     assert _compute_monogram("") == ""
 
 
-def test_monogram_all_filtered():
-    # If every token is filtered the first char of the original name is used
-    result = _compute_monogram("Architecture Studio")
-    assert result == "A"  # all tokens filtered → first char of original
+def test_monogram_descriptor_words_kept():
+    # v3: no descriptor filtering → both tokens survive → AS
+    assert _compute_monogram("Architecture Studio") == "AS"
 
 
 def test_monogram_normalises_whitespace():
-    assert _compute_monogram("  Strand   Architecture  ") == "S"
+    # v3: both tokens kept → SA
+    assert _compute_monogram("  Strand   Architecture  ") == "SA"
 
 
 def test_monogram_uppercase():
