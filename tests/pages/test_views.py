@@ -496,12 +496,12 @@ def test_nav_name_absent_renders_site_name(client, site_settings):
 
 @pytest.mark.django_db
 def test_nav_renders_full_text_when_site_name_fits(client, site_settings):
-    """site_name ≤ 24 chars and no logo/nav_name → full text in nav__name span."""
-    site_settings.site_name = "Strand Architecture"   # 19 chars
+    """site_name ≤ 18 chars and ≤ 2 words → full text in nav__name span."""
+    site_settings.site_name = "Atelier Nord"   # 12 chars, 2 words
     site_settings.nav_name = ""
     site_settings.save()
     response = client.get(reverse("pages:home"))
-    assert b'class="nav__name">Strand Architecture</span>' in response.content
+    assert b'class="nav__name">Atelier Nord</span>' in response.content
     assert b"nav__monogram" not in response.content
 
 
@@ -538,11 +538,22 @@ def test_nav_nav_name_suppresses_monogram(client, site_settings):
 
 
 @pytest.mark.django_db
-def test_nav_full_text_has_aria_label(client, site_settings):
-    """aria-label is present even when rendering the full short name as text."""
-    site_settings.site_name = "Strand Architecture"
+def test_nav_monogram_triggered_by_word_count(client, site_settings):
+    """3-word name triggers monogram even when char count would fit."""
+    site_settings.site_name = "Studio of Form"   # 14 chars, 3 words
     site_settings.nav_name = ""
     site_settings.save()
     response = client.get(reverse("pages:home"))
-    assert b'aria-label="Strand Architecture"' in response.content
+    assert b"nav__monogram" in response.content
+    assert b'class="nav__name">Studio of Form</span>' not in response.content
+
+
+@pytest.mark.django_db
+def test_nav_full_text_has_aria_label(client, site_settings):
+    """aria-label is present even when rendering the full short name as text."""
+    site_settings.site_name = "Atelier Nord"
+    site_settings.nav_name = ""
+    site_settings.save()
+    response = client.get(reverse("pages:home"))
+    assert b'aria-label="Atelier Nord"' in response.content
 

@@ -54,8 +54,9 @@ class SiteSettings(SingletonModel):
         default="",
         help_text=(
             "Overrides the automatic nav brand. Leave blank to let the system choose: "
-            "names up to 24 characters are shown in full; longer names display as a "
-            "derived monogram (e.g. \u2018BWK\u2019 for \u2018Beaumont Whitfield Kellerman Partnership\u2019). "
+            "short one- or two-word names (up to 18 characters) are shown in full; "
+            "longer or multi-word names display as a derived monogram "
+            "(e.g. \u2018BWK\u2019 for \u2018Beaumont Whitfield Kellerman Partnership\u2019). "
             "Set this field to an abbreviation like \u2018Strand Architecture\u2019 or \u2018BWK Partnership\u2019 "
             "if the automatic monogram is not what you want. A logo supersedes all text options."
         ),

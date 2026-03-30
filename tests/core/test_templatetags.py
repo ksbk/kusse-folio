@@ -46,7 +46,22 @@ def test_first_paragraph_only_whitespace():
 # ---------------------------------------------------------------------------
 
 def test_nav_needs_monogram_short_name():
-    assert nav_needs_monogram("Strand Architecture") is False  # 19 chars
+    # 12 chars, 2 words — both within thresholds → full text
+    assert nav_needs_monogram("Atelier Nord") is False
+
+
+def test_nav_needs_monogram_single_word():
+    assert nav_needs_monogram("Strand") is False  # 6 chars, 1 word
+
+
+def test_nav_needs_monogram_char_threshold_exceeded():
+    # 19 chars, 2 words — char count alone fails the test
+    assert nav_needs_monogram("Strand Architecture") is True
+
+
+def test_nav_needs_monogram_word_count_exceeded():
+    # 3 words triggers monogram even if char count would otherwise pass
+    assert nav_needs_monogram("Studio of Form") is True  # 14 chars, 3 words
 
 
 def test_nav_needs_monogram_at_threshold():

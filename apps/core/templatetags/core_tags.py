@@ -8,10 +8,12 @@ register = template.Library()
 # Navbar monogram — spec v2
 # ---------------------------------------------------------------------------
 
-# Design-system threshold: site_name at or below this length renders as full
-# text in the nav. Above it the monogram path is triggered.  Named constant
-# so a type-scale revision can locate and update it in one place.
-NAV_TEXT_MAX_CHARS = 24
+# Design-system thresholds: both conditions must pass for full text to render.
+# Site names at or below these limits look obviously navbar-safe; anything
+# outside them goes to the monogram path.  Named constants so a type-scale
+# revision can locate and adjust them in one place.
+NAV_TEXT_MAX_CHARS = 18   # e.g. "Atelier Nord" (12), "Studio Form" (11)
+NAV_TEXT_MAX_WORDS = 2    # single or two-word names only
 
 # Universal syntactic connectors — never carry identity value.
 # Conservative by design; culturally specific particles are NOT included.
@@ -78,8 +80,15 @@ def nav_monogram(site_name: str | None) -> str:
 
 @register.filter
 def nav_needs_monogram(site_name: str | None) -> bool:
-    """Return True when site_name is long enough to trigger the monogram path."""
-    return len(site_name or "") > NAV_TEXT_MAX_CHARS
+    """Return True when site_name fails the safe-text test.
+
+    Both conditions must pass for full text to render:
+      - character count at or below NAV_TEXT_MAX_CHARS, AND
+      - word count at or below NAV_TEXT_MAX_WORDS
+    If either fails the monogram path is triggered.
+    """
+    name = site_name or ""
+    return len(name) > NAV_TEXT_MAX_CHARS or len(name.split()) > NAV_TEXT_MAX_WORDS
 
 
 @register.filter

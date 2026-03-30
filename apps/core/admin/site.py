@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 
 from ..models import AboutProfile, SiteSettings
-from ..templatetags.core_tags import NAV_TEXT_MAX_CHARS, _compute_monogram
+from ..templatetags.core_tags import NAV_TEXT_MAX_CHARS, NAV_TEXT_MAX_WORDS, _compute_monogram
 
 # ---------------------------------------------------------------------------
 # SiteSettings
@@ -20,8 +20,9 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                     "hero_label appears above the studio name in the homepage hero; leave blank to omit it. "
                     "Enable hero_compact if the hero looks crowded with a long name or tagline. "
                     "nav_name is a shortened form of your practice name for the navigation bar — "
-                    "leave blank to let the system choose: names up to 24 characters are shown in full; "
-                    "longer names automatically display as a derived monogram (e.g. 'BWK' for "
+                    "leave blank to let the system choose: short one- or two-word names "
+                    "(up to 18 characters) are shown in full; longer or multi-word names "
+                    "automatically display as a derived monogram (e.g. 'BWK' for "
                     "'Beaumont Whitfield Kellerman Partnership'). "
                     "Set nav_name to override the automatic result with a specific abbreviation. "
                     "A logo supersedes all text options."
@@ -114,7 +115,12 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                     level=messages.INFO,
                 )
             # Warn when the auto-computed monogram collapses to a single letter.
-            if len(site_name_val) > NAV_TEXT_MAX_CHARS and not nav_name_val and not logo_val:
+            # Warn when the auto-computed monogram collapses to a single letter.
+            monogram_triggered = (
+                len(site_name_val) > NAV_TEXT_MAX_CHARS
+                or len(site_name_val.split()) > NAV_TEXT_MAX_WORDS
+            )
+            if monogram_triggered and not nav_name_val and not logo_val:
                 monogram = _compute_monogram(site_name_val)
                 if len(monogram) == 1:
                     self.message_user(
