@@ -1,0 +1,316 @@
+/* ---------------------------------------------------------
+   22. Contact page
+   --------------------------------------------------------- */
+.contact-success main {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-hero--receipt {
+  padding-block: calc(4rem + var(--space-sm)) var(--space-sm);
+}
+
+.contact-success .page-hero__title {
+  max-width: 10ch;
+  font-size: clamp(2.35rem, 5vw, 4.35rem);
+}
+
+.contact-success .page-hero__subtitle {
+  max-width: 34rem;
+}
+
+.completion-strip {
+  flex: 1;
+  display: flex;
+  background: linear-gradient(180deg, rgba(242, 238, 233, 0.4) 0%, rgba(242, 238, 233, 0.88) 100%);
+  border-top: 1px solid var(--color-warm-grey);
+}
+
+.completion-strip__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-md);
+  width: 100%;
+  padding-block: clamp(1.75rem, 5vw, 3rem) clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.completion-strip__copy {
+  max-width: 34rem;
+}
+
+.completion-strip__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-block-end: 0.7rem;
+}
+
+.completion-strip__text {
+  color: var(--color-text-secondary);
+}
+
+.completion-strip__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.completion-strip__back {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+.completion-strip__back:hover {
+  color: var(--color-accent);
+}
+
+/* Reduce contact section padding — page closes with contact-close-strip */
+.contact-layout.section {
+  padding-block: var(--space-md);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+/* Form visually first at desktop even though sidebar is first in DOM */
+.contact-form-col { order: 1; }
+.contact-info-col  { order: 2; }
+
+/* Stone field: quiet working surface — inputs remain white against stone */
+.contact-form-col--field {
+  background-color: var(--color-stone);
+  padding: var(--space-md);
+}
+
+.contact-form-col__heading {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 300;
+  margin-block-end: var(--space-md);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row--2 {
+  flex-direction: row;
+  gap: 1.25rem;
+}
+
+.form-row--2 .form-field { flex: 1; }
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-field label {
+  font-size: var(--text-sm);
+  letter-spacing: 0.01em;
+  color: var(--color-text-secondary);
+}
+
+.required { color: var(--color-accent); }
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--color-text);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-warm-grey);
+  border-radius: 2px;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239B9590' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-inline-end: 2.5rem;
+  cursor: pointer;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--color-accent);
+}
+
+.form-field.has-error input,
+.form-field.has-error select,
+.form-field.has-error textarea {
+  border-color: var(--color-error);
+}
+
+.form-error {
+  font-size: 0.8rem;
+  color: var(--color-error);
+}
+
+.form-hint {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin-block-end: 0.4rem;
+}
+
+.contact-form__trust {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin: 0.75rem 0 0;
+}
+
+.contact-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  position: sticky;
+  top: calc(var(--header-height) + 1rem);
+}
+
+.contact-process {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.contact-process__title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.contact-process__intro {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+}
+
+.contact-info p {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-block-end: 0.75rem;
+}
+
+.contact-info__label {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-label-subtle);
+}
+
+.contact-info a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.contact-info a:hover { color: var(--color-accent); }
+
+.contact-social {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.social-link {
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-label-subtle);
+  text-decoration: none;
+}
+
+.social-link:hover { color: var(--color-accent); }
+
+/* Form group headings give structure without chapter-book uppercase */
+.form-group-heading {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  padding-block-end: 0.5rem;
+  border-block-end: 1px solid var(--color-warm-grey);
+  margin-block: 0 0.25rem;
+}
+
+.contact-form button[disabled] {
+  cursor: wait;
+  opacity: 0.85;
+}
+
+/* ---------------------------------------------------------
+   Contact close strip — courtesy note, not a CTA
+   --------------------------------------------------------- */
+.contact-close-strip {
+  background-color: var(--color-stone);
+  border-block-start: 1px solid var(--color-warm-grey);
+  padding-block: var(--space-md);
+}
+
+.contact-close-strip__note {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 900px) {
+  .completion-strip__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-form-col { order: unset; }
+  .contact-info-col  { order: unset; position: static; }
+  .form-row--2 { flex-direction: column; }
+  .contact-form button[type="submit"] { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 600px) {
+  .completion-strip__actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .form-field input,
+  .form-field select,
+  .form-field textarea { transition: border-color var(--duration-sm); }
+  .completion-strip__back { transition: color var(--duration-sm); }
+  .contact-info a         { transition: color var(--duration-sm); }
+  .social-link            { transition: color var(--duration-sm); }
+}

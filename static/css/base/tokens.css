@@ -1,0 +1,88 @@
+/* ---------------------------------------------------------
+   1. Design tokens
+   ---------------------------------------------------------
+   Token governance
+
+   - Primitives are the palette/source values.
+   - Semantic aliases are the default choice for shared UI.
+   - Shared UI means the repo-level shell under static/css/base/,
+     static/css/components/, and static/css/utilities/, plus repeated
+     patterns rendered on multiple pages/apps such as project cards.
+   - Raw values are allowed for local one-off art direction, overlays,
+     translucency, and other cases where promoting a value would add noise.
+
+   Add a new token only when it is either:
+   1) a new brand/source value, or
+   2) a repeated role across shipped UI.
+
+   Semantic tokens are a customization seam, not a second palette.
+   See docs/specs/TOKENS.md for the repo rule and CSS acceptance checklist.
+   --------------------------------------------------------- */
+:root {
+  /* -------------------------------------------------------
+     Primitive layer — palette / source values
+     ------------------------------------------------------- */
+
+  /* Color palette */
+  --color-white:        #FAFAF8;
+  --color-stone:        #F2EEE9;
+  --color-warm-grey:    #DDD9D3;
+  --color-mid-grey:     #9B9590;  /* low-contrast — decorative large type and uppercase label/caption tiers only; fails normal-text AA on all light surfaces */
+  --color-charcoal:     #6B6660;  /* supporting text on --color-white and --color-stone; fails normal-text AA on --color-warm-grey */
+  --color-text:         #2E2C2A;
+  --color-black:        #1A1917;
+  --color-accent:       #7A6347;  /* warm bronze */
+  --color-accent-light: #A68B68;  /* accent on dark/inverse surfaces only — fails normal-text AA on all light surfaces */
+  --color-error:        #B94040;  /* error text/border on --color-white and --color-stone only — fails AA on --color-warm-grey */
+
+  /* Typography — font families and text-size scale (not text-color roles; see semantic layer) */
+  --font-serif:   'Cormorant Garamond', Georgia, serif;
+  --font-sans:    'DM Sans', system-ui, -apple-system, sans-serif;
+  --text-base:    1rem;      /* default body size — customization seam */
+  --text-sm:      0.875rem;  /* secondary text — nav links, card meta, btn copy, form labels */
+  --text-xs:      0.75rem;   /* label/caption tier — category tags, page-hero labels */
+
+  /* Spacing scale */
+  --space-sm:  1rem;
+  --space-md:  2rem;
+  --space-lg:  4rem;
+  --space-xl:  7rem;
+
+  /* Layout */
+  --header-height:   4.5rem;  /* fixed nav clearance — used by page heroes and sticky-sidebars for offset */
+  --container:       1280px;
+  --container-narrow: 780px;
+  --gutter:          clamp(1.5rem, 4vw, 3rem);
+
+  /* Motion */
+  --easing-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --duration-sm:     200ms;
+  --duration-md:     400ms;
+  --duration-lg:     700ms;
+
+  /* -------------------------------------------------------
+     Semantic layer — shared UI roles only
+     ------------------------------------------------------- */
+
+  /* Shared surfaces */
+  --surface-page:        var(--color-white);
+  --surface-muted:       var(--color-stone);
+  --surface-inverse:     var(--color-black);
+
+  /* Shared text-color roles */
+  --color-text-primary:        var(--color-text);
+  --color-text-secondary:      var(--color-charcoal);
+  --color-text-inverse:        var(--color-white);
+  --color-text-inverse-muted:  var(--color-warm-grey);
+
+  /* Shared accent / emphasis */
+  --accent-primary:      var(--color-accent);
+  --accent-on-dark:      var(--color-accent-light);
+
+  /* Decorative role — label/caption-only */
+  --color-label-subtle:  var(--color-mid-grey);  /* low-contrast label tiers only; not for paragraph or UI text */
+
+  /* Shared edges / focus */
+  --border-subtle:       var(--color-warm-grey); /* light-surface hairlines and dividers only — not for dark/inverse contexts */
+  --focus-ring:          var(--color-accent);
+}

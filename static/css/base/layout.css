@@ -1,0 +1,23 @@
+/* ---------------------------------------------------------
+   3. Layout utilities
+   --------------------------------------------------------- */
+
+/* Page shell — body as full-height flex column so footer sticks to bottom */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main { flex: 1; }
+
+.container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Must be used inside .container — only overrides max-width, not gutters */
+.container--narrow {
+  max-width: var(--container-narrow);
+}
