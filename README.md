@@ -593,7 +593,7 @@ Six custom commands handle content bootstrap, media import, and readiness checki
 │   ├── base.html
 │   ├── robots.txt
 │   └── includes/
-│       ├── nav.html
+│       ├── header.html
 │       └── footer.html
 ├── static/                    # repo-level shared shell assets
 │   ├── css/
