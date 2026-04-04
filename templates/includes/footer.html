@@ -45,7 +45,7 @@
   <div class="footer__bottom container">
     <p>&copy; {% now "Y" %} {{ site_settings.site_name|default:"Studio Name" }}{% if site_settings.location %}<span class="footer__location-inline"> · {{ site_settings.location }}</span>{% endif %}. All rights reserved. <a href="{% url 'pages:privacy' %}">Privacy</a></p>
     {% if site_settings.location %}
-    <p class="footer__location-block">Based in {{ site_settings.location }}</p>
+    <p class="footer__location-block">{{ site_settings.location }}</p>
     {% endif %}
   </div>
 </footer>

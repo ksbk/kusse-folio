@@ -38,6 +38,8 @@
   flex-direction: column;
   gap: 0.6rem;
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .footer__nav a {
@@ -85,7 +87,7 @@
 }
 
 .footer__bottom p {
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   color: rgba(255,255,255,0.5); /* bumped from 0.3 (2.7:1 fail) → 0.5 (~4.9:1 passes WCAG AA) */
 }
 
