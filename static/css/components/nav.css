@@ -45,7 +45,7 @@
   text-transform: uppercase;
   color: var(--color-text-primary);
   /* safety net — a well-set nav_name (≤24 chars) will never trigger this */
-  max-width: clamp(120px, 38vw, 240px);
+  max-width: clamp(140px, 46vw, 240px);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -96,6 +96,9 @@
 }
 
 .nav__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: 400;
@@ -128,9 +131,11 @@
 .home .site-header:not(.scrolled):not(.nav-open) .nav__link.is-active { color: var(--color-text-inverse); }
 
 .nav__cta {
+  display: inline-flex;
+  align-items: center;
   color: var(--color-text-primary);
   border: 1px solid currentColor;
-  padding: 0.45rem 1.1rem;
+  padding: 0 1.1rem;
   border-radius: 2px;
   text-decoration: none;
 }
