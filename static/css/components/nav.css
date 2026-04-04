@@ -140,6 +140,11 @@
   color: var(--color-text-inverse);
 }
 
+.nav__cta.is-active {
+  background-color: var(--color-text-primary);
+  color: var(--color-text-inverse);
+}
+
 .nav__cta::after { display: none; }
 
 .home .site-header:not(.scrolled):not(.nav-open) .nav__cta {
@@ -278,6 +283,9 @@
     background-color: transparent;
     color: var(--color-text-inverse) !important;
   }
+
+  /* Active state on mobile overlay: reset filled bg; color handled by .nav__link.is-active above */
+  .nav__cta.is-active { background: none; }
 }
 
 /* All transitions gated: reduced-motion users get instant state changes */
