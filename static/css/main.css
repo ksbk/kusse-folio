@@ -11,7 +11,7 @@
        layout.css     — shared container and section rhythm rules
 
      components/
-       nav.css        — site header and navigation shell
+       header.css     — site header and navigation shell
        buttons.css    — shared button treatments
        components.css — shared section-header and CTA patterns
        hero.css       — homepage and page-hero shared patterns
@@ -25,7 +25,7 @@
 @import url('base/base.css');
 @import url('base/layout.css');
 
-@import url('components/nav.css');
+@import url('components/header.css');
 @import url('components/buttons.css');
 @import url('components/components.css');
 @import url('components/hero.css');
