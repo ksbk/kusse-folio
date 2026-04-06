@@ -36,6 +36,7 @@ This file is a table-first reference for the current admin surfaces. It document
 | `phone` | Public phone number on the contact page | Omitted when blank. |
 | `location` | Public studio/location text in footer, contact page, and About professional profile gate | Omitted when blank. Also required for the About professional profile block to render. |
 | `address` | Stored in admin only right now | No public template surface currently reads it. |
+| `contact_response_time` | Public response-time wording on the Contact page and success state | Defaults to `two working days`. Use short human-readable wording such as `24 hours` or `one week`. |
 
 ### Social
 
@@ -62,6 +63,7 @@ This file is a table-first reference for the current admin surfaces. It document
 
 | Field | Public effect | Constraints / notes |
 | --- | --- | --- |
+| `homepage_closing_text` | Homepage closing invitation above the contact CTA | Short closing line shown at the bottom of the homepage. Keep it concise so the CTA still reads cleanly. |
 | `homepage_projects_mobile_count` | Max homepage featured cards shown at `<=639px` | Must be between `1` and `6`, and cannot exceed tablet count. |
 | `homepage_projects_tablet_count` | Max homepage featured cards shown at `640-959px` | Must be between `1` and `6`, and cannot exceed desktop count. |
 | `homepage_projects_desktop_count` | Max homepage featured cards queried and shown at `>=960px` | Must be between `1` and `6`. Defaults to `6`. |
@@ -136,7 +138,6 @@ This file is a table-first reference for the current admin surfaces. It document
 | `who_for` | “Ideal for” row | Omitted when blank. |
 | `value_proposition` | “What you get” row | Omitted when blank. |
 | `deliverables` | Deliverables list | One line per item. Omitted when blank. |
-| `icon_name` | Stored in admin only right now | No public template surface currently reads it. |
 | `order` | Service ordering on the Services page | Lower numbers appear first. |
 | `active` | Public visibility on the Services page | Only active services are listed publicly. |
 

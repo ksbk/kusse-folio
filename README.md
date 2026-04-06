@@ -47,7 +47,7 @@ focused tool for a specific purpose.
 | **Home** | Hero, featured projects, homepage coda CTA |
 | **Projects** | Paginated portfolio grid with category filter |
 | **Project detail** | Full project case study — narrative, gallery, testimonials, SEO |
-| **About** | Biography, philosophy, credentials, portrait, CV download |
+| **About** | Practice identity, narrative, professional profile, optional portrait, optional CV download |
 | **Services** | Detailed service descriptions with deliverables |
 | **Contact** | Enquiry form with spam protection, saves to DB, emails on submission |
 
@@ -72,7 +72,7 @@ Full Django admin for every model — no custom frontend needed to manage conten
 - **SEO fields** — per-page meta description and OG image on every model
 - **Google Analytics** — GA4 measurement ID managed in admin, no code changes
 - **SMTP email** — configurable email backend; contact form emails on every submission
-- **Content readiness check** — management command flags blank or starter/demo content before launch
+- **Content readiness check** — management command flags blank fields, starter/demo content, and stale page-specific metadata before launch
 - **Whitenoise static serving** — no CDN required for static files
 
 ### Developer ergonomics
@@ -95,7 +95,7 @@ uv sync --group dev
 cp .env.example .env          # then set SECRET_KEY
 uv run python manage.py migrate
 uv run python manage.py createsuperuser
-uv run python manage.py seed_demo   # loads generic starter content
+uv run python manage.py seed_demo   # loads starter/demo content
 uv run python manage.py runserver
 ```
 
@@ -207,18 +207,18 @@ uv run python manage.py createsuperuser
 Enter your chosen username, email, and a strong password at the prompts.
 There are no default credentials anywhere in this codebase.
 
-### 5. Seed starter content (optional)
+### 5. Seed starter/demo content (optional)
 
 ```bash
 uv run python manage.py seed_demo
 ```
 
-Seeds a complete set of generic starter content — SiteSettings, AboutProfile,
-six service definitions, and eight placeholder projects (six featured) — so
-the site renders fully on first load. If a `media/demo_seed/` directory is
-present, cover images are attached automatically (see DEMO.md). Use this as
-your starting point and replace content via admin. Safe to re-run (idempotent).
-Does not create any user accounts.
+Seeds a complete starter/demo dataset — `SiteSettings`, `AboutProfile`, three
+active services, eleven example projects (seven featured), and testimonials —
+so the site renders fully on first load. The repo ships a tracked demo-media
+bundle that `seed_demo` auto-discovers and attaches when available. Use this as
+your starting point and replace content via admin. Safe to re-run
+(idempotent). Does not create any user accounts.
 
 ### 6. Start the dev server
 
@@ -229,6 +229,16 @@ uv run python manage.py runserver
 
 - Site: **<http://127.0.0.1:8000>**
 - Admin: **<http://127.0.0.1:8000/admin>**
+
+### 7. First customization steps
+
+Once the site is running, the fastest buyer path is:
+
+1. `Site Settings` — set the real practice name, public email, location, response-time wording, and default share image.
+2. `About Profile` — replace the practice summary, approach, and credibility facts.
+3. `Services` — replace the three starter services or add your own.
+4. `Projects` — replace the eleven demo projects and choose the featured set deliberately.
+5. Run `uv run python manage.py check_content_readiness` before launch to catch starter/demo values, missing contact setup, and stale per-page metadata.
 
 ---
 
@@ -509,17 +519,17 @@ Six custom commands handle content bootstrap, media import, and readiness checki
 ### Safe production bootstrap order
 
 1. `migrate` + `createsuperuser`
-2. `seed_demo` — loads generic starter content so the site renders on first visit
+2. `seed_demo` — loads starter/demo content so the site renders on first visit
 3. Log in to `/admin/` and replace starter copy with your real content
 4. `seed_about` — optional; fills only blank `AboutProfile` fields if you prefer incremental setup
 5. `bootstrap_project --dry-run …` then live run for each new project
 6. `import_project_images --dry-run …` then live run to attach images
 
-> `seed_demo` is idempotent and uses generic placeholder copy — it is safe to run on
-> a fresh production database to get the site rendering immediately.
-> `check_content_readiness` will continue to flag that starter content until you replace it.
+> `seed_demo` is idempotent and loads the shipped starter/demo dataset — it is safe to
+> run on a fresh production database to get the site rendering immediately.
+> `check_content_readiness` will continue to flag that demo content until you replace it.
 > It will update existing records if re-run, so avoid running it after you have replaced
-> starter copy with your own real content.
+> starter/demo content with your own real content.
 
 ---
 
@@ -652,7 +662,7 @@ Django's `APP_DIRS=True` loader finds app-level templates automatically. The sha
 | Model | Purpose |
 | --- | --- |
 | `SiteSettings` | Global metadata: name, tagline, contact, social links, SEO, analytics |
-| `AboutProfile` | About page: biography, philosophy, portrait, CV file |
+| `AboutProfile` | About page: identity, narrative, professional profile, optional portrait, optional CV file |
 | `Service` | Service offering with description, deliverables, and ordering |
 | `Project` | Portfolio project with full story structure and SEO fields |
 | `ProjectImage` | Gallery images per project with type classification |
@@ -670,7 +680,7 @@ Django's `APP_DIRS=True` loader finds app-level templates automatically. The sha
 | `/` | `HomeView` | Hero, featured projects, homepage coda CTA |
 | `/projects/` | `ProjectListView` | Paginated listing with category filter |
 | `/projects/<slug>/` | `ProjectDetailView` | Full project case study with gallery |
-| `/about/` | `AboutView` | Profile, biography, philosophy, credentials |
+| `/about/` | `AboutView` | Practice identity, narrative, approach, and professional profile |
 | `/services/` | `ServicesView` | Detailed service descriptions |
 | `/contact/` | `contact_view` | Enquiry form — saves to DB and emails |
 | `/contact/thank-you/` | `contact_success_view` | Post-submission confirmation |

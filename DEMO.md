@@ -29,15 +29,13 @@ uv run python manage.py runserver
 
 Open **<http://127.0.0.1:8000>**.
 
-The site renders immediately with starter content — projects, services,
+The site renders immediately with starter/demo content — projects, services,
 and a populated About page. Log in to **<http://127.0.0.1:8000/admin>**
 to explore the content management interface.
 
-> **Demo media package (optional):** A separate `media/demo_seed/` directory
-> can be placed alongside the repo to enable the full 6-project showcase with
-> real cover images. When present, `seed_demo` auto-discovers and attaches it.
-> Without it, the seed still runs cleanly — projects render without cover images.
-> The demo media package is intentionally external to the git repository.
+> **Demo media bundle:** The repo ships a tracked demo-media bundle under
+> `apps/site/demo_seed/strand-architecture`. `seed_demo` auto-discovers it and
+> attaches the bundled project media during first-run setup.
 
 ---
 
@@ -89,9 +87,9 @@ python manage.py seed_demo
 ```
 
 > **Note on media uploads in demo mode:** Production uses Cloudinary for
-> media storage. For a demo without Cloudinary, media uploads (portrait,
-> project images) will not persist across deploys. The starter content seeded
-> by `seed_demo` contains no image files and renders cleanly without images.
+> media storage. For a demo without Cloudinary, uploaded media will not persist
+> across deploys. The tracked demo-media bundle still lets `seed_demo` attach a
+> strong local or preview dataset, but your own uploads should use production storage.
 
 ---
 
@@ -102,25 +100,26 @@ After running `seed_demo`, the site contains:
 ### Home page
 
 - Practice tagline
-- Up to six featured projects in the portfolio grid (three shown by default on mobile; requires demo media package for cover images)
+- Up to six featured projects in the homepage grid (drawn from seven featured demo projects; three shown by default on mobile)
 - Services summary section
-- Three client testimonials
+- Homepage closing CTA
 
 ### Projects
 
-- Eight project records across residential, cultural, commercial, and civic categories
-- Six are marked featured and appear in the homepage grid
+- Eleven project records across `Housing`, `Civic`, and `Workplace`
+- Seven are marked featured for homepage selection
 - Each project has a full narrative: overview, challenge, concept, and outcome
 - Category filter works on the list page
 
 ### Services
 
-- Six service descriptions with `who_for`, `value_proposition`, and `deliverables` fields
+- Three service records with `summary`, `who_for`, `value_proposition`, and `deliverables`
 
 ### About
 
-- Populated biography, philosophy, and credentials sections
-- `experience_years` is set to `0` as a placeholder — update in admin to see the correct display
+- Populated identity, narrative, approach, and professional-profile sections
+- Real demo values for `experience_years`, location, and studio identity
+- Default demo runs in text-only mode until a real person/studio portrait is supplied
 
 ### Contact
 
@@ -132,6 +131,13 @@ After running `seed_demo`, the site contains:
 
 - Log in at `/admin/` to see the full content management interface
 - All content visible on the site is managed entirely through admin — no template editing required
+
+## What is demo content vs system configuration?
+
+- **Demo/example content:** practice name, About copy, services, projects, testimonials, and other starter text/media loaded by `seed_demo`
+- **System/config:** navigation structure, page layouts, contact-delivery plumbing, environment variables, and the shared styling system
+- **What to edit first:** `Site Settings`, then `About Profile`, then `Services`, then `Projects`
+- **Before launch:** run `uv run python manage.py check_content_readiness` to catch demo values, missing launch facts, and stale page-specific metadata
 
 ---
 

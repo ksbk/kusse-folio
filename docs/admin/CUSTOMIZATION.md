@@ -7,7 +7,8 @@ This guide is for buyers and operators, not maintainers. It explains what you ca
 | Area | What you can change | Where |
 | --- | --- | --- |
 | Brand basics | Practice name, tagline, hero label, compact hero mode, nav abbreviation, logo, default share image | `Site Settings` |
-| Public contact details | Public email, phone, location, and social links | `Site Settings` |
+| Homepage closing CTA copy | Homepage closing invitation text | `Site Settings` |
+| Public contact details | Public email, phone, location, response-time wording, and social links | `Site Settings` |
 | Stored contact record | Address, for internal recordkeeping only in the current implementation | `Site Settings` |
 | Search/share metadata | Homepage and per-page meta descriptions, GA4 measurement ID | `Site Settings` |
 | Homepage density | How many featured projects show on mobile, tablet, and desktop | `Site Settings` |
@@ -31,7 +32,7 @@ This guide is for buyers and operators, not maintainers. It explains what you ca
 | Changing the first featured project | That project can become the homepage hero image source | Homepage hero image and first featured card |
 | Uploading a new cover image | It changes homepage hero, project detail hero, and project share image behavior when that project drives those surfaces | Homepage hero, project detail hero, social preview |
 | Leaving a project cover image blank or reordering its gallery | It changes which image drives the project detail hero/share fallback | Project detail hero, share preview, first gallery image |
-| Editing service slugs | Service enquiry links map contact prefill from the slug | “Discuss this service” link on the Services page |
+| Editing service slugs | Service enquiry links map contact prefill from the slug | “Enquire About This Service” link on the Services page |
 
 ## What Is Fixed Without Code Changes
 
@@ -60,12 +61,13 @@ This guide is for buyers and operators, not maintainers. It explains what you ca
 ## Practical Buyer Workflow
 
 1. Start with `Site Settings`: set the real practice name, public email, location, meta description, and default share image.
-2. Decide the navbar brand path early: leave it automatic, set a short `nav_name`, or upload a logo.
-3. Complete `About Profile` before polishing portfolio pages. The About page has the most render gates.
-4. Enter services before linking the site publicly. Service enquiry links are already wired into the contact form.
-5. Add and order featured projects carefully. The first selected homepage project can become the homepage hero image source.
-6. Before publishing, review the `Launch Readiness` panel in `Site Settings`, then run, or ask your maintainer to run, the content-readiness check for the same full result in the terminal.
-7. Confirm both contact paths are ready: the public `contact_email` should look correct on the site, and the internal notification inbox `CONTACT_EMAIL` should be configured in the environment.
+2. Add page-specific meta descriptions only if you want them. If you do, make sure they match the current studio identity and do not carry over old demo-brand wording.
+3. Decide the navbar brand path early: leave it automatic, set a short `nav_name`, or upload a logo.
+4. Complete `About Profile` before polishing portfolio pages. The About page has the most render gates.
+5. Enter services before linking the site publicly. Service enquiry links are already wired into the contact form.
+6. Add and order featured projects carefully. The first selected homepage project can become the homepage hero image source.
+7. Before publishing, review the `Launch Readiness` panel in `Site Settings`, then run, or ask your maintainer to run, the content-readiness check for the same full result in the terminal.
+8. Confirm both contact paths are ready: the public `contact_email` should look correct on the site, and the internal notification inbox `CONTACT_EMAIL` should be configured in the environment.
 
 ## Practical Warnings
 
