@@ -196,3 +196,4 @@ def test_site_settings_admin_launch_readiness_surfaces_homepage_fallback_warning
     assert b"CONTACT_EMAIL is blank" in response.content
     assert b"No featured Project records are selected" in response.content
     assert b"check_content_readiness" in response.content
+

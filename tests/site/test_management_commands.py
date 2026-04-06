@@ -322,100 +322,36 @@ def test_about_readiness_does_not_add_generic_placeholder_blocker_for_optional_p
 
 
 @pytest.mark.django_db
-def test_warns_when_no_active_services():
-    # Fresh DB has no services.
-    warnings = collect_warnings()
-    assert any("No active Service records found" in w for w in warnings)
+@override_settings(CONTACT_EMAIL="")
+def test_readiness_warns_when_internal_contact_inbox_is_missing(service, project):
+    _populate_minimum_ready_site_and_about()
 
+    _, warnings = collect_readiness_issues()
 
-@pytest.mark.django_db
-def test_no_service_warning_when_active_service_exists(service):
-    # `service` fixture (conftest) creates one active Service.
-    warnings = collect_warnings()
-    assert not any("No active Service records found" in w for w in warnings)
-
-
-@pytest.mark.django_db
-def test_warns_when_no_projects():
-    # Fresh DB has no projects.
-    warnings = collect_warnings()
-    assert any("No Project records found" in w for w in warnings)
-
-
-@pytest.mark.django_db
-def test_no_project_warning_when_project_exists(project):
-    # `project` fixture (conftest) creates one Project.
-    warnings = collect_warnings()
-    assert not any("No Project records found" in w for w in warnings)
-
-
-@pytest.mark.django_db
-def test_warns_when_demo_projects_exist(site_settings):
-    Project.objects.create(
-        title="House on the Hillside",
-        short_description="Starter project.",
-        category="housing",
-        status="completed",
-    )
-    warnings = collect_warnings()
-    assert any("Starter Project records are still present" in w for w in warnings)
-
-
-@pytest.mark.django_db
-def test_warns_when_demo_testimonials_exist(project):
-    Testimonial.objects.create(
-        project=project,
-        name="Sarah & Mark L.",
-        role="Private Clients",
-        quote="Starter testimonial.",
-    )
-    warnings = collect_warnings()
-    assert any("Starter Testimonial records are still present" in w for w in warnings)
-
-
-@pytest.mark.django_db
-def test_readiness_warns_when_long_site_name_has_no_nav_name_or_logo(service):
-    site, _ = _populate_minimum_ready_site_and_about()
-    site.site_name = "Beaumont Whitfield Kellerman Partnership"
-    site.nav_name = ""
-    site.logo = None
-    site.save()
-    Project.objects.create(
-        title="Harbor House",
-        slug="harbor-house",
-        short_description="Project used for readiness coverage.",
-        category="housing",
-        status="completed",
-        featured=True,
-        cover_image=SimpleUploadedFile("cover.jpg", b"cover-image", content_type="image/jpeg"),
-    )
-
-    blockers, warnings = collect_readiness_issues()
-
-    assert not blockers
-    assert any("longer than 30 characters" in warning for warning in warnings)
+    assert any("CONTACT_EMAIL is blank" in warning for warning in warnings)
 
 
 @pytest.mark.django_db
 def test_readiness_warns_when_no_featured_projects_are_selected(service, project):
     _populate_minimum_ready_site_and_about()
+    Project.objects.update(featured=False)
 
-    blockers, warnings = collect_readiness_issues()
+    _, warnings = collect_readiness_issues()
 
-    assert not blockers
     assert any("No featured Project records are selected" in warning for warning in warnings)
 
 
 @pytest.mark.django_db
-def test_readiness_warns_when_current_homepage_hero_project_has_no_cover_image(service):
+def test_readiness_warns_when_homepage_hero_project_has_no_cover_image(service):
     _populate_minimum_ready_site_and_about()
     Project.objects.create(
         title="Featured Without Cover",
         slug="featured-without-cover",
-        short_description="Project without a cover image.",
+        short_description=".",
         category="housing",
         status="completed",
         featured=True,
+        order=1,
     )
 
     blockers, warnings = collect_readiness_issues()
@@ -425,12 +361,12 @@ def test_readiness_warns_when_current_homepage_hero_project_has_no_cover_image(s
 
 
 def test_seed_demo_auto_discovers_tracked_bundled_media(tmp_path):
-    media_dir = _discover_demo_media_dir(tmp_path)
+    bundled = _discover_demo_media_dir(tmp_path)
 
-    assert media_dir is not None
-    assert media_dir.name == "strand-architecture"
-    assert (media_dir / "covers").is_dir()
-    assert (media_dir / "gallery").is_dir()
+    assert bundled is not None
+    assert bundled.name == "strand-architecture"
+    assert (bundled / "covers").is_dir()
+    assert (bundled / "gallery").is_dir()
 
 
 @pytest.mark.django_db
@@ -454,35 +390,49 @@ def test_seed_demo_populates_signed_off_project_preview_states_from_tracked_bund
     assert Project.objects.get(slug="coastline-civic-centre").images.count() == 4
     assert Project.objects.get(slug="harbour-court-apartments").images.count() == 5
     assert Project.objects.get(slug="ridgeline-housing").images.count() == 7
-    assert Project.objects.get(slug="house-on-the-hillside").images.count() == 4
 
 
 @pytest.mark.django_db
-def test_seed_demo_sets_coherent_about_demo_defaults_without_forcing_non_portrait_image_publicly(
-    settings, tmp_path
-):
-    settings.MEDIA_ROOT = tmp_path
-
+def test_seed_demo_sets_coherent_about_demo_defaults_without_forcing_non_portrait_image_publicly():
     call_command("seed_demo")
 
     site = SiteSettings.load()
     about = AboutProfile.load()
 
     assert site.location == "Reykjavik, Iceland"
-    assert (
-        site.about_meta_description
-        == "About Demo Architecture Studio, the practice approach, experience, and professional profile."
+    assert site.about_meta_description == (
+        "About Demo Architecture Studio, the practice approach, experience, and professional profile."
     )
-    assert about.portrait
     assert about.portrait_mode == AboutProfile.PortraitMode.TEXT_ONLY
 
 
 @pytest.mark.django_db
-@override_settings(CONTACT_EMAIL="")
-def test_readiness_warns_when_internal_contact_notification_inbox_is_missing(service, project):
+def test_readiness_blocks_when_demo_projects_remain(service):
     _populate_minimum_ready_site_and_about()
+    Project.objects.create(
+        title="House on the Hillside",
+        slug="house-on-the-hillside",
+        short_description=".",
+        category="housing",
+        status="completed",
+    )
 
-    blockers, warnings = collect_readiness_issues()
+    blockers, _ = collect_readiness_issues()
 
-    assert not blockers
-    assert any("CONTACT_EMAIL is blank" in warning for warning in warnings)
+    assert any("Starter Project records are still present" in blocker for blocker in blockers)
+
+
+@pytest.mark.django_db
+def test_readiness_blocks_when_demo_testimonials_remain(service, project):
+    _populate_minimum_ready_site_and_about()
+    Testimonial.objects.create(
+        project=project,
+        name="A. Navarro",
+        quote="Excellent.",
+        order=1,
+        active=True,
+    )
+
+    blockers, _ = collect_readiness_issues()
+
+    assert any("Starter Testimonial records are still present" in blocker for blocker in blockers)

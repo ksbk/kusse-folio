@@ -161,3 +161,4 @@ def test_site_settings_hero_compact_defaults_false():
 def test_site_settings_nav_name_defaults_blank():
     s = SiteSettings.load()
     assert s.nav_name == ""
+
