@@ -62,7 +62,8 @@ reqs:
 # Check that requirements.txt is in sync with pyproject.toml / uv.lock.
 # Exits non-zero if requirements.txt would change — use in CI to catch drift.
 check-reqs:
-	@uv export --no-dev --no-hashes 2>/dev/null | grep -v '^#' > /tmp/_reqs_fresh.txt; \
+	@uv export --no-dev --no-hashes > /tmp/_reqs_fresh_all.txt
+	@grep -v '^#' /tmp/_reqs_fresh_all.txt > /tmp/_reqs_fresh.txt; \
 	grep -v '^#' requirements.txt > /tmp/_reqs_committed.txt; \
 	diff /tmp/_reqs_fresh.txt /tmp/_reqs_committed.txt > /dev/null \
 		&& echo "requirements.txt is up to date" \

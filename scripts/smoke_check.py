@@ -33,7 +33,7 @@ def fetch(url: str, timeout: float) -> tuple[int, bytes]:
     if parsed.scheme not in ("http", "https"):
         raise ValueError(f"Only http/https URLs are permitted, got: {url!r}")
     request = urllib.request.Request(
-        url, headers={"User-Agent": "architecture-portfolio-smoke/1.0.0"}
+        url, headers={"User-Agent": "architecture-portfolio-smoke/1.0.1"}
     )
     with urllib.request.urlopen(request, timeout=timeout) as response:  # noqa: S310  # trunk-ignore(bandit/B310)
         return response.getcode(), response.read()

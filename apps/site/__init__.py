@@ -1,1 +1,1 @@
-"""Product-local global content and configuration for Jeannote."""
+"""Product-local global content and configuration for the template repo."""

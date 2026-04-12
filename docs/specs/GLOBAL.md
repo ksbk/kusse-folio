@@ -6,7 +6,7 @@
 
 ## Scope
 
-This file defines the global, cross-cutting requirements that apply across Jeannote's public-facing UI.
+This file defines the global, cross-cutting requirements that apply across the template's public-facing UI.
 
 It covers:
 - shared shell structure
@@ -58,9 +58,10 @@ Implemented in:
 - `templates/includes/footer.html`
 - `static/css/base/base.css`
 - `static/css/utilities/utilities.css`
-- `static/css/components/nav.css`
+- `static/css/components/header.css`
 - `static/css/components/hero.css`
 - `static/css/components/components.css`
+- `static/js/header.js`
 - `static/js/main.js`
 
 ### Current automated / direct evidence
@@ -86,7 +87,7 @@ This prevents the spec from overstating what is enforced today.
 ### 1.1 Accessibility baseline
 
 #### Standard
-Jeannote targets **WCAG 2.1 AA** as the baseline accessibility standard for the shipped public UI.
+The template targets **WCAG 2.1 AA** as the baseline accessibility standard for the shipped public UI.
 
 #### Contrast
 Minimum contrast requirements:

@@ -6,7 +6,7 @@
 
 ## Scope
 
-This file defines the measurable typography system used across Jeannote's public UI.
+This file defines the measurable typography system used across the template's public UI.
 
 It covers:
 - font stack and loading model
@@ -60,7 +60,7 @@ Implemented in:
 - `templates/base.html`
 - `static/css/base/tokens.css`
 - `static/css/base/base.css`
-- `static/css/components/nav.css`
+- `static/css/components/header.css`
 - `static/css/components/hero.css`
 - `static/css/components/components.css`
 - `static/css/components/buttons.css`
@@ -149,7 +149,7 @@ Display typography uses the serif family and carries most of the visual identity
 
 ### 1.4 Micro-scale baseline
 
-Jeannote uses a disciplined two-tier micro-scale for small text.
+The template uses a disciplined two-tier micro-scale for small text.
 
 #### Required baseline
 Small text in the public UI MUST resolve into two main functional tiers:

@@ -5,7 +5,9 @@ from django.core.mail import EmailMessage
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from .forms import LEGACY_PROJECT_TYPE_MAP, PROJECT_TYPE_CHOICES, ContactForm
+from apps.core.enquiry_types import LEGACY_PROJECT_TYPE_MAP, PROJECT_TYPE_CHOICES
+
+from .forms import ContactForm
 
 logger = logging.getLogger(__name__)
 

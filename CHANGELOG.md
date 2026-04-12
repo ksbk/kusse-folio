@@ -76,7 +76,7 @@ Initial release of the Architecture Portfolio Django Template.
 #### Launch safety
 
 - `check_content_readiness` flags blank and starter/demo content across site settings, About copy, services, projects, and testimonials
-- System check `core.W001` — warns in development if email backend is still the console backend
+- System check `core.W001` — warns in production-like mode if a development email backend is still active
 - System check `core.W006` — warns if `CONTACT_EMAIL` is blank
 
 #### Developer tooling

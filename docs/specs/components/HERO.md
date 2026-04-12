@@ -17,7 +17,6 @@ Backed in part by:
 
 - `tests/pages/test_views.py`
 - `tests/e2e/test_homepage.py`
-- `scripts/audit_hero_spec.py`
 
 ## DOM Contract
 
@@ -72,5 +71,5 @@ Backed in part by:
 
 ## Notes
 
-- `scripts/audit_hero_spec.py` includes additional stress cases such as long-content combinations, dark/light image contrast, and a single-CTA screenshot. Those cases are useful for visual QA, but the single-CTA case is not a configurable user-facing state in the shipped template.
+- Visual QA for long-content combinations, dark/light image contrast, and a single-CTA screenshot is not covered by an automated assertion. These states remain an explicit evidence gap.
 - Model help text currently recommends shorter content for fit, but the hard behavior is still the DOM and CSS contract above. Soft guidance is not treated as validation.

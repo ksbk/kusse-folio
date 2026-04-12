@@ -14,14 +14,14 @@ This file defines testing policy and execution rules. It does not list individua
 
 | Layer | Purpose | Current entrypoints |
 | --- | --- | --- |
-| Unit / model | Field defaults, validation, helper functions, and singleton behavior | `tests/core/test_models.py`, `tests/core/test_templatetags.py`, `tests/contact/test_forms.py`, `tests/projects/test_models.py` |
+| Unit / model | Field defaults, validation, helper functions, and singleton behavior | `tests/site/test_models.py`, `tests/core/test_templatetags.py`, `tests/contact/test_forms.py`, `tests/projects/test_models.py` |
 | View / template | Context values and DOM path selection without a browser | `tests/pages/test_views.py`, `tests/services/test_views.py`, `tests/projects/test_views.py`, `tests/contact/test_views.py` |
-| Admin safety | Singleton guards and admin warning behavior | `tests/core/test_admin.py`, `tests/projects/test_admin.py`, `tests/contact/test_admin.py` |
+| Admin safety | Singleton guards and admin warning behavior | `tests/site/test_admin.py`, `tests/projects/test_admin.py`, `tests/contact/test_admin.py` |
 | Browser e2e | Navigation, user journeys, and JS behavior | `tests/e2e/` |
-| Content readiness | Launch-time content auditing against starter/default content | `apps/site/management/commands/check_content_readiness.py`, `tests/core/test_management_commands.py` |
+| Content readiness | Buyer pre-launch auditing against starter/default content in the deployment database | `apps/site/management/commands/check_content_readiness.py`, `tests/site/test_management_commands.py` |
 | Deploy / system | Django checks, migration drift, deploy checks, requirements sync | `make health`, `make check-deploy`, `make check-reqs`, `.github/workflows/ci.yml` |
 | Smoke / live instance | Post-deploy URL verification | `scripts/smoke_check.py`, `make smoke`, `make smoke-prod` |
-| Visual audit | Repeatable screenshot-based QA for hero, navbar brand, and typography fit | `scripts/audit_hero_spec.py`, `scripts/audit_nav_brand.py`, `scripts/audit_typography_qa.py` |
+| Visual audit | Screenshot capture and pixel-level heuristics for broad page review | `scripts/take_screenshots.py`, `scripts/analyse_screenshots.py`, `artifacts/visual-audit/` |
 
 ## Standard Commands
 
@@ -31,7 +31,7 @@ This file defines testing policy and execution rules. It does not list individua
 | Unit + view tests only | `uv run pytest` |
 | Browser e2e | `make test-e2e` |
 | Coverage report | `uv run pytest --cov --cov-report=term-missing` |
-| Content readiness gate | `make check-content` |
+| Buyer pre-launch content gate | `make check-content` |
 | Deploy/security check | `make check-deploy` |
 | Requirements sync check | `make check-reqs` |
 | Local smoke against running server | `make smoke` |
@@ -43,7 +43,7 @@ This file defines testing policy and execution rules. It does not list individua
 | --- | --- |
 | Pure render-path change in template/view/model | Add or update a unit/view test. |
 | JS behavior, focus, keyboard, or body scroll lock | Add or update an e2e test. |
-| Responsive fit or contrast-only change | Run the relevant visual audit script and record the affected matrix row as manual/scripted coverage. |
+| Responsive fit or contrast-only change | Run the current screenshot audit workflow or record a manual review against the affected matrix rows. |
 | Admin-controlled frontend change | Update frontend tests and the admin/config coverage that proves the input path or safety guard. |
 | Launch-readiness or starter-content rule | Update `check_content_readiness` behavior and its tests. |
 
@@ -52,6 +52,7 @@ This file defines testing policy and execution rules. It does not list individua
 - `Covered` means the state has a named automated test or a named repeatable visual audit procedure.
 - `Partial` means some evidence exists, but not enough to prove the whole state contract.
 - `Gap` means the state is implemented but not currently proven by a reliable automated or scripted visual check.
+- `Known debt` means the release explicitly accepts the remaining evidence gap and keeps it visible for follow-up.
 - If a release touches a `Partial` or `Gap` row, that row must be reviewed in [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) before release.
 
 ## Current CI Gate

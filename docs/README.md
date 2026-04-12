@@ -1,6 +1,6 @@
 # Documentation System
 
-This directory is the implementation-facing documentation system for Jeannote. It documents current behavior, test coverage expectations, admin-facing configuration, and explicit product decisions.
+This directory is the implementation-facing documentation system for the template repo. It documents current behavior, test coverage expectations, admin-facing configuration, and explicit product decisions.
 
 The docs in this folder are not a redesign workspace. They are the operational source of truth for what is already built, how it is verified, and what must be updated in the same PR when behavior changes.
 
@@ -75,7 +75,7 @@ Stale docs block merge. If an urgent code fix must land first, the affected doc 
 
 ## Current Docs Debt
 
-- No open documentation debt is currently tracked in the docs system.
+- Documentation debt is not considered closed while `qa/TEST_MATRIX.md` still contains `Gap` or `Partial` rows.
 - Open QA backlog remains tracked in `qa/TEST_MATRIX.md`.
 
 ## How To Add A New Component

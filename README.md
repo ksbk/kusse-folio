@@ -129,16 +129,16 @@ See [LICENSE.md](LICENSE.md) for purchase terms.
 
 ## Repo architecture
 
-This repo separates reusable Django apps from Jeannote-specific composition.
-Reusable shell and domain apps live under `apps/`; Jeannote-only global config
-and page composition live outside `apps/` so product-specific concerns do not
-leak into reusable boundaries.
+This repo separates reusable Django apps from repo-level composition.
+Reusable shell and domain apps live under `apps/`; shared project config
+and page composition live outside `apps/` so domain concerns do not leak
+into the cross-cutting layers.
 
 | Path | Ownership |
 | --- | --- |
 | `config/` | Django project package: settings split, root URLs, ASGI/WSGI. |
 | `apps/core/` | Cross-cutting Django glue only: system checks, context processor, templatetags, and other tiny shared helpers. |
-| `apps/site/` | Site-wide content/config/admin behavior: `SiteSettings`, `AboutProfile`, readiness rules, and seed/readiness commands. |
+| `apps/site/` | Site-wide content/config/admin behavior: `SiteSettings`, `AboutProfile`, readiness rules, and seed/readiness commands. This app keeps the historical Django app label `core` for migration continuity. |
 | `apps/pages/` | Public page composition for Home, About, and Privacy, plus page-scoped CSS. Keep it thin. |
 | `apps/projects/` | Reusable portfolio / case-study domain. Owns its templates and CSS. |
 | `apps/services/` | Reusable services domain and service-specific enquiry context. Owns its templates and CSS. |
@@ -400,9 +400,7 @@ Tests live in `tests/` organised by domain, mirroring the `apps/` layout:
 tests/
   conftest.py          # shared fixtures (site_settings, project, service)
   core/
-    test_admin.py      # singleton admin guardrails
     test_checks.py     # core.W001 system check (email backend guard)
-    test_models.py     # SiteSettings and AboutProfile singletons
     test_templatetags.py  # first_paragraph filter
     test_views.py      # admin, sitemap, robots.txt
   contact/
@@ -426,6 +424,10 @@ tests/
   services/
     test_models.py     # Service str, slug, deliverables
     test_views.py      # services page
+  site/
+    test_admin.py      # SiteSettings / AboutProfile admin guardrails
+    test_management_commands.py  # launch-readiness and seed commands
+    test_models.py     # SiteSettings and AboutProfile singletons
 ```
 
 ```bash

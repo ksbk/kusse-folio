@@ -76,7 +76,7 @@ def test_check_warns_when_csrf_trusted_origins_missing():
 def test_check_warns_when_csrf_trusted_origins_not_https():
     errors = check_production_csrf_trusted_origins(None)
     assert len(errors) == 1
-    assert errors[0].id == "core.W002"
+    assert errors[0].id == "core.W007"
 
 
 @override_settings(DEBUG=False, CSRF_TRUSTED_ORIGINS=["https://example.com"])

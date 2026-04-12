@@ -65,7 +65,10 @@ class SiteSettings(SingletonModel):
     contact_email = models.EmailField(default="")
     phone = models.CharField(max_length=40, blank=True)
     location = models.CharField(max_length=120, blank=True)
-    address = models.TextField(blank=True)
+    address = models.TextField(
+        blank=True,
+        help_text="Stored but not currently rendered on any public page. Reserved for future use or custom template additions.",
+    )
     contact_response_time = models.CharField(
         max_length=60,
         blank=True,

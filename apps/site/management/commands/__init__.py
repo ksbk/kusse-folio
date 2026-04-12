@@ -1,1 +1,1 @@
-"""Product-local management commands for Jeannote site configuration."""
+"""Product-local management commands for site configuration."""

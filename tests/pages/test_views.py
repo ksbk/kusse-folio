@@ -516,6 +516,24 @@ def test_homepage_hero_renders_selected_cover_image_as_eager_background(
 
 
 @pytest.mark.django_db
+def test_hero_placeholder_background_renders_when_no_cover_image(client, site_settings):
+    """H-07: hero__bg--placeholder renders when the hero project has no cover image."""
+    Project.objects.create(
+        title="No Image Project",
+        slug="no-image-project",
+        short_description="Project without a cover image.",
+        category="housing",
+        status="completed",
+        featured=True,
+        order=1,
+    )
+    response = client.get(reverse("pages:home"))
+    assert response.status_code == 200
+    assert b"hero__bg--placeholder" in response.content
+    assert b'class="hero__bg"' not in response.content
+
+
+@pytest.mark.django_db
 def test_site_settings_hero_fields_default(db):
     """hero_label defaults blank and hero_compact defaults False."""
     s = SiteSettings.load()
@@ -644,3 +662,22 @@ def test_nav_marks_current_route_active(client, site_settings, route_name, expec
 
     assert response.status_code == 200
     assert expected_fragment in response.content
+
+
+# ---------------------------------------------------------------------------
+# Navbar brand — logo override (N-01)
+# ---------------------------------------------------------------------------
+
+@pytest.mark.django_db
+def test_nav_logo_suppresses_text_and_monogram(client, site_settings, make_uploaded_image):
+    """N-01: logo overrides all text and monogram brand paths in the nav."""
+    site_settings.logo = make_uploaded_image("logo.png", image_format="PNG")
+    # use a name that would trigger the monogram path when no logo is set
+    site_settings.site_name = "Beaumont Whitfield Kellerman Partnership"
+    site_settings.nav_name = ""
+    site_settings.save()
+    response = client.get(reverse("pages:home"))
+    assert response.status_code == 200
+    assert b'class="nav__logo"' in response.content
+    assert b"nav__name" not in response.content
+    assert b"nav__monogram" not in response.content

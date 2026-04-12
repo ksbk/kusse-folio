@@ -1,6 +1,6 @@
 # Recovery Runbook
 
-Procedures for recovering the Jeannote production deployment from partial or
+Procedures for recovering the production deployment from partial or
 complete failure. Use this when Railway, the database, or media storage is in
 a degraded state.
 

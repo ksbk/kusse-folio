@@ -4,26 +4,9 @@ from django import forms
 from django.conf import settings
 from django.core import signing
 
+from apps.core.enquiry_types import PROJECT_TYPE_CHOICES
+
 from .models import ContactInquiry
-
-PROJECT_TYPE_CHOICES = [
-    ("", "Select project type…"),
-    ("Housing", "Housing"),
-    ("Civic", "Civic"),
-    ("Workplace", "Workplace"),
-    ("Renovation / Adaptive Reuse", "Renovation / Adaptive Reuse"),
-    ("Other", "Other"),
-]
-
-LEGACY_PROJECT_TYPE_MAP = {
-    "Residential Design": "Housing",
-    "Commercial Design": "Workplace",
-    "Interior Architecture": "Other",
-    "Concept Development": "Other",
-    "3D Visualisation": "Other",
-    "Planning & Consultation": "Other",
-    "Renovation / Adaptive Reuse": "Renovation / Adaptive Reuse",
-}
 
 BUDGET_CHOICES = [
     ("", "Budget range (optional)…"),

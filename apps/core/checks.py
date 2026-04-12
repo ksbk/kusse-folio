@@ -103,7 +103,7 @@ def check_production_csrf_trusted_origins(app_configs, **kwargs):
                     "Production CSRF trusted origins should use HTTPS origins only, e.g. "
                     "https://yourdomain.com."
                 ),
-                id="core.W002",
+                id="core.W007",
             )
         )
     return errors

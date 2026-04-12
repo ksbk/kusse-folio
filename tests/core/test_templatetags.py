@@ -1,9 +1,9 @@
 """Tests for shared template filters in core/templatetags/core_tags.py."""
 
 
+from apps.core.brand import NAV_TEXT_MAX_CHARS
+from apps.core.brand import compute_monogram as _compute_monogram
 from apps.core.templatetags.core_tags import (
-    NAV_TEXT_MAX_CHARS,
-    _compute_monogram,
     first_paragraph,
     nav_needs_monogram,
 )

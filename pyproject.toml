@@ -1,6 +1,6 @@
 [project]
 name = "architecture-portfolio"
-version = "1.0.0"
+version = "1.0.1"
 description = "A reusable Django portfolio template for architecture practices."
 requires-python = ">=3.13"
 dependencies = [
@@ -100,6 +100,9 @@ filterwarnings = [
     "ignore::pytest.PytestCollectionWarning",
     # staticfiles/ doesn't exist until collectstatic is run; harmless in tests
     "ignore:No directory at.*staticfiles:UserWarning",
+    # URLField assume_scheme will default to https in Django 6.0; tracked,
+    # will be addressed on the Django 6 upgrade.
+    "ignore:The default scheme will be changed.*Django 6.0:django.utils.deprecation.RemovedInDjango60Warning",
 ]
 
 [tool.coverage.run]

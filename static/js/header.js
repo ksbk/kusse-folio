@@ -1,4 +1,4 @@
-/* Jeannot Tsirenge Portfolio — header.js */
+/* Architecture Portfolio — header.js */
 
 (() => {
   'use strict';

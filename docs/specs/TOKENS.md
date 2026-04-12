@@ -6,7 +6,7 @@
 
 ## Scope
 
-This file defines how Jeannote's CSS token layer is structured and how contributors should decide between primitives, semantic aliases, and local raw values.
+This file defines how the template's CSS token layer is structured and how contributors should decide between primitives, semantic aliases, and local raw values.
 
 It covers:
 - token-layer responsibilities

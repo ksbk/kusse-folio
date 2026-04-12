@@ -1,17 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 
-CONTACT_PROJECT_TYPE_MAP = {
-    "housing": "Housing",
-    "residential-design": "Housing",
-    "civic": "Civic",
-    "civic-community-buildings": "Civic",
-    "workplace": "Workplace",
-    "workplace-commercial-buildings": "Workplace",
-    "renovation-adaptive-reuse": "Renovation / Adaptive Reuse",
-    "interior-architecture": "Other",
-    "concept-design": "Other",
-}
+from apps.core.enquiry_types import SERVICE_SLUG_TO_ENQUIRY_TYPE
 
 
 class Service(models.Model):
@@ -43,7 +33,7 @@ class Service(models.Model):
 
     @property
     def contact_project_type(self) -> str:
-        return CONTACT_PROJECT_TYPE_MAP.get(self.slug, "Other")
+        return SERVICE_SLUG_TO_ENQUIRY_TYPE.get(self.slug, "Other")
 
     def deliverables_list(self):
         return [d.strip() for d in self.deliverables.splitlines() if d.strip()]

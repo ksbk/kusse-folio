@@ -9,16 +9,12 @@ from django.urls import reverse
 from django.utils.functional import cached_property
 from django.utils.text import slugify
 
+from apps.core.enquiry_types import PROJECT_CATEGORY_TO_ENQUIRY_TYPE
+
 # ---------------------------------------------------------------------------
 # Project
 # ---------------------------------------------------------------------------
 
-
-CONTACT_PROJECT_TYPE_MAP = {
-    "housing": "Housing",
-    "civic": "Civic",
-    "workplace": "Workplace",
-}
 
 
 def get_safe_image_dimensions(image) -> dict[str, int] | None:
@@ -146,7 +142,7 @@ class Project(models.Model):
 
     @property
     def contact_project_type(self) -> str:
-        return CONTACT_PROJECT_TYPE_MAP.get(self.category, "Other")
+        return PROJECT_CATEGORY_TO_ENQUIRY_TYPE.get(self.category, "Other")
 
     @cached_property
     def preview_gallery_image(self):
@@ -240,6 +236,11 @@ class Testimonial(models.Model):
         null=True,
         blank=True,
         related_name="testimonials",
+        help_text=(
+            "The project this testimonial is associated with. "
+            "Testimonials without a project are stored but not rendered on any public page "
+            "— only project-linked testimonials appear on project detail pages."
+        ),
     )
     name = models.CharField(max_length=120)
     role = models.CharField(max_length=120, blank=True)

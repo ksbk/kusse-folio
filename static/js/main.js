@@ -1,4 +1,4 @@
-/* Jeannot Tsirenge Portfolio — main.js */
+/* Architecture Portfolio — main.js */
 
 (() => {
   'use strict';

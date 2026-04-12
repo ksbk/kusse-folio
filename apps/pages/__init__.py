@@ -1,1 +1,1 @@
-"""Product-local public page composition for Jeannote."""
+"""Product-local public page composition for the template repo."""

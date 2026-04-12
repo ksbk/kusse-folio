@@ -21,10 +21,12 @@ import sys
 from django.conf import settings as django_settings
 from django.core.management.base import BaseCommand
 
-from apps.core.templatetags.core_tags import (
+from apps.core.brand import (
     NAV_TEXT_MAX_CHARS,
     NAV_TEXT_MAX_WORDS,
-    _compute_monogram,
+)
+from apps.core.brand import (
+    compute_monogram as _compute_monogram,
 )
 from apps.projects.models import Project, Testimonial
 from apps.services.models import Service

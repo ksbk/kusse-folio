@@ -1,1 +1,1 @@
-"""Portfolio and case-study domain for Jeannote."""
+"""Portfolio and case-study domain for the template repo."""

@@ -11,7 +11,7 @@ This file is a table-first reference for the current admin surfaces. It document
 | `Service` | Multiple records | Services page content and ordering |
 | `Project` | Multiple records | Project list/detail content, homepage featured pool, and project SEO |
 | `Project Image` | Inline on `Project` | Project gallery and drawing/media structure |
-| `Testimonial` | Inline on `Project`, also standalone admin | Client quotes on project pages |
+| `Testimonial` | Inline on `Project`, also standalone admin | Client quotes on project detail pages (project-linked only; unlinked testimonials are not rendered publicly) |
 | `Contact Inquiry` | Read-only inbound records; add disabled | Enquiry workflow tracking only |
 
 ## Site Settings

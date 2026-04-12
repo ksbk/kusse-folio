@@ -9,9 +9,10 @@ This spec covers the shared top navigation only. It documents brand fallback ord
 Implemented in:
 
 - `templates/includes/header.html`
-- `static/css/components/nav.css`
-- `static/js/main.js`
+- `static/css/components/header.css`
+- `static/js/header.js`
 - `apps/core/templatetags/core_tags.py`
+- `apps/core/brand.py`
 - `apps/site/models/site.py`
 - `apps/site/admin/site.py`
 
@@ -20,7 +21,6 @@ Backed in part by:
 - `tests/pages/test_views.py`
 - `tests/core/test_templatetags.py`
 - `tests/e2e/test_navigation.py`
-- `scripts/audit_nav_brand.py`
 
 ## DOM Contract
 
@@ -86,7 +86,7 @@ If either threshold fails, the automatic brand path switches to the monogram.
 | Area | Requirement |
 | --- | --- |
 | Header height | `.nav` height is `var(--header-height)` (currently `4.5rem`). |
-| Text brand safety net | `.nav__name` uses `max-width: clamp(120px, 38vw, 240px)` with ellipsis. This safety net applies to `nav_name`; automatic full-text `site_name` rendering should stay within the safe-text thresholds instead of relying on truncation. |
+| Text brand safety net | `.nav__name` uses `max-width: clamp(140px, 46vw, 240px)` with ellipsis. This safety net applies to `nav_name`; automatic full-text `site_name` rendering should stay within the safe-text thresholds instead of relying on truncation. |
 | Logo cap | `.nav__logo` max width is `160px` and height is `2.5rem`. |
 | Mobile overlay | The menu overlay fills the viewport with `position: fixed; inset: 0`. |
 | Mobile link typography | On the overlay, nav links and Contact use the serif system at `2rem`, not the desktop sans/CTA styles. |
@@ -102,4 +102,4 @@ If either threshold fails, the automatic brand path switches to the monogram.
 ## Notes
 
 - `tests/core/test_templatetags.py` proves the monogram algorithm in isolation. `tests/pages/test_views.py` proves the rendered path selection in templates. `tests/e2e/test_navigation.py` proves the mobile interaction behavior.
-- The long-`nav_name` truncation safety net is implemented in CSS and exercised by `scripts/audit_nav_brand.py`, but it is not currently covered by an automated assertion.
+- The long-`nav_name` truncation safety net is implemented in CSS but is not currently covered by an automated assertion. This is an explicit evidence gap.

@@ -1,11 +1,14 @@
 from django.conf import settings as django_settings
 from django.contrib import admin, messages
+from django.db import models
 from django.utils.html import format_html, format_html_join
 
-from apps.core.templatetags.core_tags import (
+from apps.core.brand import (
     NAV_TEXT_MAX_CHARS,
     NAV_TEXT_MAX_WORDS,
-    _compute_monogram,
+)
+from apps.core.brand import (
+    compute_monogram as _compute_monogram,
 )
 
 from ..management.commands.check_content_readiness import collect_readiness_issues
@@ -27,6 +30,9 @@ admin.site.index_title = "Start here: Site Settings → About Profile → Servic
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     readonly_fields = ("launch_readiness",)
+    formfield_overrides = {
+        models.URLField: {"assume_scheme": "https"},
+    }
     fieldsets = (
         (
             "Launch Readiness",

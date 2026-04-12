@@ -6,7 +6,7 @@
 
 ## Scope
 
-This file defines the measurable layout system used across Jeannote's public UI.
+This file defines the measurable layout system used across the template's public UI.
 
 It covers:
 - layout tokens and container widths
@@ -69,7 +69,7 @@ Implemented in:
 ### Current automated / direct evidence
 Backed in part by:
 - `tests/pages/test_views.py`
-- `tests/core/test_models.py`
+- `tests/site/test_models.py`
 - direct CSS and template review captured during the March 2026 refinement pass
 
 ### Current evidence model
