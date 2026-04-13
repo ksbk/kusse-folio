@@ -28,7 +28,7 @@ The docs in this folder are not a redesign workspace. They are the operational s
 | Path | Purpose | Status |
 | --- | --- | --- |
 | [`docs/README.md`](README.md) | Operating guide for the doc system: structure, update rules, and contribution workflow. | Active |
-| `docs/CHANGELOG.md` | Change history for this documentation system using Keep a Changelog style. Not the repo-root product release changelog. | Active |
+| [`docs/DOC_CHANGELOG.md`](DOC_CHANGELOG.md) | Change history for this documentation system using Keep a Changelog style. Not the repo-root product release changelog. | Active |
 | `docs/DECISION_LOG.md` | Reverse-chronological log of documentation and product decisions that affect specs, QA, or admin behavior. | Active |
 | `docs/product/DOCTRINE.md` | Product principles only. No implementation detail, no layout rules, no marketing copy. | Active |
 | [`docs/specs/TECHNICAL_SPEC.md`](specs/TECHNICAL_SPEC.md) | Gateway spec that points to the detailed specs and explains how the system fits together. | Active |

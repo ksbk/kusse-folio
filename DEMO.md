@@ -57,6 +57,8 @@ docker compose exec web python manage.py seed_demo
 
 Open **<http://localhost:8000>**.
 
+For the full Docker reference — including one-off commands, volume behaviour, and notes on the dev vs production distinction — see [README.md §Run locally with Docker](README.md#run-locally-with-docker).
+
 ---
 
 ## Option C — Public preview URL (share with others)

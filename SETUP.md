@@ -324,24 +324,9 @@ The command exits with code `1` if any blocker is present (CI-friendly).
 
 ## Phase 8 — Production environment
 
-Set these variables in your hosting environment (e.g. Railway → Variables):
+Set these variables in your hosting environment (e.g. Railway → Variables). See [README.md §Environment variables](README.md#environment-variables) for the full annotated reference including all optional variables (Sentry, Cloudinary, GA4).
 
-| Variable | Value |
-| --- | --- |
-| `SECRET_KEY` | A new unique key — do not reuse your local one |
-| `DEBUG` | `False` |
-| `DJANGO_SETTINGS_MODULE` | `config.settings.prod` |
-| `ALLOWED_HOSTS` | `yourdomain.com,www.yourdomain.com` |
-| `DATABASE_URL` | `postgres://user:password@host:5432/dbname` |
-| `CSRF_TRUSTED_ORIGINS` | `https://yourdomain.com,https://www.yourdomain.com` |
-| `CONTACT_EMAIL` | Your monitored inbox |
-| `EMAIL_BACKEND` | `django.core.mail.backends.smtp.EmailBackend` |
-| `EMAIL_HOST` | Your SMTP server |
-| `EMAIL_PORT` | `587` |
-| `EMAIL_USE_TLS` | `True` |
-| `EMAIL_HOST_USER` | Your SMTP username |
-| `EMAIL_HOST_PASSWORD` | Your SMTP password |
-| `DEFAULT_FROM_EMAIL` | `Your Name <hello@yourdomain.com>` |
+The minimum required production variables are: `SECRET_KEY`, `DEBUG=False`, `DJANGO_SETTINGS_MODULE=config.settings.prod`, `ALLOWED_HOSTS`, `DATABASE_URL`, `CSRF_TRUSTED_ORIGINS`, `CONTACT_EMAIL`, and the SMTP email settings.
 
 After setting variables and deploying, verify production Django settings:
 
@@ -384,11 +369,4 @@ This confirms the main pages return HTTP 200 and no obvious errors appear.
 
 ## Quick reference — management commands
 
-| Command | When to use |
-| --- | --- |
-| `seed_demo` | Fresh install — loads the starter/demo dataset |
-| `check_content_readiness` | Before launch — flags blocking launch issues, demo values, and stale page metadata |
-| `bootstrap_project` | Add a project from local files |
-| `import_project_images` | Attach a batch of images to an existing project |
-| `seed_about` | Optionally fill blank AboutProfile fields incrementally |
-| `seed_services` | Optionally reset service records to the starter set |
+See [README.md §Management commands](README.md#management-commands) for the full reference including safety notes, idempotency status, and key flags for each command.

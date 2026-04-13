@@ -16,10 +16,7 @@ Use this checklist before a tagged release or any buyer-facing delivery. This fi
 
 ### 2a. CI-safe checks (no populated database required)
 
-- [ ] `make health`
-- [ ] `make test-e2e`
-- [ ] `make check-deploy`
-- [ ] `make check-reqs`
+Run the checks listed in [RELEASE.md §2 — Run the release checks](../../RELEASE.md#2-run-the-release-checks). The canonical command sequence is defined there; this checklist does not repeat it.
 
 ### 2b. Buyer pre-launch gate (requires a configured, populated database)
 
