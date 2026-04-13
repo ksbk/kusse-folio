@@ -8,6 +8,9 @@
   // side and the CSS is not authored by tooling that would introduce errors.
   "css.validate": false,
 
+  // Pin to the project venv so Pylance never picks up Homebrew or system Python.
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+
   "python.analysis.typeCheckingMode": "basic",
   "python.analysis.useLibraryCodeForTypes": false,
   // Exclude the virtualenv from Pylance analysis — it is not project code.
@@ -45,6 +48,9 @@
     "reportUnknownParameterType": "none",
     "reportMissingTypeArgument": "none",
     "reportMissingParameterType": "none",
-    "reportConstantRedefinition": "none"
+    "reportConstantRedefinition": "none",
+    // Suppress "Unused type: ignore" — Pylance flips this on/off depending on
+    // whether django-stubs is hot in cache. The ignores are load-bearing.
+    "reportUnnecessaryTypeIgnoreComment": "none"
   }
 }

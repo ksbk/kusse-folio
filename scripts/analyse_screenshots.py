@@ -29,7 +29,7 @@ def load(name: str) -> Image.Image:
 
 
 def near(px: Any, ref: tuple, tol: int = TOLERANCE) -> bool:
-    return all(abs(a - b) <= tol for a, b in zip(px, ref))
+    return all(abs(a - b) <= tol for a, b in zip(px, ref, strict=False))
 
 
 def sample_row(img: Image.Image, y: int, x_fraction: float = 0.5) -> tuple[int, int, int]:
@@ -56,9 +56,12 @@ def dominant_top_color(img: Image.Image, rows: int = 8) -> str:
     dark  = sum(1 for p in samples if near(p, C_BLACK, 30) or near(p, (40, 38, 35), 30))
     stone = sum(1 for p in samples if near(p, C_STONE, 20))
     white = sum(1 for p in samples if near(p, C_WHITE, 20))
-    if dark  >= len(samples) // 2: return "dark"
-    if stone >= len(samples) // 2: return "stone"
-    if white >= len(samples) // 2: return "white"
+    if dark  >= len(samples) // 2:
+        return "dark"
+    if stone >= len(samples) // 2:
+        return "stone"
+    if white >= len(samples) // 2:
+        return "white"
     return f"mixed (dark={dark} stone={stone} white={white} total={len(samples)})"
 
 
