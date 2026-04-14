@@ -2,10 +2,11 @@
 View tests for apps.contact: contact page and success page.
 """
 
+from unittest.mock import patch
+
 import pytest
 from django.test import override_settings
 from django.urls import reverse
-from unittest.mock import patch
 
 
 @pytest.mark.django_db
