@@ -1,3 +1,5 @@
+from urllib.parse import urlsplit
+
 from django import template
 
 from apps.core.brand import compute_monogram
@@ -38,3 +40,18 @@ def first_paragraph(text: str | None) -> str:
     if not text:
         return ""
     return text.split("\n\n")[0].strip()
+
+
+@register.simple_tag
+def absolute_url(request, value: str | None) -> str:
+    """Return *value* as an absolute URL for the current request.
+
+    Absolute URLs are returned unchanged. Relative URLs are resolved against the
+    request host using Django's build_absolute_uri(path) behavior.
+    """
+    if not value:
+        return ""
+    parsed = urlsplit(value)
+    if parsed.scheme and parsed.netloc:
+        return value
+    return request.build_absolute_uri(value)

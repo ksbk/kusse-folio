@@ -2,6 +2,8 @@
 View tests for apps.pages: home and about pages.
 """
 
+import re
+
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
@@ -13,6 +15,13 @@ from apps.site.about_defaults import (
     PROJECT_LEADERSHIP_PROMPT,
 )
 from apps.site.models import AboutProfile, SiteSettings
+
+
+def _meta_content(html: bytes, attr_name: str, attr_value: str) -> str:
+    pattern = rf'<meta\s+[^>]*{attr_name}="{re.escape(attr_value)}"\s+content="([^"]+)"'
+    match = re.search(pattern, html.decode())
+    assert match, f"Missing meta tag {attr_name}={attr_value!r}"
+    return match.group(1)
 
 
 @pytest.mark.django_db
@@ -218,6 +227,44 @@ def test_homepage_closing_coda_uses_compact_invitation_language(client, site_set
     assert response.status_code == 200
     assert b"Ready to discuss a project?" in response.content
     assert b"Bring a site, a brief in progress, or an early question." not in response.content
+
+
+@pytest.mark.django_db
+def test_home_page_uses_absolute_site_og_image_url_for_og_and_twitter(
+    client, site_settings, make_uploaded_image, settings
+):
+    settings.ALLOWED_HOSTS = ["testserver"]
+    site_settings.og_image = make_uploaded_image("site-og.jpg", image_format="PNG")
+    site_settings.save()
+
+    response = client.get(reverse("pages:home"))
+
+    assert response.status_code == 200
+    expected = f"http://testserver{site_settings.og_image.url}"
+    assert _meta_content(response.content, "property", "og:image") == expected
+    assert _meta_content(response.content, "name", "twitter:image") == expected
+
+
+@pytest.mark.django_db
+def test_home_page_falls_back_to_absolute_bundled_og_image_when_site_og_missing(
+    client, site_settings, settings
+):
+    settings.ALLOWED_HOSTS = ["testserver"]
+    site_settings.og_image.delete(save=True)
+
+    response = client.get(reverse("pages:home"))
+
+    assert response.status_code == 200
+    expected = "http://testserver/static/images/og-default.png"
+    assert _meta_content(response.content, "property", "og:image") == expected
+    assert _meta_content(response.content, "name", "twitter:image") == expected
+
+
+@pytest.mark.django_db
+def test_homepage_does_not_render_removed_trust_band_sections(client, site_settings):
+    response = client.get(reverse("pages:home"))
+
+    assert response.status_code == 200
     assert b"Who We Work With" not in response.content
     assert b"Project Types" not in response.content
     assert b"How Work Starts" not in response.content

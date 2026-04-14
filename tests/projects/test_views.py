@@ -2,6 +2,7 @@
 View tests for apps.projects: list and detail pages.
 """
 
+import re
 from unittest.mock import MagicMock, PropertyMock, patch
 
 import pytest
@@ -9,6 +10,13 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 
 from apps.projects.models import Project, ProjectImage, Testimonial
+
+
+def _meta_content(html: bytes, attr_name: str, attr_value: str) -> str:
+    pattern = rf'<meta\s+[^>]*{attr_name}="{re.escape(attr_value)}"\s+content="([^"]+)"'
+    match = re.search(pattern, html.decode())
+    assert match, f"Missing meta tag {attr_name}={attr_value!r}"
+    return match.group(1)
 
 
 @pytest.mark.django_db
@@ -387,3 +395,66 @@ def test_project_detail_og_image_set_when_cover_exists(client, site_settings, pr
         response = client.get(url)
     assert response.status_code == 200
     assert response.context["og_image"] == "/media/projects/cover.jpg"
+
+
+@pytest.mark.django_db
+def test_project_list_uses_absolute_site_og_image_without_prefixing_projects_path(
+    client, site_settings, project, make_uploaded_image, settings
+):
+    settings.ALLOWED_HOSTS = ["testserver"]
+    site_settings.og_image = make_uploaded_image("site-og.png", image_format="PNG")
+    site_settings.save()
+
+    response = client.get(reverse("projects:list"))
+
+    assert response.status_code == 200
+    expected = f"http://testserver{site_settings.og_image.url}"
+    assert _meta_content(response.content, "property", "og:image") == expected
+    assert _meta_content(response.content, "name", "twitter:image") == expected
+
+
+@pytest.mark.django_db
+def test_project_detail_uses_absolute_cover_image_url_for_og_and_twitter(
+    client, site_settings, project, make_uploaded_image, settings
+):
+    settings.ALLOWED_HOSTS = ["testserver"]
+    project.cover_image = make_uploaded_image("cover.jpg", size=(1600, 900))
+    project.save()
+
+    response = client.get(reverse("projects:detail", kwargs={"slug": project.slug}))
+
+    assert response.status_code == 200
+    expected = f"http://testserver{project.cover_image.url}"
+    assert _meta_content(response.content, "property", "og:image") == expected
+    assert _meta_content(response.content, "name", "twitter:image") == expected
+
+
+@pytest.mark.django_db
+def test_project_detail_falls_back_to_absolute_site_og_image_when_project_has_no_media(
+    client, site_settings, project, make_uploaded_image, settings
+):
+    settings.ALLOWED_HOSTS = ["testserver"]
+    site_settings.og_image = make_uploaded_image("site-og.png", image_format="PNG")
+    site_settings.save()
+
+    response = client.get(reverse("projects:detail", kwargs={"slug": project.slug}))
+
+    assert response.status_code == 200
+    expected = f"http://testserver{site_settings.og_image.url}"
+    assert _meta_content(response.content, "property", "og:image") == expected
+    assert _meta_content(response.content, "name", "twitter:image") == expected
+
+
+@pytest.mark.django_db
+def test_project_detail_falls_back_to_absolute_bundled_og_image_when_project_and_site_og_missing(
+    client, site_settings, project, settings
+):
+    settings.ALLOWED_HOSTS = ["testserver"]
+    site_settings.og_image.delete(save=True)
+
+    response = client.get(reverse("projects:detail", kwargs={"slug": project.slug}))
+
+    assert response.status_code == 200
+    expected = "http://testserver/static/images/og-default.png"
+    assert _meta_content(response.content, "property", "og:image") == expected
+    assert _meta_content(response.content, "name", "twitter:image") == expected
