@@ -20,7 +20,7 @@ def test_home_page(client, site_settings):
     response = client.get(reverse("pages:home"))
     assert response.status_code == 200
     assert b"Test Site" in response.content  # hero h1 renders site_name
-    assert b"/static/images/og-default.svg" in response.content
+    assert b"/static/images/og-default.png" in response.content
 
 
 @pytest.mark.django_db
