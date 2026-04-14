@@ -74,6 +74,12 @@
   }
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .project-card__link:focus-visible .project-card__media img {
+    transform: scale(1.04);
+  }
+}
+
 .project-card__placeholder {
   width: 100%;
   height: 100%;
@@ -100,7 +106,8 @@
   margin-block-end: 0.5rem;
 }
 
-.project-card__link:hover .project-card__title { color: var(--accent-primary); }
+.project-card__link:hover .project-card__title,
+.project-card__link:focus-visible .project-card__title { color: var(--accent-primary); }
 
 .project-card__desc {
   font-size: var(--text-sm);
@@ -120,7 +127,8 @@
   opacity: 0;
 }
 
-.project-card__link:hover .project-card__cta { opacity: 1; }
+.project-card__link:hover .project-card__cta,
+.project-card__link:focus-visible .project-card__cta { opacity: 1; }
 
 /* Show the CTA label unconditionally on touch — hover-reveal is meaningless there */
 @media (hover: none) {
@@ -207,10 +215,20 @@
   border-block-end-color: var(--accent-primary);
 }
 
-/* Narrow mobile: reduce inline padding so all 4 tabs fit at 360px */
+/* Narrow mobile: tighten the filter rail enough for all 4 tabs to fit on first paint */
 @media (max-width: 480px) {
+  .filter-bar > .container {
+    padding-inline: 0.75rem;
+  }
+
+  .filter-bar__nav {
+    gap: 0;
+  }
+
   .filter-btn {
-    padding: 0.8rem 0.75rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    padding: 0.8rem 0.65rem;
   }
 }
 
