@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ post.title }}{% endblock %}
+{% block og_title %}{{ post.title }}{% endblock %}
+{% block meta_description %}{{ post.summary }}{% endblock %}
+{% block og_description %}{{ post.summary }}{% endblock %}
+{% block twitter_description %}{{ post.summary }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--short">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'blog:list' %}">Writing</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">{{ post.title }}</span>
+    </nav>
+    {% if post.published_date %}
+    <p class="page-hero__label">{{ post.published_date|date:"j F Y" }}</p>
+    {% endif %}
+    <h1 class="page-hero__title">{{ post.title }}</h1>
+    {% if post.summary %}
+    <p class="page-hero__subtitle">{{ post.summary }}</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container container--narrow">
+    <div class="post-body">
+      {{ post.body|linebreaks }}
+    </div>
+    {% if post.tag_list %}
+    <div class="post-tags">
+      {% for tag in post.tag_list %}
+      <span class="post-tag">{{ tag }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <nav class="post-nav" aria-label="Post navigation">
+      <a href="{% url 'blog:list' %}" class="post-nav__back">← Back to Writing</a>
+    </nav>
+  </div>
+</section>
+
+{% endblock %}

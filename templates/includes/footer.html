@@ -12,26 +12,32 @@
       {% endif %}
     </div>
 
-    {% if site_settings.contact_email or site_settings.instagram_url or site_settings.linkedin_url or site_settings.facebook_url or site_settings.behance_url or site_settings.issuu_url %}
+    {% if site_settings.contact_email or social_links or site_settings.instagram_url or site_settings.linkedin_url or site_settings.facebook_url or site_settings.behance_url or site_settings.issuu_url %}
     <div class="footer__contact">
       {% if site_settings.contact_email %}
       <a href="mailto:{{ site_settings.contact_email }}" class="footer__email">{{ site_settings.contact_email }}</a>
       {% endif %}
       <div class="footer__social">
-        {% if site_settings.instagram_url %}
-        <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
-        {% endif %}
-        {% if site_settings.linkedin_url %}
-        <a href="{{ site_settings.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
-        {% endif %}
-        {% if site_settings.facebook_url %}
-        <a href="{{ site_settings.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
-        {% endif %}
-        {% if site_settings.behance_url %}
-        <a href="{{ site_settings.behance_url }}" target="_blank" rel="noopener" aria-label="Behance">Behance</a>
-        {% endif %}
-        {% if site_settings.issuu_url %}
-        <a href="{{ site_settings.issuu_url }}" target="_blank" rel="noopener" aria-label="Issuu">Issuu</a>
+        {% if social_links %}
+          {% for link in social_links %}
+          <a href="{{ link.url }}" target="_blank" rel="noopener" aria-label="{{ link.label }}">{{ link.label }}</a>
+          {% endfor %}
+        {% else %}
+          {% if site_settings.instagram_url %}
+          <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+          {% endif %}
+          {% if site_settings.linkedin_url %}
+          <a href="{{ site_settings.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+          {% endif %}
+          {% if site_settings.facebook_url %}
+          <a href="{{ site_settings.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
+          {% endif %}
+          {% if site_settings.behance_url %}
+          <a href="{{ site_settings.behance_url }}" target="_blank" rel="noopener" aria-label="Behance">Behance</a>
+          {% endif %}
+          {% if site_settings.issuu_url %}
+          <a href="{{ site_settings.issuu_url }}" target="_blank" rel="noopener" aria-label="Issuu">Issuu</a>
+          {% endif %}
         {% endif %}
       </div>
     </div>

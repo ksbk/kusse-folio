@@ -356,14 +356,15 @@ def test_project_detail_query_count(client, site_settings, project, django_asser
     Expected queries for a project with no cover_image, no gallery/drawings,
     no testimonials, no related projects:
       1. SiteSettings (context_processor)
-      2. Project.objects.get(slug=...)
-      3. gallery images
-      4. drawings images
-      5. related projects
-      6. testimonials
+      2. SocialLink active entries (context_processor)
+      3. Project.objects.get(slug=...)
+      4. gallery images
+      5. drawings images
+      6. related projects
+      7. testimonials
     """
     url = reverse("projects:detail", kwargs={"slug": project.slug})
-    with django_assert_num_queries(6):
+    with django_assert_num_queries(7):
         client.get(url)
 
 

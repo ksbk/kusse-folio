@@ -31,3 +31,8 @@ class Post(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+    @property
+    def tag_list(self) -> list[str]:
+        """Return a stripped list of individual tags."""
+        return [t.strip() for t in self.tags.split(",") if t.strip()]

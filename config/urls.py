@@ -52,5 +52,6 @@ urlpatterns = [
     path("projects/", include("apps.projects.urls")),
     path("contact/", include("apps.contact.urls")),
     path("services/", include("apps.services.urls")),
+    path("writing/", include("apps.blog.urls")),
 # static() is a no-op when DEBUG=False — safe to keep for local dev media serving.
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
