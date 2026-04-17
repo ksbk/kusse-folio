@@ -1,6 +1,6 @@
-# Architecture Portfolio — Django Template
+# Kusse Folio — Professional Portfolio Django Template
 
-A professional, content-driven portfolio platform for architecture practices, built with Django.
+A professional, content-driven portfolio template for developers, designers, researchers, and technical professionals, built with Django.
 
 > **New here?** See [SETUP.md](SETUP.md) for the buyer-facing setup and customisation checklist.
 > See [docs/admin/CUSTOMIZATION.md](docs/admin/CUSTOMIZATION.md) for the canonical customization matrix and the exact split between `admin-managed`, `env/config-managed — required for launch`, `env/config-managed — optional integration`, `code-only (simple editorial change)`, `code-only (behavior-coupled / risky)`, and `intentionally opinionated` surfaces.
@@ -16,11 +16,11 @@ A professional, content-driven portfolio platform for architecture practices, bu
 
 ## What this is
 
-A Django template for architecture practices who want a content-managed
+A Django template for technical professionals who want a content-managed
 portfolio site — not a generic website builder, not a theme on top of a CMS, but a
 properly engineered Django application built specifically for this domain.
 
-Jeannote is an opinionated architecture portfolio template, not a no-code site builder.
+Kusse Folio is an opinionated professional portfolio template, not a no-code site builder.
 Its core public content is managed through Django admin, but launch-critical delivery and
 media behavior still require environment configuration, and some visible copy and
 structural surfaces still require code edits.
@@ -48,11 +48,11 @@ The canonical source of truth is [docs/admin/CUSTOMIZATION.md](docs/admin/CUSTOM
 
 ## Who it's for
 
-- Sole-practitioner architects or small studios
-- Graduates establishing an independent practice
-- Established practices replacing a dated or off-brand site
-- Developers or agencies building portfolio sites for architecture clients
-- Buyers who want an opinionated architecture portfolio template with a strong admin
+- Developers, designers, researchers, and consultants
+- Technical professionals establishing or refreshing their public presence
+- Professionals replacing a dated or off-brand site
+- Agencies building portfolio sites for technical clients
+- Buyers who want an opinionated professional portfolio template with a strong admin
   content model, not a drag-and-drop or fully no-code builder
 
 Not a good fit if you need multi-tenant, e-commerce, or blog publishing — this is a
@@ -62,7 +62,7 @@ focused tool for a specific purpose.
 
 ## Launch-Critical Configuration
 
-Before launch, plan for more than admin content entry. Jeannote requires environment and
+Before launch, plan for more than admin content entry. Kusse Folio requires environment and
 deployment configuration for:
 
 - contact-form delivery (`CONTACT_EMAIL`, SMTP backend, sender settings)
@@ -734,7 +734,7 @@ SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
 
 ### 3. Email — must configure before launch ⚠️
 
-> Without a real email backend, the architect receives no notification when
+> Without a real email backend, the site owner receives no notification when
 > a contact form is submitted. Enquiries are saved to the database but arrive
 > silently.
 

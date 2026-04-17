@@ -1,7 +1,7 @@
 # Buyer Setup Guide
 
 A step-by-step checklist for taking this template from fresh install to live site.
-Work through each phase in order. Jeannote is an opinionated architecture portfolio
+Work through each phase in order. Kusse Folio is an opinionated professional portfolio
 template, not a no-code site builder, so the full setup path includes admin content,
 launch-critical environment configuration, optional integrations, and some code-level
 customization.
@@ -118,9 +118,9 @@ Replace every placeholder with your real information.
 
 | Field | What to enter | Notes |
 | --- | --- | --- |
-| `site_name` | Your practice name | e.g. "Studio Rossi Architecture" |
+| `site_name` | Your practice name | e.g. "Alex Morgan Design" |
 | `tagline` | One-line positioning statement | Shown in the homepage hero and footer |
-| `hero_label` | Optional short descriptor above the homepage title | e.g. "Architecture & Urbanism" |
+| `hero_label` | Optional short descriptor above the homepage title | e.g. "Design & Research" |
 | `nav_name` | Optional short navbar brand override | Use if the full `site_name` is too long or the automatic monogram is weak |
 | `logo` | Upload your logo | Replaces text branding in the navbar |
 | `contact_email` | Public email shown on the site | Shown in the footer and contact page. Contact-form notifications are configured separately via `CONTACT_EMAIL` |
@@ -337,7 +337,7 @@ EMAIL_HOST_USER=your-smtp-username
 EMAIL_HOST_PASSWORD=your-smtp-password
 
 # Address in the From field of outgoing emails
-DEFAULT_FROM_EMAIL=Studio Rossi <hello@yourdomain.com>
+DEFAULT_FROM_EMAIL=Your Name <hello@yourdomain.com>
 
 # Address that receives contact form notifications — must be your monitored inbox
 CONTACT_EMAIL=hello@yourdomain.com

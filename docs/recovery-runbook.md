@@ -14,7 +14,7 @@ All must be set in Railway → Service → Variables before deploying.
 | -------- | -------- | ----------- |
 | `SECRET_KEY` | **Yes** | Django secret key — generate with `uv run python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"` |
 | `DJANGO_SETTINGS_MODULE` | **Yes** | `config.settings.prod` |
-| `ALLOWED_HOSTS` | **Yes** | Comma-separated, e.g. `jeannote.up.railway.app,yourdomain.com` |
+| `ALLOWED_HOSTS` | **Yes** | Comma-separated, e.g. `kusse-folio.up.railway.app,yourdomain.com` |
 | `CSRF_TRUSTED_ORIGINS` | **Yes** | Comma-separated with scheme, e.g. `https://yourdomain.com` |
 | `DATABASE_URL` | **Yes** | Postgres connection string — provisioned automatically by Railway Postgres |
 | `CLOUDINARY_CLOUD_NAME` | **Yes** | From Cloudinary dashboard |
@@ -35,7 +35,7 @@ All must be set in Railway → Service → Variables before deploying.
 
 ## Database
 
-**Ownership:** Railway Postgres service attached to the jeannote project.
+**Ownership:** Railway Postgres service attached to the kusse-folio project.
 
 **Recovery assumptions:**
 
@@ -83,8 +83,8 @@ Complete path from a blank Railway project to a working deployment:
 
 ```bash
 # 1. Fork/clone the repo
-git clone https://github.com/ksbk/jeannote.git
-cd jeannote
+git clone https://github.com/ksbk/kusse-folio.git
+cd kusse-folio
 
 # 2. In Railway: create a new project, add a Postgres service, connect the repo
 

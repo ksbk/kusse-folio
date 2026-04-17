@@ -1,4 +1,4 @@
-"""HTTP smoke check for a running Architecture Portfolio deployment.
+"""HTTP smoke check for a running Kusse Folio deployment.
 
 Checks status codes, key page content, and post-deploy specifics
 (branded 404, admin reachability).

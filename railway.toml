@@ -1,4 +1,4 @@
-# Railway deployment configuration for jat21.com
+# Railway deployment configuration for Kusse Folio
 # https://docs.railway.com/reference/config-as-code
 #
 # Build:      Railpack (Railway default) auto-installs from requirements.txt,

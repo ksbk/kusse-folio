@@ -1,4 +1,4 @@
-# Commercial License — Architecture Portfolio Django Template
+# Commercial License — Kusse Folio Django Template
 
 Version 1.0.2 · Effective date: 2026-03-24
 

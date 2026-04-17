@@ -244,7 +244,7 @@ The following describes the current shared shell behavior already implemented in
 | Canonical URL | The canonical link defaults to `request.build_absolute_uri` unless a page overrides the block. |
 | Open Graph image fallback | Fallback order is page `og_image`, then `site_settings.og_image`, then `static/images/og-default.svg`. |
 | Twitter image fallback | Twitter image uses the same fallback order as Open Graph. |
-| Site title pattern | Base title pattern uses an em dash separator: `<page title> — <site name>`, with the homepage currently overriding to `<site name> — Architecture Practice`. |
+| Site title pattern | Base title pattern uses an em dash separator: `<page title> — <site name>`, with the homepage currently overriding to `<site name> — Portfolio`. |
 | Global font load | `Cormorant Garamond` and `DM Sans` are loaded once in the base template from Google Fonts. |
 | Focus state | Implemented via `:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }` with `:focus:not(:focus-visible) { outline: none; }` — keeps the shared keyboard focus treatment explicit and avoids showing the outline on pointer focus. |
 | Body shell | `body` is a column flex container with `min-height: 100vh`; `main` flexes to fill the remaining space. |

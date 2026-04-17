@@ -26,7 +26,7 @@ def check_production_email_backend(app_configs, **kwargs):
     This check fires when DEBUG=False and EMAIL_BACKEND is one of the
     development-only backends (console, dummy, locmem). In that state the
     contact form saves enquiries to the database but sends no email notification,
-    so the architect receives no leads — silently.
+    so the site owner receives no contact notifications — silently.
 
     Fix: set EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
     (and the matching EMAIL_HOST / EMAIL_PORT / EMAIL_USE_TLS variables)

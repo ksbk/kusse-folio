@@ -3,7 +3,7 @@
 How to stand up a working preview of this template in under five minutes —
 locally or on a public URL — so you can evaluate it before customising.
 
-Jeannote is an opinionated architecture portfolio template, not a no-code site builder.
+Kusse Folio is an opinionated professional portfolio template, not a no-code site builder.
 The demo proves the content model and admin workflow. It does not prove that every
 visible surface is editable without code or deployment configuration.
 

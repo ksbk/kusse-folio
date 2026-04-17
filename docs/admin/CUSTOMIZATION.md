@@ -1,6 +1,6 @@
 # Customization
 
-Jeannote is an opinionated architecture portfolio template, not a no-code site builder.
+Kusse Folio is an opinionated professional portfolio template, not a no-code site builder.
 This document is the canonical source of truth for what buyers can change in admin, what
 requires environment or deployment configuration, what still requires code edits, and
 what is intentionally fixed by product choice.
@@ -121,14 +121,14 @@ The `recommended action` column means:
 
 ## What Is Intentionally Opinionated
 
-These are deliberate product choices in the current version of Jeannote:
+These are deliberate product choices in the current version of Kusse Folio:
 
 - the core information architecture: `Projects`, `About`, `Services`, `Contact`
 - the architecture-specific public taxonomy: `Housing`, `Civic`, and `Workplace`
 - the overall design system, layout language, and route structure
 - CTA destinations that reinforce the primary site flow
 
-If you need those surfaces to behave like a no-code site builder, Jeannote is the wrong
+If you need those surfaces to behave like a no-code site builder, Kusse Folio is the wrong
 product shape in its current form.
 
 ## Launch-Critical Config vs Optional Integrations
