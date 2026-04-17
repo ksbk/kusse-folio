@@ -38,7 +38,7 @@ def test_robots_txt_returns_200(client, site_settings):
         "/about/",
         "/privacy/",
         "/projects/",
-        "/services/",
+        "/writing/",
         "/contact/",
     ],
 )

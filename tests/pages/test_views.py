@@ -698,7 +698,7 @@ def test_nav_full_text_has_aria_label(client, site_settings):
     [
         ("projects:list", b'class="nav__link is-active" aria-current="page">Projects</a>'),
         ("pages:about", b'class="nav__link is-active" aria-current="page">About</a>'),
-        ("services:list", b'class="nav__link is-active" aria-current="page">Services</a>'),
+        ("blog:list", b'class="nav__link is-active" aria-current="page">Writing</a>'),
         ("contact:contact", b'class="nav__link nav__cta is-active" aria-current="page">Contact</a>'),
     ],
 )

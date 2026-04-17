@@ -362,6 +362,10 @@ def test_project_detail_query_count(client, site_settings, project, django_asser
       5. drawings images
       6. related projects
       7. testimonials
+
+    Note: queries 1 and 2 come from apps.core.context_processors.site_settings,
+    which runs on every request. If new global context-processor queries are added,
+    this count must be updated — that is the expected maintenance cost.
     """
     url = reverse("projects:detail", kwargs={"slug": project.slug})
     with django_assert_num_queries(7):

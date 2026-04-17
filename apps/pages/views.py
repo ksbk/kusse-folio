@@ -1,7 +1,6 @@
 from django.views.generic import TemplateView
 
 from apps.projects.models import Project
-from apps.services.models import Service
 from apps.site.models import AboutProfile, SiteSettings
 
 
@@ -34,7 +33,6 @@ class HomeView(TemplateView):
             site.homepage_closing_text
             or "Ready to discuss a project? Bring a brief, a question, or an early idea."
         )
-        ctx["homepage_services"] = list(Service.objects.filter(active=True)[:4])
         return ctx
 
 

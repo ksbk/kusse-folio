@@ -35,27 +35,6 @@
   </a>
 </section>
 
-<!-- ===== SERVICES STRIP ===== -->
-{% if homepage_services %}
-<section class="section section--tinted homepage-services">
-  <div class="container">
-    <ul class="homepage-services__list" role="list">
-      {% for service in homepage_services %}
-      <li class="homepage-services__item">
-        <h3 class="homepage-services__title">
-          <a href="{% url 'services:list' %}#{{ service.slug }}">{{ service.title }}</a>
-        </h3>
-        <p class="homepage-services__summary">{{ service.summary }}</p>
-      </li>
-      {% endfor %}
-    </ul>
-    <div class="homepage-services__footer">
-      <a href="{% url 'services:list' %}" class="homepage-services__link">All Services</a>
-    </div>
-  </div>
-</section>
-{% endif %}
-
 <!-- ===== FEATURED PROJECTS ===== -->
 {% if homepage_projects %}
 <section class="section homepage-projects" id="featured">
