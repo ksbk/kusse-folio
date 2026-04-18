@@ -55,7 +55,7 @@
             {% endif %}
           </div>
           <div class="project-card__info">
-            <span class="project-card__meta">{{ project.get_category_display }} {% if project.year %}· {{ project.year }}{% endif %} {% if project.location %}· {{ project.location }}{% endif %}</span>
+            <span class="project-card__meta">{% with project.tag_list as tags %}{% if tags %}{{ tags|first|title }}{% endif %}{% endwith %} {% if project.year %}· {{ project.year }}{% endif %} {% if project.location %}· {{ project.location }}{% endif %}</span>
             <h3 class="project-card__title">{{ project.title }}</h3>
             <p class="project-card__desc">{{ project.short_description }}</p>
             <span class="project-card__cta">View Project</span>
