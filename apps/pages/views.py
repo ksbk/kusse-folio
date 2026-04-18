@@ -47,6 +47,22 @@ class HomeView(TemplateView):
         else:
             ctx["homepage_testimonials"] = []
 
+        if site.research_enabled:
+            from apps.research.models import ResearchProject
+            ctx["homepage_research"] = list(
+                ResearchProject.objects.filter(is_active=True, is_featured=True).order_by("order")[:4]
+            )
+        else:
+            ctx["homepage_research"] = []
+
+        if site.publications_enabled:
+            from apps.publications.models import Publication
+            ctx["homepage_publications"] = list(
+                Publication.objects.filter(is_active=True, is_featured=True).order_by("-year", "order")[:4]
+            )
+        else:
+            ctx["homepage_publications"] = []
+
         return ctx
 
 

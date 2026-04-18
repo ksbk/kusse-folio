@@ -876,3 +876,79 @@ def test_homepage_testimonials_section_hidden_when_disabled(client, site_setting
     Testimonial.objects.create(name="Hidden Person", quote="Should not appear.", order=1, active=True, project=None)
     response = client.get(reverse("pages:home"))
     assert b"Should not appear." not in response.content
+
+
+# ---------------------------------------------------------------------------
+# Homepage — research context (module flag guards)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_homepage_research_context_empty_when_disabled(client, site_settings):
+    from apps.research.models import ResearchProject
+    site_settings.research_enabled = False
+    site_settings.save()
+    ResearchProject.objects.create(title="Hidden Project", status="ongoing", is_active=True, is_featured=True)
+    response = client.get(reverse("pages:home"))
+    assert response.status_code == 200
+    assert response.context["homepage_research"] == []
+
+
+@pytest.mark.django_db
+def test_homepage_research_context_populated_when_enabled(client, site_settings):
+    from apps.research.models import ResearchProject
+    site_settings.research_enabled = True
+    site_settings.save()
+    ResearchProject.objects.create(title="Featured Project", status="ongoing", is_active=True, is_featured=True)
+    response = client.get(reverse("pages:home"))
+    titles = [p.title for p in response.context["homepage_research"]]
+    assert "Featured Project" in titles
+
+
+@pytest.mark.django_db
+def test_homepage_research_context_excludes_non_featured(client, site_settings):
+    from apps.research.models import ResearchProject
+    site_settings.research_enabled = True
+    site_settings.save()
+    ResearchProject.objects.create(title="Non-Featured", status="ongoing", is_active=True, is_featured=False)
+    response = client.get(reverse("pages:home"))
+    titles = [p.title for p in response.context["homepage_research"]]
+    assert "Non-Featured" not in titles
+
+
+# ---------------------------------------------------------------------------
+# Homepage — publications context (module flag guards)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_homepage_publications_context_empty_when_disabled(client, site_settings):
+    from apps.publications.models import Publication
+    site_settings.publications_enabled = False
+    site_settings.save()
+    Publication.objects.create(title="Hidden Pub", year=2023, is_active=True, is_featured=True)
+    response = client.get(reverse("pages:home"))
+    assert response.status_code == 200
+    assert response.context["homepage_publications"] == []
+
+
+@pytest.mark.django_db
+def test_homepage_publications_context_populated_when_enabled(client, site_settings):
+    from apps.publications.models import Publication
+    site_settings.publications_enabled = True
+    site_settings.save()
+    Publication.objects.create(title="Featured Pub", year=2023, is_active=True, is_featured=True)
+    response = client.get(reverse("pages:home"))
+    titles = [p.title for p in response.context["homepage_publications"]]
+    assert "Featured Pub" in titles
+
+
+@pytest.mark.django_db
+def test_homepage_publications_context_excludes_non_featured(client, site_settings):
+    from apps.publications.models import Publication
+    site_settings.publications_enabled = True
+    site_settings.save()
+    Publication.objects.create(title="Non-Featured Pub", year=2023, is_active=True, is_featured=False)
+    response = client.get(reverse("pages:home"))
+    titles = [p.title for p in response.context["homepage_publications"]]
+    assert "Non-Featured Pub" not in titles

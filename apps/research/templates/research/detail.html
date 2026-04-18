@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ research_project.title }}{% endblock %}
+{% block og_title %}{{ research_project.title }} — {{ site_settings.site_name }}{% endblock %}
+{% block meta_description %}{% if research_project.summary %}{{ research_project.summary }}{% else %}{{ site_settings.meta_description }}{% endif %}{% endblock %}
+{% block og_description %}{% if research_project.summary %}{{ research_project.summary }}{% else %}{{ site_settings.meta_description }}{% endif %}{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--short">
+  <div class="container">
+    <p class="page-hero__label">
+      <a href="{% url 'research:list' %}">Research</a>
+      {% if research_project.status %}&nbsp;· {{ research_project.get_status_display }}{% endif %}
+    </p>
+    <h1 class="page-hero__title">{{ research_project.title }}</h1>
+    {% if research_project.summary %}
+    <p class="page-hero__subtitle">{{ research_project.summary }}</p>
+    {% endif %}
+  </div>
+</section>
+
+{% if research_project.description %}
+<section class="section section--research-detail">
+  <div class="container">
+    <div class="prose">
+      {{ research_project.description|linebreaksbr }}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="page-cta">
+  <div class="container">
+    <a href="{% url 'research:list' %}" class="btn btn--ghost">Back to Research</a>
+    <a href="{% url 'contact:contact' %}" class="btn btn--primary">Get in Touch</a>
+  </div>
+</section>
+
+{% endblock %}

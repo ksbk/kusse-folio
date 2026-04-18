@@ -109,6 +109,64 @@
 </section>
 {% endif %}
 
+<!-- ===== RESEARCH PREVIEW ===== -->
+{% if site_settings.research_enabled %}
+<section class="section research-preview" id="research">
+  <div class="container">
+    <div class="section__header section__header--inline">
+      <h2 class="section__title">Research</h2>
+      <a href="{% url 'research:list' %}" class="section__header-link">All Projects</a>
+    </div>
+    {% if homepage_research %}
+    <div class="research-preview__grid">
+      {% for project in homepage_research %}
+      <article class="research-card">
+        <h3 class="research-card__title"><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></h3>
+        {% if project.status %}<span class="research-card__status research-card__status--{{ project.status }}">{{ project.get_status_display }}</span>{% endif %}
+        {% if project.summary %}<p class="research-card__summary">{{ project.summary }}</p>{% endif %}
+      </article>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<!-- ===== PUBLICATIONS PREVIEW ===== -->
+{% if site_settings.publications_enabled %}
+<section class="section publications-preview" id="publications">
+  <div class="container">
+    <div class="section__header section__header--inline">
+      <h2 class="section__title">Publications</h2>
+      <a href="{% url 'publications:list' %}" class="section__header-link">All Publications</a>
+    </div>
+    {% if homepage_publications %}
+    <div class="publications-preview__list">
+      {% for pub in homepage_publications %}
+      <article class="pub-preview-item">
+        <h3 class="pub-preview-item__title">{{ pub.title }}</h3>
+        {% if pub.authors %}<p class="pub-preview-item__authors">{{ pub.authors }}</p>{% endif %}
+        {% if pub.venue or pub.year %}<p class="pub-preview-item__venue">{% if pub.venue %}{{ pub.venue }}{% endif %}{% if pub.venue and pub.year %}, {% endif %}{% if pub.year %}{{ pub.year }}{% endif %}</p>{% endif %}
+      </article>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<!-- ===== RESUME CTA ===== -->
+{% if site_settings.resume_enabled %}
+<section class="section resume-cta" id="resume">
+  <div class="container">
+    <div class="section__header">
+      <h2 class="section__title">CV / Resume</h2>
+    </div>
+    <a href="{% url 'resume:page' %}" class="btn btn--secondary">View CV</a>
+  </div>
+</section>
+{% endif %}
+
 <!-- ===== HOMEPAGE CODA ===== -->
 <section class="homepage-coda">
   <div class="container">

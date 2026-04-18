@@ -164,6 +164,27 @@ class SiteSettings(SingletonModel):
             "Only active testimonials without a project association appear in the homepage section."
         ),
     )
+    research_enabled = models.BooleanField(
+        default=False,
+        help_text=(
+            "Show the Research module in public navigation, footer, and homepage preview. "
+            "Add Research Projects first so the page has content when you enable this."
+        ),
+    )
+    publications_enabled = models.BooleanField(
+        default=False,
+        help_text=(
+            "Show the Publications module in public navigation, footer, and homepage preview. "
+            "Add Publications first so the page has content when you enable this."
+        ),
+    )
+    resume_enabled = models.BooleanField(
+        default=False,
+        help_text=(
+            "Show the Resume / CV page in public navigation and footer. "
+            "Add your headline, summary, and optionally a PDF download link via the Resume profile."
+        ),
+    )
 
     class Meta:
         verbose_name = "Site Settings"

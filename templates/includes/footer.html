@@ -47,8 +47,11 @@
       <ul>
         <li><a href="{% url 'projects:list' %}">Projects</a></li>
         {% if site_settings.services_enabled %}<li><a href="{% url 'services:list' %}">Services</a></li>{% endif %}
+        {% if site_settings.research_enabled %}<li><a href="{% url 'research:list' %}">Research</a></li>{% endif %}
+        {% if site_settings.publications_enabled %}<li><a href="{% url 'publications:list' %}">Publications</a></li>{% endif %}
         <li><a href="{% url 'pages:about' %}">About</a></li>
         {% if site_settings.blog_enabled %}<li><a href="{% url 'blog:list' %}">Blog</a></li>{% endif %}
+        {% if site_settings.resume_enabled %}<li><a href="{% url 'resume:page' %}">CV</a></li>{% endif %}
         <li><a href="{% url 'contact:contact' %}">Contact</a></li>
       </ul>
     </nav>

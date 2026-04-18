@@ -104,13 +104,22 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         ),        (
             "Optional modules",
             {
-                "fields": ("blog_enabled", "services_enabled", "testimonials_enabled"),
+                "fields": (
+                    "blog_enabled",
+                    "services_enabled",
+                    "research_enabled",
+                    "publications_enabled",
+                    "resume_enabled",
+                    "testimonials_enabled",
+                ),
                 "description": (
                     "Optional modules are off by default. Enable them to show the relevant section "
-                    "in public navigation, footer, and homepage. Only modules with live pages are "
-                    "listed here — additional modules will appear as they are implemented. "
-                    "Services: add Service items first. Testimonials: add standalone testimonials "
-                    "(without a project link) under Projects → Testimonials."
+                    "in public navigation, footer, and homepage. "
+                    "Services: add Service items first. "
+                    "Research: add Research Projects first. "
+                    "Publications: add Publications first. "
+                    "Resume: complete the Resume profile first. "
+                    "Testimonials: add standalone testimonials (without a project link) under Projects → Testimonials."
                 ),
             },
         ),

@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     "apps.contact.apps.ContactConfig",
     "apps.blog.apps.BlogConfig",
     "apps.services.apps.ServicesConfig",
+    "apps.research.apps.ResearchConfig",
+    "apps.publications.apps.PublicationsConfig",
+    "apps.resume.apps.ResumeConfig",
 ]
 
 MIDDLEWARE = [

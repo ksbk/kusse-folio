@@ -107,6 +107,36 @@ def test_site_settings_admin_optional_modules_fieldset_includes_testimonials_ena
     assert "testimonials_enabled" in optional_section["fields"]
 
 
+def test_site_settings_admin_optional_modules_fieldset_includes_research_enabled():
+    """'Optional modules' fieldset must expose research_enabled."""
+    a = SiteSettingsAdmin(SiteSettings, admin.site)
+    optional_section = next(
+        (options for name, options in a.fieldsets if name == "Optional modules"), None
+    )
+    assert optional_section is not None
+    assert "research_enabled" in optional_section["fields"]
+
+
+def test_site_settings_admin_optional_modules_fieldset_includes_publications_enabled():
+    """'Optional modules' fieldset must expose publications_enabled."""
+    a = SiteSettingsAdmin(SiteSettings, admin.site)
+    optional_section = next(
+        (options for name, options in a.fieldsets if name == "Optional modules"), None
+    )
+    assert optional_section is not None
+    assert "publications_enabled" in optional_section["fields"]
+
+
+def test_site_settings_admin_optional_modules_fieldset_includes_resume_enabled():
+    """'Optional modules' fieldset must expose resume_enabled."""
+    a = SiteSettingsAdmin(SiteSettings, admin.site)
+    optional_section = next(
+        (options for name, options in a.fieldsets if name == "Optional modules"), None
+    )
+    assert optional_section is not None
+    assert "resume_enabled" in optional_section["fields"]
+
+
 # ---------------------------------------------------------------------------
 # SiteSettingsAdmin.changeform_view — site_name blank warning
 # ---------------------------------------------------------------------------

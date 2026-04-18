@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Publications{% endblock %}
+{% block og_title %}Publications — {{ site_settings.site_name }}{% endblock %}
+{% block meta_description %}{{ site_settings.meta_description }}{% endblock %}
+{% block og_description %}{{ site_settings.meta_description }}{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--short">
+  <div class="container">
+    <p class="page-hero__label">Publications</p>
+    <h1 class="page-hero__title">Published Work</h1>
+  </div>
+</section>
+
+<section class="section section--publications">
+  <div class="container">
+    {% if publications %}
+    <div class="publications-list">
+      {% for pub in publications %}
+      <article class="publication-item">
+        <div class="publication-item__header">
+          <h2 class="publication-item__title">{{ pub.title }}</h2>
+          {% if pub.year %}<span class="publication-item__year">{{ pub.year }}</span>{% endif %}
+        </div>
+        {% if pub.authors %}<p class="publication-item__authors">{{ pub.authors }}</p>{% endif %}
+        {% if pub.venue %}<p class="publication-item__venue">{{ pub.venue }}</p>{% endif %}
+        {% if pub.abstract %}<p class="publication-item__abstract">{{ pub.abstract }}</p>{% endif %}
+        {% if pub.citation %}<p class="publication-item__citation">{{ pub.citation }}</p>{% endif %}
+        {% if pub.doi_url or pub.paper_url %}
+        <div class="publication-item__links">
+          {% if pub.doi_url %}<a href="{{ pub.doi_url }}" class="publication-item__link" target="_blank" rel="noopener">DOI</a>{% endif %}
+          {% if pub.paper_url %}<a href="{{ pub.paper_url }}" class="publication-item__link" target="_blank" rel="noopener">Full Text</a>{% endif %}
+        </div>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="no-content">Publications details coming soon.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="page-cta">
+  <div class="container">
+    <a href="{% url 'contact:contact' %}" class="btn btn--primary">Get in Touch</a>
+  </div>
+</section>
+
+{% endblock %}

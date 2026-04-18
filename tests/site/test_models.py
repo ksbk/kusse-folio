@@ -204,6 +204,48 @@ def test_site_settings_testimonials_enabled_can_be_set():
     assert refreshed.testimonials_enabled is True
 
 
+@pytest.mark.django_db
+def test_site_settings_research_enabled_defaults_false():
+    s = SiteSettings.load()
+    assert s.research_enabled is False
+
+
+@pytest.mark.django_db
+def test_site_settings_publications_enabled_defaults_false():
+    s = SiteSettings.load()
+    assert s.publications_enabled is False
+
+
+@pytest.mark.django_db
+def test_site_settings_resume_enabled_defaults_false():
+    s = SiteSettings.load()
+    assert s.resume_enabled is False
+
+
+@pytest.mark.django_db
+def test_site_settings_research_enabled_can_be_set():
+    s = SiteSettings.load()
+    s.research_enabled = True
+    s.save()
+    assert SiteSettings.load().research_enabled is True
+
+
+@pytest.mark.django_db
+def test_site_settings_publications_enabled_can_be_set():
+    s = SiteSettings.load()
+    s.publications_enabled = True
+    s.save()
+    assert SiteSettings.load().publications_enabled is True
+
+
+@pytest.mark.django_db
+def test_site_settings_resume_enabled_can_be_set():
+    s = SiteSettings.load()
+    s.resume_enabled = True
+    s.save()
+    assert SiteSettings.load().resume_enabled is True
+
+
 # ---------------------------------------------------------------------------
 # ClientProfile
 # ---------------------------------------------------------------------------

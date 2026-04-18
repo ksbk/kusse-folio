@@ -39,6 +39,9 @@ from django.core.files import File
 from django.core.management.base import BaseCommand, CommandError
 
 from apps.projects.models import Project, ProjectImage, Testimonial
+from apps.publications.models import Publication
+from apps.research.models import ResearchProject
+from apps.resume.models import ResumeProfile
 from apps.services.models import ServiceItem
 from apps.site.models import AboutProfile, SiteSettings
 
@@ -495,6 +498,9 @@ class Command(BaseCommand):
         self._seed_settings()
         self._seed_about()
         self._seed_services()
+        self._seed_research()
+        self._seed_publications()
+        self._seed_resume()
         self._seed_projects()
         self._seed_testimonials()
 
@@ -545,6 +551,9 @@ class Command(BaseCommand):
         )
         settings.blog_enabled = True
         settings.services_enabled = True
+        settings.research_enabled = True
+        settings.publications_enabled = True
+        settings.resume_enabled = True
         settings.testimonials_enabled = True
         settings.save()
         action = "Created" if created else "Updated"
@@ -598,6 +607,121 @@ class Command(BaseCommand):
             self.stdout.write(f"  Created {created_count} ServiceItem(s)")
         if existing:
             self.stdout.write(f"  Skipped {existing} ServiceItem(s) (already exist)")
+
+    def _seed_research(self):
+        DEMO_RESEARCH = [
+            {
+                "title": "Spatial Cognition in Dense Urban Environments",
+                "summary": (
+                    "An investigation into how people navigate and form mental maps in "
+                    "high-density urban settings."
+                ),
+                "status": "ongoing",
+                "order": 1,
+                "is_featured": True,
+            },
+            {
+                "title": "Material Longevity Under Variable Climate Conditions",
+                "summary": (
+                    "Testing the long-term performance of low-embodied-carbon materials "
+                    "across a range of climate scenarios."
+                ),
+                "status": "completed",
+                "order": 2,
+                "is_featured": True,
+            },
+            {
+                "title": "Participatory Design Methods for Community Spaces",
+                "summary": (
+                    "Examining how co-design processes shape outcomes and community "
+                    "ownership in publicly funded projects."
+                ),
+                "status": "forthcoming",
+                "order": 3,
+                "is_featured": False,
+            },
+        ]
+        created_count = 0
+        for item in DEMO_RESEARCH:
+            _, created = ResearchProject.objects.get_or_create(
+                title=item["title"],
+                defaults={k: v for k, v in item.items() if k != "title"},
+            )
+            if created:
+                created_count += 1
+        existing = len(DEMO_RESEARCH) - created_count
+        if created_count:
+            self.stdout.write(f"  Created {created_count} ResearchProject(s)")
+        if existing:
+            self.stdout.write(f"  Skipped {existing} ResearchProject(s) (already exist)")
+
+    def _seed_publications(self):
+        DEMO_PUBLICATIONS = [
+            {
+                "title": "Craft, Context, and the Durable Brief",
+                "authors": "Studio Author",
+                "venue": "Journal of Spatial Practice",
+                "year": 2022,
+                "abstract": (
+                    "This paper argues that durability in design arises from a careful "
+                    "attention to context rather than from formal conventions alone."
+                ),
+                "order": 1,
+                "is_featured": True,
+            },
+            {
+                "title": "Low-Carbon Material Strategies in Residential Retrofit",
+                "authors": "Studio Author, Collaborator B",
+                "venue": "Building Materials & Sustainability Symposium",
+                "year": 2023,
+                "abstract": (
+                    "A survey of low-embodied-carbon retrofit approaches across fifty "
+                    "residential case studies, with practical selection criteria."
+                ),
+                "order": 2,
+                "is_featured": True,
+            },
+            {
+                "title": "Civic Spaces and Collective Memory: Three Case Studies",
+                "authors": "Studio Author",
+                "venue": "International Urban Design Review",
+                "year": 2021,
+                "abstract": (
+                    "Three recent civic projects are examined through the lens of "
+                    "collective memory and long-term community stewardship."
+                ),
+                "order": 3,
+                "is_featured": False,
+            },
+        ]
+        created_count = 0
+        for item in DEMO_PUBLICATIONS:
+            _, created = Publication.objects.get_or_create(
+                title=item["title"],
+                defaults={k: v for k, v in item.items() if k != "title"},
+            )
+            if created:
+                created_count += 1
+        existing = len(DEMO_PUBLICATIONS) - created_count
+        if created_count:
+            self.stdout.write(f"  Created {created_count} Publication(s)")
+        if existing:
+            self.stdout.write(f"  Skipped {existing} Publication(s) (already exist)")
+
+    def _seed_resume(self):
+        profile, created = ResumeProfile.objects.get_or_create(pk=1)
+        profile.headline = "Researcher, Designer & Educator"
+        profile.summary = (
+            "An independent practitioner working at the intersection of spatial practice, "
+            "research, and education. Over a decade of project experience across civic, "
+            "residential, and institutional contexts, combined with ongoing research "
+            "activity and academic contribution.\n\n"
+            "Available for commissions, research collaborations, and advisory roles."
+        )
+        profile.is_active = True
+        profile.save()
+        action = "Created" if created else "Updated"
+        self.stdout.write(f"  {action} ResumeProfile")
 
     def _seed_about(self):
         profile, created = AboutProfile.objects.get_or_create(pk=1)
