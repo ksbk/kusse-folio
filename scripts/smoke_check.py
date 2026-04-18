@@ -19,7 +19,6 @@ ROUTES = [
     ("/", "home"),
     ("/about/", "about"),
     ("/privacy/", "privacy"),
-    ("/services/", "services"),
     ("/contact/", "contact"),
     ("/projects/", "projects list"),
     ("/sitemap.xml", "sitemap"),

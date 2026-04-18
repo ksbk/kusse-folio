@@ -29,7 +29,6 @@ from apps.core.brand import (
     compute_monogram as _compute_monogram,
 )
 from apps.projects.models import Project, Testimonial
-from apps.services.models import Service
 from apps.site.about_defaults import (
     is_placeholder_text,
     public_lines,
@@ -37,27 +36,27 @@ from apps.site.about_defaults import (
 )
 from apps.site.models import AboutProfile, SiteSettings
 
-_DEMO_SITE_NAME = "Demo Architecture Studio"
-_DEMO_CONTACT_EMAIL = "hello@demo-architecture.example"
-_DEMO_TAGLINE = "Architectural design shaped by context, clarity, and identity."
+_DEMO_SITE_NAME = "Demo Portfolio Studio"
+_DEMO_CONTACT_EMAIL = "hello@demo-portfolio.example"
+_DEMO_TAGLINE = "Creative work shaped by context, clarity, and craft."
 _DEMO_META_DESCRIPTION = (
-    "An architecture practice whose work combines spatial clarity, "
-    "contextual sensitivity, and thoughtful design to create places with identity, "
+    "A studio whose work combines thoughtful craft, "
+    "contextual sensitivity, and clear thinking to create outcomes with identity, "
     "purpose, and lasting value."
 )
 _DEMO_SITE_LOCATION = "Your City, Your Country"
 _META_BRAND_NAMES = {
-    "Demo Architecture Studio",
+    "Demo Portfolio Studio",
     "Rossi Meyer Studio",
 }
-_DEMO_ABOUT_ONE_LINE = "Architecture shaped by context, use, and urban climate."
+_DEMO_ABOUT_ONE_LINE = "Creative work shaped by context, use, and materials."
 _DEMO_ABOUT_PRACTICE_SUMMARY = (
-    "Demo Architecture Studio is a practice working across housing, civic buildings, "
-    "and workplace projects in northern urban settings."
+    "Demo Portfolio Studio is a studio working across a range of projects "
+    "in considered, craft-led ways."
 )
 _DEMO_ABOUT_PROJECT_LEADERSHIP = (
-    "Projects are led by a compact studio team, with specialist consultants involved as "
-    "needed for structure, building services, and planning coordination."
+    "Projects are led directly, with specialist collaborators involved as "
+    "needed for technical, production, and coordination work."
 )
 _DEMO_PROJECT_TITLES = {
     "House on the Hillside",
@@ -110,7 +109,7 @@ def collect_readiness_issues() -> tuple[list[str], list[str]]:
     elif site.site_name == _DEMO_SITE_NAME:
         blockers.append(
             f"SiteSettings.site_name is still the starter value ('{_DEMO_SITE_NAME}'). "
-            "Replace it with your real practice name in admin \u2192 Site Settings."
+            "Replace it with your real studio name in admin → Site Settings."
         )
     else:
         nav_name_set = bool(site.nav_name.strip())
@@ -147,7 +146,7 @@ def collect_readiness_issues() -> tuple[list[str], list[str]]:
     if not getattr(django_settings, "CONTACT_EMAIL", "").strip():
         warnings.append(
             "CONTACT_EMAIL is blank. Public contact details may still render, but contact-form notification emails "
-            "will not reach the practice until the internal inbox is configured in the environment."
+            "will not reach you until the internal inbox is configured in the environment."
         )
 
     if site.tagline == _DEMO_TAGLINE:
@@ -181,18 +180,6 @@ def collect_readiness_issues() -> tuple[list[str], list[str]]:
     elif stale_brand := _stale_meta_brand(site.about_meta_description, site.site_name):
         blockers.append(
             f"SiteSettings.about_meta_description still references '{stale_brand}', "
-            f"which does not match the current site name ('{site.site_name}'). "
-            "Update it or clear the field to fall back to the homepage meta description."
-        )
-
-    if not site.services_meta_description:
-        warnings.append(
-            "SiteSettings.services_meta_description is blank. "
-            "The Services page will fall back to the homepage meta description."
-        )
-    elif stale_brand := _stale_meta_brand(site.services_meta_description, site.site_name):
-        blockers.append(
-            f"SiteSettings.services_meta_description still references '{stale_brand}', "
             f"which does not match the current site name ('{site.site_name}'). "
             "Update it or clear the field to fall back to the homepage meta description."
         )
@@ -347,12 +334,6 @@ def collect_readiness_issues() -> tuple[list[str], list[str]]:
         )
 
     # -- Content collections --------------------------------------------------
-
-    if not Service.objects.filter(active=True).exists():
-        blockers.append(
-            "No active Service records found. "
-            "The Services page will be empty."
-        )
 
     projects = Project.objects.all()
     if not projects.exists():

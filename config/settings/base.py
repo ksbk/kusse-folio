@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     "apps.pages.apps.PagesConfig",
     "apps.projects.apps.ProjectsConfig",
     "apps.contact.apps.ContactConfig",
-    "apps.services.apps.ServicesConfig",
     "apps.blog.apps.BlogConfig",
 ]
 

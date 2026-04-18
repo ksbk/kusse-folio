@@ -8,10 +8,8 @@ import os
 from collections.abc import Callable
 
 import pytest
-from django.core.management import call_command
 
 from apps.projects.models import Project
-from apps.services.models import Service
 from apps.site.models import SiteSettings
 
 # pytest-playwright keeps an event loop around during setup, which trips
@@ -72,12 +70,6 @@ def project_factory(transactional_db) -> Callable[..., Project]:
         return Project.objects.create(**defaults)
 
     return _make_project
-
-
-@pytest.fixture
-def seeded_services(transactional_db):
-    call_command("seed_services", reset=True)
-    return list(Service.objects.order_by("order"))
 
 
 @pytest.fixture

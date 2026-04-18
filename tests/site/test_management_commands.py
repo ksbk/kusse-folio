@@ -33,8 +33,8 @@ def _populate_minimum_ready_site_and_about():
     site = SiteSettings.load()
     site.site_name = "Studio Rossi"
     site.contact_email = "studio@mypractice.com"
-    site.tagline = "Context-led architecture"
-    site.meta_description = "Independent architectural practice."
+    site.tagline = "Context-led design"
+    site.meta_description = "Independent creative studio."
     site.location = "Reykjavik, Iceland"
     site.og_image = SimpleUploadedFile("og.jpg", b"og-image", content_type="image/jpeg")
     site.save()
@@ -42,13 +42,13 @@ def _populate_minimum_ready_site_and_about():
     about = AboutProfile.load()
     about.identity_mode = AboutProfile.IdentityMode.STUDIO
     about.professional_context = "Small studio"
-    about.one_line_bio = "Design for housing, civic, and workplace projects."
-    about.bio_summary = "A Reykjavik-based practice working across public and private projects."
+    about.one_line_bio = "Design for spatial and visual projects."
+    about.bio_summary = "A studio working across public and private projects."
     about.work_approach = (
-        "Projects are led directly with specialist consultants involved as needed."
+        "Projects are led directly with specialist collaborators involved as needed."
     )
-    about.professional_standing = "Registered architectural practice"
-    about.education = "Master of Architecture"
+    about.professional_standing = "Independent studio"
+    about.education = "MA Design"
     about.supporting_facts = ""
     about.experience_years = 12
     about.approach = "The work focuses on clarity, durability, and legible project decision-making."
@@ -93,21 +93,21 @@ def test_no_contact_email_warning_when_customised():
 @pytest.mark.django_db
 def test_warns_when_site_name_is_still_demo_value():
     site = SiteSettings.load()
-    site.site_name = "Demo Architecture Studio"
+    site.site_name = "Demo Portfolio Studio"
     site.contact_email = "studio@mypractice.com"
     site.save()
     warnings = collect_warnings()
-    assert any("starter value ('Demo Architecture Studio')" in w for w in warnings)
+    assert any("starter value ('Demo Portfolio Studio')" in w for w in warnings)
 
 
 @pytest.mark.django_db
 def test_warns_when_contact_email_is_still_demo_value():
     site = SiteSettings.load()
     site.site_name = "Studio Rossi"
-    site.contact_email = "hello@demo-architecture.example"
+    site.contact_email = "hello@demo-portfolio.example"
     site.save()
     warnings = collect_warnings()
-    assert any("hello@demo-architecture.example" in w for w in warnings)
+    assert any("hello@demo-portfolio.example" in w for w in warnings)
 
 
 # ---------------------------------------------------------------------------
@@ -148,7 +148,7 @@ def test_warns_when_about_contains_placeholder_markers():
 
 
 @pytest.mark.django_db
-def test_about_readiness_warns_but_does_not_block_in_text_only_mode(service, project):
+def test_about_readiness_warns_but_does_not_block_in_text_only_mode(project):
     _populate_minimum_ready_site_and_about()
 
     blockers, warnings = collect_readiness_issues()
@@ -158,34 +158,33 @@ def test_about_readiness_warns_but_does_not_block_in_text_only_mode(service, pro
 
 
 @pytest.mark.django_db
-def test_readiness_warns_when_page_specific_meta_descriptions_are_blank(service, project):
+def test_readiness_warns_when_page_specific_meta_descriptions_are_blank(project):
     _populate_minimum_ready_site_and_about()
 
     blockers, warnings = collect_readiness_issues()
 
     assert not any("meta_description is blank" in blocker for blocker in blockers)
     assert any("about_meta_description is blank" in warning for warning in warnings)
-    assert any("services_meta_description is blank" in warning for warning in warnings)
     assert any("projects_meta_description is blank" in warning for warning in warnings)
     assert any("contact_meta_description is blank" in warning for warning in warnings)
 
 
 @pytest.mark.django_db
 def test_readiness_blocks_when_nonblank_page_meta_references_a_different_studio_identity(
-    service, project
+    project
 ):
     site, _ = _populate_minimum_ready_site_and_about()
-    site.about_meta_description = "About Demo Architecture Studio, the practice approach, experience, and professional profile."
+    site.about_meta_description = "About Demo Portfolio Studio, the studio approach, experience, and professional profile."
     site.save()
 
     blockers, warnings = collect_readiness_issues()
 
-    assert any("about_meta_description still references 'Demo Architecture Studio'" in blocker for blocker in blockers)
+    assert any("about_meta_description still references 'Demo Portfolio Studio'" in blocker for blocker in blockers)
     assert not any("about_meta_description is blank" in warning for warning in warnings)
 
 
 @pytest.mark.django_db
-def test_readiness_warns_when_custom_og_image_is_missing_but_no_longer_blocks(service, project):
+def test_readiness_warns_when_custom_og_image_is_missing_but_no_longer_blocks(project):
     site, _ = _populate_minimum_ready_site_and_about()
     site.og_image.delete(save=True)
 
@@ -209,7 +208,7 @@ def test_seed_about_sets_safe_default_invitation_and_truth_prompts():
 
 
 @pytest.mark.django_db
-def test_about_readiness_warns_when_truth_fields_are_omitted_or_starter_prompts(service, project):
+def test_about_readiness_warns_when_truth_fields_are_omitted_or_starter_prompts(project):
     _, about = _populate_minimum_ready_site_and_about()
     about.professional_context = PRACTICE_STRUCTURE_PROMPT
     about.work_approach = ""
@@ -227,7 +226,7 @@ def test_about_readiness_warns_when_truth_fields_are_omitted_or_starter_prompts(
 
 
 @pytest.mark.django_db
-def test_about_readiness_blocks_when_person_led_name_is_missing(service, project):
+def test_about_readiness_blocks_when_person_led_name_is_missing(project):
     _, about = _populate_minimum_ready_site_and_about()
     about.identity_mode = AboutProfile.IdentityMode.PERSON
     about.principal_title = "Founder and Registered Architect"
@@ -239,7 +238,7 @@ def test_about_readiness_blocks_when_person_led_name_is_missing(service, project
 
 
 @pytest.mark.django_db
-def test_about_readiness_blocks_when_minimum_profile_fact_set_is_missing(service, project):
+def test_about_readiness_blocks_when_minimum_profile_fact_set_is_missing(project):
     _, about = _populate_minimum_ready_site_and_about()
     about.education = ""
     about.supporting_facts = ""
@@ -251,7 +250,7 @@ def test_about_readiness_blocks_when_minimum_profile_fact_set_is_missing(service
 
 
 @pytest.mark.django_db
-def test_about_readiness_blocks_when_optional_proof_fields_contain_only_starter_prompts(service, project):
+def test_about_readiness_blocks_when_optional_proof_fields_contain_only_starter_prompts(project):
     _, about = _populate_minimum_ready_site_and_about()
     about.education = "[Add education details, one per line]"
     about.supporting_facts = "[Add at least one concrete supporting fact, one per line]"
@@ -284,7 +283,6 @@ def test_about_readiness_blocks_when_optional_proof_fields_contain_only_starter_
     ],
 )
 def test_about_readiness_warns_when_truth_fields_are_still_starter_prompts(
-    service,
     project,
     field,
     value,
@@ -304,7 +302,7 @@ def test_about_readiness_warns_when_truth_fields_are_still_starter_prompts(
 
 @pytest.mark.django_db
 def test_about_readiness_does_not_add_generic_placeholder_blocker_for_optional_proof_prompts(
-    service, project
+    project
 ):
     _, about = _populate_minimum_ready_site_and_about()
     about.education = "[Add education details, one per line]"
@@ -323,7 +321,7 @@ def test_about_readiness_does_not_add_generic_placeholder_blocker_for_optional_p
 
 @pytest.mark.django_db
 @override_settings(CONTACT_EMAIL="")
-def test_readiness_warns_when_internal_contact_inbox_is_missing(service, project):
+def test_readiness_warns_when_internal_contact_inbox_is_missing(project):
     _populate_minimum_ready_site_and_about()
 
     _, warnings = collect_readiness_issues()
@@ -332,7 +330,7 @@ def test_readiness_warns_when_internal_contact_inbox_is_missing(service, project
 
 
 @pytest.mark.django_db
-def test_readiness_warns_when_no_featured_projects_are_selected(service, project):
+def test_readiness_warns_when_no_featured_projects_are_selected(project):
     _populate_minimum_ready_site_and_about()
     Project.objects.update(featured=False)
 
@@ -342,7 +340,7 @@ def test_readiness_warns_when_no_featured_projects_are_selected(service, project
 
 
 @pytest.mark.django_db
-def test_readiness_warns_when_homepage_hero_project_has_no_cover_image(service):
+def test_readiness_warns_when_homepage_hero_project_has_no_cover_image():
     _populate_minimum_ready_site_and_about()
     Project.objects.create(
         title="Featured Without Cover",
@@ -399,15 +397,15 @@ def test_seed_demo_sets_coherent_about_demo_defaults_without_forcing_non_portrai
     site = SiteSettings.load()
     about = AboutProfile.load()
 
-    assert site.location == "Reykjavik, Iceland"
+    assert site.location == "Your City, Your Country"
     assert site.about_meta_description == (
-        "About Demo Architecture Studio, the practice approach, experience, and professional profile."
+        "About Demo Portfolio Studio, the studio approach, experience, and professional profile."
     )
     assert about.portrait_mode == AboutProfile.PortraitMode.TEXT_ONLY
 
 
 @pytest.mark.django_db
-def test_readiness_blocks_when_demo_projects_remain(service):
+def test_readiness_blocks_when_demo_projects_remain():
     _populate_minimum_ready_site_and_about()
     Project.objects.create(
         title="House on the Hillside",
@@ -423,7 +421,7 @@ def test_readiness_blocks_when_demo_projects_remain(service):
 
 
 @pytest.mark.django_db
-def test_readiness_blocks_when_demo_testimonials_remain(service, project):
+def test_readiness_blocks_when_demo_testimonials_remain(project):
     _populate_minimum_ready_site_and_about()
     Testimonial.objects.create(
         project=project,

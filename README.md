@@ -5,7 +5,7 @@ A professional, content-driven portfolio template for developers, designers, res
 > **New here?** See [SETUP.md](SETUP.md) for the buyer-facing setup and customisation checklist.
 > See [docs/admin/CUSTOMIZATION.md](docs/admin/CUSTOMIZATION.md) for the canonical customization matrix and the exact split between `admin-managed`, `env/config-managed — required for launch`, `env/config-managed — optional integration`, `code-only (simple editorial change)`, `code-only (behavior-coupled / risky)`, and `intentionally opinionated` surfaces.
 >
-> **Current stable version:** `v1.0.2`\
+> **Current stable version:** `v1.1.0`\
 > **Status:** Stable\
 > **Stack:** Python `3.13` · Django `5.2 LTS`\
 > **Docs:** [SETUP.md](SETUP.md) · [DEMO.md](DEMO.md) · [docs/admin/CUSTOMIZATION.md](docs/admin/CUSTOMIZATION.md) · [CHANGELOG.md](CHANGELOG.md) · [LICENSE.md](LICENSE.md)\
@@ -30,7 +30,7 @@ currently buyer-editable without touching code or deployment settings.
 
 ## Customization Truth
 
-- `admin-managed`: brand basics, homepage closing copy, About content, services, projects,
+- `admin-managed`: brand basics, homepage closing copy, About content, projects,
   project media, per-page SEO descriptions, and GA4 measurement ID.
 - `env/config-managed — required for launch`: contact delivery, SMTP settings, production
   media storage, and standard production Django settings.
@@ -38,7 +38,7 @@ currently buyer-editable without touching code or deployment settings.
 - `code-only (simple editorial change)`: some CTA labels, page-hero copy, privacy copy,
   footer legal text, and other fixed editorial strings.
 - `code-only (behavior-coupled / risky)`: contact form structure, metadata selection
-  logic, service slug mapping, and other logic-tied surfaces.
+  logic, and other logic-tied surfaces.
 - `intentionally opinionated`: core navigation, public taxonomy, route structure, and the
   design system.
 
@@ -79,7 +79,7 @@ Some buyer-visible surfaces are not yet `admin-managed`:
 - nav labels and footer nav labels
 - project taxonomy and filter behavior
 - contact form structure and dropdown choices
-- some CTA labels and editorial strings across home, services, projects, contact, and privacy
+- some CTA labels and editorial strings across home, projects, contact, and privacy
 - share-image precedence and metadata logic
 
 See [docs/admin/CUSTOMIZATION.md](docs/admin/CUSTOMIZATION.md) for the detailed matrix.
@@ -103,8 +103,7 @@ See [docs/admin/CUSTOMIZATION.md](docs/admin/CUSTOMIZATION.md) for the detailed 
 | **Home** | Hero, featured projects, homepage coda CTA |
 | **Projects** | Paginated portfolio grid with category filter |
 | **Project detail** | Full project case study — narrative, gallery, testimonials, SEO |
-| **About** | Practice identity, narrative, professional profile, optional portrait, optional CV download |
-| **Services** | Detailed service descriptions with deliverables |
+| **About** | Studio identity, narrative, professional profile, optional portrait, optional CV download |
 | **Contact** | Enquiry form with spam protection, saves to DB, emails on submission |
 
 ### Admin
@@ -115,7 +114,6 @@ Full Django admin for every model — no custom frontend needed to manage conten
 | --- | --- |
 | **Site Settings** | Brand, contact details, social links, SEO, analytics — all in one place |
 | **About Profile** | About page content and portrait |
-| **Services** | Services listing with ordering and active/inactive toggle |
 | **Projects** | Portfolio projects with full story fields, gallery images, and testimonials |
 | **Contact Inquiries** | Submitted enquiries — read, manage, and track status |
 
@@ -197,7 +195,6 @@ into the cross-cutting layers.
 | `apps/site/` | Site-wide content/config/admin behavior: `SiteSettings`, `AboutProfile`, readiness rules, and seed/readiness commands. This app keeps the historical Django app label `core` for migration continuity. |
 | `apps/pages/` | Public page composition for Home, About, and Privacy, plus page-scoped CSS. Keep it thin. |
 | `apps/projects/` | Reusable portfolio / case-study domain. Owns its templates and CSS. |
-| `apps/services/` | Reusable services domain and service-specific enquiry context. Owns its templates and CSS. |
 | `apps/contact/` | Reusable enquiry flow, persistence, and delivery handling. Owns its templates and CSS. |
 | `templates/` | Repo-level shared shell and global chrome: `base.html`, shared nav/footer, error templates, and `robots.txt`. |
 | `static/` | Repo-level shared shell assets. Shared CSS stays under `static/css/` with shallow `base/`, `components/`, and `utilities/` grouping plus one `main.css` entrypoint. |
@@ -384,7 +381,7 @@ Tests live in `tests/` organised by domain, mirroring the `apps/` layout:
 
 ```text
 tests/
-  conftest.py          # shared fixtures (site_settings, project, service)
+  conftest.py          # shared fixtures (site_settings, project)
   core/
     test_checks.py     # core.W001 system check (email backend guard)
     test_templatetags.py  # first_paragraph filter
@@ -400,16 +397,12 @@ tests/
     test_homepage.py   # homepage smoke
     test_navigation.py # mobile navigation
     test_projects.py   # project list usability
-    test_services.py   # services seeded-content flow
   pages/
     test_views.py      # home/about pages and featured-project exclusion
   projects/
     test_admin.py      # admin thumbnail helpers
     test_models.py     # Project, ProjectImage, Testimonial
     test_views.py      # list, detail, context, query count, og_image fallback
-  services/
-    test_models.py     # Service str, slug, deliverables
-    test_views.py      # services page
   site/
     test_admin.py      # SiteSettings / AboutProfile admin guardrails
     test_management_commands.py  # launch-readiness and seed commands
@@ -499,7 +492,6 @@ Six custom commands handle content bootstrap, media import, and readiness checki
 | --- | --- | --- | --- | --- |
 | `seed_demo` | Generic starter content for new installs | Yes | Yes (`get_or_create`) | — |
 | `seed_about` | `AboutProfile` skeleton | Yes | Yes — skips non-blank fields | `--force` to overwrite existing |
-| `seed_services` | `Service` records | Yes | Yes — skips non-blank fields | `--reset` deletes and reinitialises all |
 | `bootstrap_project` | Create one project from local files | Yes | No — creates a new record each run | **`--dry-run` required first** |
 | `import_project_images` | Attach images to an existing project | Yes | Yes — deduplicates by filename | **`--dry-run` required first** |
 | `check_content_readiness` | Pre-launch content audit | Yes | Yes (read-only) | — |
@@ -577,16 +569,6 @@ Six custom commands handle content bootstrap, media import, and readiness checki
 │   │   │   └── contact.css
 │   │   ├── migrations/
 │   │   └── urls.py
-│   └── services/              # services listing domain
-│       ├── admin.py
-│       ├── models.py
-│       ├── views.py
-│       ├── templates/
-│       │   └── services/
-│       ├── static/css/
-│       │   └── services.css
-│       ├── migrations/
-│       └── urls.py
 ├── templates/                 # repo-level shared shell
 │   ├── base.html
 │   ├── robots.txt
@@ -607,7 +589,7 @@ Six custom commands handle content bootstrap, media import, and readiness checki
 │   ├── contact/
 │   ├── pages/
 │   ├── projects/
-│   └── services/
+│   └── site/
 ├── scripts/
 │   ├── smoke_check.py
 │   └── tree.py
@@ -639,7 +621,6 @@ Templates are split across two locations with distinct ownership:
 | `apps/pages/templates/pages/` | `pages` app | Home, About, and Privacy composition templates |
 | `apps/projects/templates/projects/` | `projects` app | Project list and detail |
 | `apps/contact/templates/contact/` | `contact` app | Contact form and success page |
-| `apps/services/templates/services/` | `services` app | Services listing |
 
 Django's `APP_DIRS=True` loader finds app-level templates automatically. The shared shell stays repo-level, `apps/pages` owns page composition, and domain apps own their route templates.
 
@@ -651,7 +632,6 @@ Django's `APP_DIRS=True` loader finds app-level templates automatically. The sha
 | --- | --- |
 | `SiteSettings` | Global metadata: name, tagline, contact, social links, SEO, analytics |
 | `AboutProfile` | About page: identity, narrative, professional profile, optional portrait, optional CV file |
-| `Service` | Service offering with description, deliverables, and ordering |
 | `Project` | Portfolio project with full story structure and SEO fields |
 | `ProjectImage` | Gallery images per project with type classification |
 | `Testimonial` | Client quotes with optional project association |
@@ -668,8 +648,7 @@ Django's `APP_DIRS=True` loader finds app-level templates automatically. The sha
 | `/` | `HomeView` | Hero, featured projects, homepage coda CTA |
 | `/projects/` | `ProjectListView` | Paginated listing with category filter |
 | `/projects/<slug>/` | `ProjectDetailView` | Full project case study with gallery |
-| `/about/` | `AboutView` | Practice identity, narrative, approach, and professional profile |
-| `/services/` | `ServicesView` | Detailed service descriptions |
+| `/about/` | `AboutView` | Studio identity, narrative, approach, and professional profile |
 | `/contact/` | `contact_view` | Enquiry form — saves to DB and emails |
 | `/contact/thank-you/` | `contact_success_view` | Post-submission confirmation |
 | `/admin/` | Django admin | Full content management |

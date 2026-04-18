@@ -9,7 +9,6 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from PIL import Image
 
 from apps.projects.models import Project
-from apps.services.models import Service
 from apps.site.models import SiteSettings
 
 
@@ -35,17 +34,6 @@ def project(db):
         location="Dublin",
     )
 
-
-@pytest.fixture
-def service(db):
-    """A minimal active service."""
-    return Service.objects.create(
-        title="Architectural Design",
-        slug="architectural-design",
-        summary="Full design service.",
-        order=1,
-        active=True,
-    )
 
 
 @pytest.fixture

@@ -1,6 +1,6 @@
 # Commercial License — Kusse Folio Django Template
 
-Version 1.0.2 · Effective date: 2026-03-24
+Version 1.1.0 · Effective date: 2026-04-18
 
 Please read this license carefully before purchasing or using this template.
 By purchasing, downloading, or using this template you agree to the terms below.

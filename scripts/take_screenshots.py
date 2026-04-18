@@ -63,7 +63,6 @@ EXTRA_VIEWPORTS = [
 CORE_PAGES = [
     ("home",     "/"),
     ("about",    "/about/"),
-    ("services", "/services/"),
     ("projects", "/projects/"),
     ("contact",  "/contact/"),
 ]

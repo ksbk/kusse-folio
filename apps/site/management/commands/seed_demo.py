@@ -39,7 +39,6 @@ from django.core.files import File
 from django.core.management.base import BaseCommand, CommandError
 
 from apps.projects.models import Project, ProjectImage, Testimonial
-from apps.services.models import Service
 from apps.site.models import AboutProfile, SiteSettings
 
 _IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp"}
@@ -129,42 +128,6 @@ DEMO_GALLERY_SOURCES = {
         "gallery/ridgeline-housing/05.jpg",
     ],
 }
-
-SERVICES = [
-    {
-        "title": "Housing",
-        "slug": "housing",
-        "summary": "Apartment buildings, housing blocks, and residential projects designed for clear planning, durable use, and long-term liveability.",
-        "description": "",
-        "who_for": "Developers, housing associations, institutions, and private clients delivering apartment buildings, infill housing, or residential work.",
-        "value_proposition": "Clear housing design that balances site conditions, planning constraints, and day-to-day use without overstatement.",
-        "deliverables": "Site and massing studies\nPlanning package\nDeveloped design\nTechnical coordination\nConstruction information",
-        "order": 1,
-        "active": True,
-    },
-    {
-        "title": "Civic",
-        "slug": "civic",
-        "summary": "Public-facing buildings shaped by threshold, circulation, durability, and a clear relationship between civic use and context.",
-        "description": "",
-        "who_for": "Municipal bodies, trusts, cultural organisations, and public-sector clients commissioning libraries, community facilities, and civic buildings.",
-        "value_proposition": "Buildings that support everyday public use with clarity, resilience, and a calm architectural presence.",
-        "deliverables": "Brief development\nConcept design\nPublic consultation support\nTechnical package\nConsultant coordination",
-        "order": 2,
-        "active": True,
-    },
-    {
-        "title": "Workplace",
-        "slug": "workplace",
-        "summary": "Workplace projects where frontage, efficiency, envelope performance, and spatial legibility need to work together.",
-        "description": "",
-        "who_for": "Commercial clients and development teams delivering office buildings, service buildings, or mixed-use workplace environments.",
-        "value_proposition": "A design process that keeps the building useful, robust, and recognisable without forcing an unnecessary brand layer onto the architecture.",
-        "deliverables": "Feasibility and frontage studies\nDeveloped design\nEnvelope coordination\nTechnical documentation",
-        "order": 3,
-        "active": True,
-    },
-]
 
 PROJECTS = [
     {
@@ -497,7 +460,7 @@ TESTIMONIALS = [
 
 class Command(BaseCommand):
     help = (
-        "Seed generic starter content: SiteSettings, AboutProfile, Services, and example "
+        "Seed generic starter content: SiteSettings, AboutProfile, and example "
         "Projects with placeholder testimonials. Use as your starting point and replace "
         "content via admin. Idempotent — safe to re-run."
     )
@@ -530,7 +493,6 @@ class Command(BaseCommand):
 
         self._seed_settings()
         self._seed_about()
-        self._seed_services()
         self._seed_projects()
         self._seed_testimonials()
 
@@ -567,17 +529,17 @@ class Command(BaseCommand):
 
     def _seed_settings(self):
         settings, created = SiteSettings.objects.get_or_create(pk=1)
-        settings.site_name = "Demo Architecture Studio"
-        settings.tagline = "Architectural design shaped by context, clarity, and identity."
-        settings.contact_email = "hello@demo-architecture.example"
-        settings.location = "Reykjavik, Iceland"
+        settings.site_name = "Demo Portfolio Studio"
+        settings.tagline = "Creative work shaped by context, clarity, and craft."
+        settings.contact_email = "hello@demo-portfolio.example"
+        settings.location = "Your City, Your Country"
         settings.meta_description = (
-            "An architecture practice whose work combines spatial clarity, "
-            "contextual sensitivity, and thoughtful design to create places with identity, "
+            "A studio whose work combines thoughtful craft, "
+            "contextual sensitivity, and clear thinking to create outcomes with identity, "
             "purpose, and lasting value."
         )
         settings.about_meta_description = (
-            "About Demo Architecture Studio, the practice approach, experience, and professional profile."
+            "About Demo Portfolio Studio, the studio approach, experience, and professional profile."
         )
         settings.save()
         action = "Created" if created else "Updated"
@@ -590,37 +552,34 @@ class Command(BaseCommand):
         profile.principal_title = ""
         profile.professional_context = "Independent studio"
         profile.one_line_bio = (
-            "Architecture shaped by context, use, and urban climate."
+            "Creative work shaped by context, use, and materials."
         )
         profile.bio_summary = (
-            "Demo Architecture Studio is a practice working across housing, civic buildings, "
-            "and workplace projects in northern urban settings. The work is defined by clear "
-            "massing, durable materials, careful daylighting, and legible circulation.\n\n"
-            "The studio works on projects that sit between everyday infrastructure and long-term "
-            "city-making: housing blocks, public buildings, workplaces, and mixed-use urban sites. "
-            "Rather than treating architecture as image-making, the emphasis is on performance, "
-            "clarity, and how buildings hold up over time."
+            "Demo Portfolio Studio works across a range of commissioned projects, "
+            "led by a compact team with a clear approach to materials, process, and outcome. "
+            "The work is defined by craft, durability, and care for the brief."
+            "\n\n"
+            "Rather than chasing a recognisable style, the emphasis is on fit: "
+            "how a project responds to its conditions, and how that thinking is held across the work."
         )
         profile.work_approach = (
-            "Projects are led by a compact studio team, with specialist consultants involved as "
-            "needed for structure, building services, and planning coordination."
+            "Projects are led directly, with specialist collaborators involved as "
+            "needed for technical, production, and coordination work."
         )
-        profile.professional_standing = "Registered architectural practice"
+        profile.professional_standing = "Independent studio"
         profile.education = (
-            "Bachelor of Architecture (Professional)\n"
-            "Master of Architecture"
+            "BA (Hons) Design\n"
+            "MA Creative Practice"
         )
         profile.supporting_facts = (
-            "Housing, civic, and workplace project experience\n"
-            "Planning, technical design, and consultant coordination\n"
-            "New-build and urban infill commissions"
+            "Commissioned projects across multiple disciplines\n"
+            "Technical, production, and client coordination experience\n"
+            "New commissions and ongoing client relationships"
         )
         profile.approach = (
-            "Buildings in northern settings need to manage weather, frame daylight carefully, "
-            "and make circulation feel intuitive in difficult conditions.\n\n"
-            "The work focuses on fit rather than spectacle: how a building sits in context, "
-            "how structure and envelope reinforce one another, and how public or shared spaces "
-            "are made legible through proportion and movement."
+            "Good work requires genuine attention to the problem — not a formula applied in advance.\n\n"
+            "The focus is on fit: how an outcome serves its conditions, how decisions hold together "
+            "across the project, and how the work stands up over time."
         )
         profile.experience_years = 12
         profile.closing_invitation = (
@@ -631,19 +590,6 @@ class Command(BaseCommand):
         profile.save()
         action = "Created" if created else "Updated"
         self.stdout.write(f"  {action} AboutProfile")
-
-    def _seed_services(self):
-        for data in SERVICES:
-            obj, created = Service.objects.get_or_create(
-                slug=data["slug"],
-                defaults={"title": data["title"]},
-            )
-            for key, value in data.items():
-                if key != "slug":
-                    setattr(obj, key, value)
-            obj.save()
-            action = "Created" if created else "Updated"
-            self.stdout.write(f"  {action} Service: {obj.title}")
 
     def _seed_projects(self):
         for data in PROJECTS:

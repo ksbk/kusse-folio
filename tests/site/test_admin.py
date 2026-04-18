@@ -8,7 +8,6 @@ from django.contrib.messages import INFO, WARNING
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory, override_settings
 
-from apps.services.models import Service
 from apps.site.admin.site import AboutProfileAdmin, SiteSettingsAdmin
 from apps.site.models import AboutProfile, SiteSettings
 
@@ -22,8 +21,8 @@ def _populate_minimum_ready_site_and_about():
     site = SiteSettings.load()
     site.site_name = "Studio Rossi"
     site.contact_email = "studio@example.com"
-    site.tagline = "Context-led architecture"
-    site.meta_description = "Independent architectural practice."
+    site.tagline = "Context-led design"
+    site.meta_description = "Independent creative studio."
     site.location = "Reykjavik, Iceland"
     site.og_image = SimpleUploadedFile("og.jpg", b"og-image", content_type="image/jpeg")
     site.save()
@@ -31,27 +30,19 @@ def _populate_minimum_ready_site_and_about():
     about = AboutProfile.load()
     about.identity_mode = AboutProfile.IdentityMode.STUDIO
     about.professional_context = "Small studio"
-    about.one_line_bio = "Design for housing, civic, and workplace projects."
-    about.bio_summary = "A Reykjavik-based practice working across public and private projects."
+    about.one_line_bio = "Design for spatial and visual projects."
+    about.bio_summary = "A Reykjavik-based studio working across public and private projects."
     about.work_approach = (
-        "Projects are led directly with specialist consultants involved as needed."
+        "Projects are led directly with specialist collaborators involved as needed."
     )
-    about.professional_standing = "Registered architectural practice"
-    about.education = "Master of Architecture"
+    about.professional_standing = "Independent studio"
+    about.education = "MA Design"
     about.supporting_facts = ""
     about.experience_years = 12
     about.approach = "The work focuses on clarity, durability, and legible project decision-making."
     about.closing_invitation = "Get in touch to discuss a project."
     about.portrait_mode = AboutProfile.PortraitMode.TEXT_ONLY
     about.save()
-
-    Service.objects.create(
-        title="Architectural Design",
-        slug="architectural-design",
-        summary="Full design service.",
-        order=1,
-        active=True,
-    )
 
 
 @pytest.mark.django_db

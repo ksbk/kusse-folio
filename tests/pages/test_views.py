@@ -100,15 +100,15 @@ def _populate_minimum_about(site_settings, **overrides):
     defaults = {
         "identity_mode": AboutProfile.IdentityMode.STUDIO,
         "professional_context": "Small studio",
-        "one_line_bio": "Design for housing, civic, and workplace projects.",
-        "bio_summary": "A practice working across public and private projects.",
-        "work_approach": "Projects are led directly with specialist consultants brought in as needed.",
-        "professional_standing": "Registered architectural practice",
-        "education": "Master of Architecture",
+        "one_line_bio": "Design for spatial and visual projects.",
+        "bio_summary": "A studio working across public and private projects.",
+        "work_approach": "Projects are led directly with specialist collaborators brought in as needed.",
+        "professional_standing": "Independent studio",
+        "education": "MA Design",
         "supporting_facts": "",
         "experience_years": 12,
         "approach": "The work prioritises clarity, durability, and legible project decision-making.",
-        "closing_invitation": "Get in touch to discuss a housing, civic, or workplace project.",
+        "closing_invitation": "Get in touch to discuss a project.",
         "portrait_mode": AboutProfile.PortraitMode.TEXT_ONLY,
     }
     defaults.update(overrides)
@@ -124,14 +124,14 @@ def test_about_page_uses_person_led_identity_fields(client, site_settings):
         site_settings,
         identity_mode=AboutProfile.IdentityMode.PERSON,
         principal_name="Avery Strand",
-        principal_title="Founder and Registered Architect",
+        principal_title="Founder and Lead Designer",
     )
 
     response = client.get(reverse("pages:about"))
 
     assert response.status_code == 200
     assert b"Avery Strand" in response.content
-    assert b"Founder and Registered Architect, Test Site" in response.content
+    assert b"Founder and Lead Designer, Test Site" in response.content
 
 
 @pytest.mark.django_db
@@ -168,7 +168,7 @@ def test_about_page_hides_starter_prompt_fields_from_public_render(client, site_
         work_approach=PROJECT_LEADERSHIP_PROMPT,
         professional_standing=PROFESSIONAL_STANDING_PROMPT,
         education="[Add education details, one per line]",
-        supporting_facts="Registered architectural practice\nPlanning, technical design, and consultant coordination",
+        supporting_facts="Independent studio\nProject coordination and technical delivery",
     )
 
     response = client.get(reverse("pages:about"))
@@ -193,7 +193,7 @@ def test_about_page_shows_professional_profile_with_minimum_fact_set(client, sit
     assert response.status_code == 200
     assert b"Professional Profile" in response.content
     assert b"Based in Reykjavik, Iceland" in response.content
-    assert b"Registered architectural practice" in response.content
+    assert b"Independent studio" in response.content
     assert b"12+ years of experience" in response.content
     assert b"Housing and civic project experience" in response.content
 

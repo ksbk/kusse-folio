@@ -30,23 +30,23 @@ class SiteSettings(SingletonModel):
     site_name = models.CharField(
         max_length=120,
         default="",
-        help_text="Your practice's display name. Shorter names (under 40 characters) work best in the homepage hero.",
+        help_text="Your studio's display name. Shorter names (under 40 characters) work best in the homepage hero.",
     )
     tagline = models.CharField(
         max_length=220,
         blank=True,
         default="Design shaped by purpose, context, and enduring quality.",
-        help_text="One or two sentences describing your practice. Under 140 characters fits most hero layouts cleanly.",
+        help_text="One or two sentences describing your work. Under 140 characters fits most hero layouts cleanly.",
     )
     hero_label = models.CharField(
         max_length=60,
         blank=True,
         default="",
-        help_text="Short descriptor shown above the studio name in the homepage hero (e.g. 'Architecture & Urbanism'). Leave blank to omit.",
+        help_text="Short descriptor shown above the studio name in the homepage hero (e.g. 'Design & Strategy'). Leave blank to omit.",
     )
     hero_compact = models.BooleanField(
         default=False,
-        help_text="Compact hero text — use if your practice name or tagline is long and the hero looks crowded.",
+        help_text="Compact hero text — use if your studio name or tagline is long and the hero looks crowded.",
     )
     nav_name = models.CharField(
         max_length=30,
@@ -57,7 +57,7 @@ class SiteSettings(SingletonModel):
             "short one- or two-word names (up to 18 characters) are shown in full; "
             "longer or multi-word names display as a derived monogram "
             "(e.g. \u2018BWK\u2019 for \u2018Beaumont Whitfield Kellerman Partnership\u2019). "
-            "Set this field to an abbreviation like \u2018Strand Architecture\u2019 or \u2018BWK Partnership\u2019 "
+            "Set this field to an abbreviation like \u2018Strand Studio\u2019 or \u2018BWK Partners\u2019 "
             "if the automatic monogram is not what you want. A logo supersedes all text options."
         ),
     )
@@ -105,11 +105,6 @@ class SiteSettings(SingletonModel):
         max_length=160,
         blank=True,
         help_text="Meta description for the About page. Keep under 160 characters.",
-    )
-    services_meta_description = models.CharField(
-        max_length=160,
-        blank=True,
-        help_text="Meta description for the Services page. Keep under 160 characters.",
     )
     projects_meta_description = models.CharField(
         max_length=160,

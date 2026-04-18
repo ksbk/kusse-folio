@@ -82,7 +82,6 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                 "fields": (
                     "meta_description",
                     "about_meta_description",
-                    "services_meta_description",
                     "projects_meta_description",
                     "contact_meta_description",
                     "google_analytics_id",
@@ -109,7 +108,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         form = super().get_form(request, obj, change=change, **kwargs)
         field_help = {
             "site_name": (
-                "Public practice name used in the homepage hero, page-title fallback, footer, and brand accessibility label. "
+                "Public studio name used in the homepage hero, page-title fallback, footer, and brand accessibility label. "
                 "Long names often need a nav_name or logo to stay strong in the navbar."
             ),
             "hero_label": (
@@ -221,7 +220,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         if not getattr(django_settings, "CONTACT_EMAIL", "").strip():
             self.message_user(
                 request,
-                "Notification inbox is not configured. Contact submissions will still be saved, but notification emails will not reach the practice until CONTACT_EMAIL is set in the environment.",
+                "Notification inbox is not configured. Contact submissions will still be saved, but notification emails will not reach you until CONTACT_EMAIL is set in the environment.",
                 level=messages.WARNING,
             )
 
@@ -230,7 +229,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
             if len(site_name_val) > 30 and not nav_name_val and not logo_val:
                 self.message_user(
                     request,
-                    "Your practice name is longer than 30 characters. Consider adding a short "
+                    "Your studio name is longer than 30 characters. Consider adding a short "
                     "Navigation Name, or uploading a logo, to ensure it fits on narrow screens.",
                     level=messages.INFO,
                 )
@@ -247,7 +246,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                         f"The automatic nav monogram for this name would be a single letter "
                         f"(\u2018{monogram}\u2019). Consider setting a Nav Name to give visitors "
                         f"more context\u2014for example, an abbreviation like "
-                        f"\u2018{monogram}CA\u2019 or a shortened version of the practice name.",
+                        f"\u2018{monogram}CA\u2019 or a shortened version of the studio name.",
                         level=messages.WARNING,
                     )
         return super().changeform_view(request, object_id, form_url, extra_context)
@@ -286,8 +285,8 @@ class AboutProfileAdmin(admin.ModelAdmin):
                     "closing_invitation",
                 ),
                 "description": (
-                    "Keep the About page factual. Practice summary explains what the practice "
-                    "does; project leadership explains how work is led and where consultants fit in."
+                    "Keep the About page factual. Bio summary explains what the studio "
+                    "does; project leadership explains how work is led and where collaborators fit in."
                 ),
             },
         ),
@@ -302,7 +301,7 @@ class AboutProfileAdmin(admin.ModelAdmin):
                 ),
                 "description": (
                     "Use concrete facts only. The public profile renders only when location, "
-                    "professional standing, years in practice, and at least one supporting fact are present."
+                    "professional standing, years of experience, and at least one supporting fact are present."
                 ),
             },
         ),

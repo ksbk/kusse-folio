@@ -8,6 +8,65 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.0] — 2026-04-18
+
+### Added
+
+- **Blog / writing surface:** `apps/blog` introduces `Post` model with
+  published/draft lifecycle. Writing list and detail views, admin, URL
+  routing, sitemap, and nav/footer links all included. The surface ships
+  suppressed (no posts seeded) so buyers who don't need a blog see nothing
+  until they publish.
+- **Social links:** `SocialLink` model — ordered, platform-typed links managed
+  in admin and rendered in the footer. Zero hardcoded social URLs remain.
+- **Tag-based project taxonomy:** `Project` records now carry `tags` (a
+  TextField with one tag per line). The project list filter uses `?tag=`
+  rather than the legacy `?category=` parameter. The migration canonicalises
+  existing category values to the new tag vocabulary. `?category=` is silently
+  remapped at the view layer for backwards compatibility.
+
+### Changed
+
+- **`AboutProfile` fields renamed:** All architecture-specific field names
+  replaced with generic professional-portfolio equivalents
+  (`practice_summary` → `bio_summary`, `project_leadership` → `work_approach`,
+  etc.). Admin labels and help text updated throughout.
+- **Project enquiry logic decoupled:** Enquiry-type mapping removed from
+  `Project` model. `apps/core/enquiry_types.py` is now the single source of
+  truth for all enquiry vocabulary.
+
+### Removed
+
+- **`apps/services` surface:** Service listing app removed entirely — models,
+  views, templates, admin, migrations, CSS, URL config, e2e tests, and fixtures
+  all deleted. Nav, footer, sitemap, and all cross-references updated.
+- **`services_meta_description` field:** Removed from `SiteSettings` model
+  (migration 0014). Admin fieldset and docs updated.
+
+### Cleaned
+
+- **Admin language:** Architecture- and practice-era wording replaced with
+  portfolio-neutral equivalents throughout `apps/site` admin labels, help text,
+  and demo constants (`practice` → `studio`, `years in practice` →
+  `years of experience`, `Demo Architecture Studio` → `Demo Portfolio Studio`,
+  `hello@demo-architecture.example` → `hello@demo-portfolio.example`).
+- **Demo seed content:** `seed_demo` and `check_content_readiness` constants
+  updated — all architecture-specific copy replaced with discipline-neutral
+  portfolio text.
+
+### Internal
+
+- **Migration 0015 — `SiteSettings` help text:** Auto-generated migration for
+  updated `help_text` values on `hero_compact`, `hero_label`, `nav_name`,
+  `site_name`, and `tagline`.
+- **`apps.site` app-label alias documented:** `apps.site` carries
+  `label = "core"` because its migrations pre-date the app rename.
+  `apps.core` uses `label = "core_runtime"` to avoid collision. Documented in
+  `docs/DECISION_LOG.md` as `DL-016` so future migration dependencies use the
+  correct label.
+
+---
+
 ## [1.0.2] — 2026-04-12
 
 ### Fixed
@@ -119,9 +178,8 @@ Initial release of the Architecture Portfolio Django Template.
 
 #### Management commands
 
-- `seed_demo` — idempotent starter content for new installs (SiteSettings, AboutProfile, 6 services, 4 projects, 3 testimonials)
+- `seed_demo` — idempotent starter content for new installs (SiteSettings, AboutProfile, projects, testimonials)
 - `seed_about` — fills blank AboutProfile fields; `--force` to overwrite
-- `seed_services` — fills blank service records; `--reset` to reinitialise all
 - `bootstrap_project` — creates a Project record from local files; `--dry-run` required first
 - `import_project_images` — attaches gallery images to an existing project; `--dry-run` required first
 - `check_content_readiness` — pre-launch audit; exits 1 if required fields are missing or at placeholder values

@@ -54,7 +54,6 @@ This file is a table-first reference for the current admin surfaces. It document
 | --- | --- | --- |
 | `meta_description` | Homepage meta description and fallback meta description for other pages | Max length `160`. |
 | `about_meta_description` | About page meta description | Falls back to `meta_description` when blank. |
-| `services_meta_description` | Services page meta description | Falls back to `meta_description` when blank. |
 | `projects_meta_description` | Projects list page meta description | Falls back to `meta_description` when blank. |
 | `contact_meta_description` | Contact page meta description | Falls back to `meta_description` when blank. |
 | `google_analytics_id` | Loads GA4 tracking script in the base template | Max length `30`. Script is omitted when blank. |

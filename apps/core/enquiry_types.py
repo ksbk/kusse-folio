@@ -9,18 +9,6 @@ PROJECT_TYPE_CHOICES = [
     ("Other", "Other"),
 ]
 
-SERVICE_SLUG_TO_ENQUIRY_TYPE = {
-    "housing": "Housing",
-    "residential-design": "Housing",
-    "civic": "Civic",
-    "civic-community-buildings": "Civic",
-    "workplace": "Workplace",
-    "workplace-commercial-buildings": "Workplace",
-    "renovation-adaptive-reuse": "Renovation / Adaptive Reuse",
-    "interior-architecture": "Other",
-    "concept-design": "Other",
-}
-
 LEGACY_PROJECT_TYPE_MAP = {
     "Residential Design": "Housing",
     "Commercial Design": "Workplace",

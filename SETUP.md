@@ -135,7 +135,6 @@ Replace every placeholder with your real information.
 page appears in search results):
 
 - `about_meta_description`
-- `services_meta_description`
 - `projects_meta_description`
 - `contact_meta_description`
 
