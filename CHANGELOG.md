@@ -8,6 +8,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.1] — 2026-04-18
+
+### Fixed
+
+- Removed duplicate `Optional modules` fieldset in `SiteSettingsAdmin` that
+  caused a Django system-check error (`admin.E012`) on startup.
+
+---
+
 ## [1.1.0] — 2026-04-18
 
 ### Added

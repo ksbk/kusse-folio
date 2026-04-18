@@ -5,7 +5,7 @@ A professional, content-driven portfolio template for developers, designers, res
 > **New here?** See [SETUP.md](SETUP.md) for the buyer-facing setup and customisation checklist.
 > See [docs/admin/CUSTOMIZATION.md](docs/admin/CUSTOMIZATION.md) for the canonical customization matrix and the exact split between `admin-managed`, `env/config-managed — required for launch`, `env/config-managed — optional integration`, `code-only (simple editorial change)`, `code-only (behavior-coupled / risky)`, and `intentionally opinionated` surfaces.
 >
-> **Current stable version:** `v1.1.0`\
+> **Current stable version:** `v1.1.1`\
 > **Status:** Stable\
 > **Stack:** Python `3.13` · Django `5.2 LTS`\
 > **Docs:** [SETUP.md](SETUP.md) · [DEMO.md](DEMO.md) · [docs/admin/CUSTOMIZATION.md](docs/admin/CUSTOMIZATION.md) · [CHANGELOG.md](CHANGELOG.md) · [LICENSE.md](LICENSE.md)\
