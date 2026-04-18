@@ -71,6 +71,22 @@ def test_about_profile_admin_blocks_add_when_row_exists(rf):
     assert a.has_add_permission(rf.get("/admin/")) is False
 
 
+def test_site_settings_admin_optional_modules_fieldset_includes_blog_enabled():
+    """'Optional modules' fieldset must expose blog_enabled to buyers."""
+    a = SiteSettingsAdmin(SiteSettings, admin.site)
+    all_fieldset_fields = [
+        field
+        for name, options in a.fieldsets
+        for field in options.get("fields", ())
+    ]
+    assert "blog_enabled" in all_fieldset_fields
+    optional_section = next(
+        (options for name, options in a.fieldsets if name == "Optional modules"), None
+    )
+    assert optional_section is not None, "'Optional modules' fieldset not found in SiteSettingsAdmin"
+    assert "blog_enabled" in optional_section["fields"]
+
+
 # ---------------------------------------------------------------------------
 # SiteSettingsAdmin.changeform_view — site_name blank warning
 # ---------------------------------------------------------------------------

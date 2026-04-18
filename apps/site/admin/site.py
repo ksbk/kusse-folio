@@ -101,6 +101,26 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                     "Mobile \u2264 Tablet \u2264 Desktop. Each value must be between 1 and 6."
                 ),
             },
+        ),        (
+            "Optional modules",
+            {
+                "fields": ("blog_enabled",),
+                "description": (
+                    "Optional modules are off by default. Enable them to show the relevant section "
+                    "in public navigation. Only modules with live pages are listed here — additional "
+                    "modules will appear as they are implemented."
+                ),
+            },
+        ),        (
+            "Optional modules",
+            {
+                "fields": ("blog_enabled",),
+                "description": (
+                    "Optional modules are off by default. Enable them to show the relevant section "
+                    "in public navigation. Only modules with live pages are listed here — additional "
+                    "modules will appear as they are implemented."
+                ),
+            },
         ),
     )
 

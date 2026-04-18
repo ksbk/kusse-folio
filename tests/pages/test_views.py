@@ -422,6 +422,34 @@ def test_footer_includes_privacy_link(client, site_settings):
     assert b"Privacy" in response.content
 
 
+@pytest.mark.django_db
+def test_blog_nav_hidden_when_disabled(client, site_settings):
+    """Blog link must not appear in nav when blog_enabled=False."""
+    assert site_settings.blog_enabled is False
+    response = client.get(reverse("pages:home"))
+
+    assert b">Blog</a>" not in response.content
+
+
+@pytest.mark.django_db
+def test_blog_footer_hidden_when_disabled(client, site_settings):
+    """Blog link must not appear in footer when blog_enabled=False."""
+    assert site_settings.blog_enabled is False
+    response = client.get(reverse("pages:home"))
+
+    assert b'href="/writing/">Blog</a>' not in response.content
+
+
+@pytest.mark.django_db
+def test_blog_footer_shown_when_enabled(client, site_settings):
+    """Blog link must appear in footer when blog_enabled=True."""
+    site_settings.blog_enabled = True
+    site_settings.save()
+    response = client.get(reverse("pages:home"))
+
+    assert b'href="/writing/">Blog</a>' in response.content
+
+
 # ---------------------------------------------------------------------------
 # Homepage — admin-editable per-breakpoint project counts
 # ---------------------------------------------------------------------------

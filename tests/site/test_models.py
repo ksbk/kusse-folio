@@ -162,3 +162,9 @@ def test_site_settings_nav_name_defaults_blank():
     s = SiteSettings.load()
     assert s.nav_name == ""
 
+
+@pytest.mark.django_db
+def test_site_settings_blog_enabled_defaults_false():
+    s = SiteSettings.load()
+    assert s.blog_enabled is False
+

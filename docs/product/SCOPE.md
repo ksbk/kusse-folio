@@ -25,12 +25,33 @@ These are **not part of the core product**. A buyer may enable them post-purchas
 They are off by default and must not appear in nav, readiness checks, or buyer
 onboarding as if they are required.
 
-| Module | Notes |
+| Module | `SiteSettings` flag | Implementation state |
+|---|---|---|
+| Blog | `blog_enabled` | ✅ Implemented (v1.1.0) |
+| Resume / CV | `resume_enabled` | 🔲 Planned — flag added when module ships |
+| Research / Publications | `research_enabled` | 🔲 Planned — flag added when module ships |
+| Services | `services_enabled` | 🔲 Planned — flag added when module ships |
+
+**Rule:** A module flag is added to `SiteSettings` and exposed in admin only when
+the corresponding public pages exist. A buyer should never be able to enable a
+module and see nothing happen.
+
+---
+
+## Commercial packaging
+
+Kusse Folio is designed to support tiered commercial marketing from a single
+codebase. Presets are applied by the activation/seed layer, not by separate
+codebase branches.
+
+| Tier | Included modules |
 |---|---|
-| Blog | Posts / writing surface |
-| Resume / CV | Structured credentials page |
-| Research / Publications | Academic or professional publications |
-| Services | Service offering page |
+| **Starter** | Home, About, Projects, Contact, Privacy |
+| **Pro** | Starter + Blog, Resume / CV |
+| **Academic** | Starter + Research / Publications, Resume / CV |
+| **Consultant** | Starter + Services, Blog |
+
+Starter must feel complete, not crippled. Projects are core to all tiers.
 
 ---
 
@@ -67,11 +88,21 @@ In all product language, docs, and buyer-facing copy:
 
 ## Current implementation state (as of v1.1.0)
 
-Blog is implemented as an optional module with the following properties:
+### Module flags
+
+| Flag | Default | In admin | Notes |
+|---|---|---|---|
+| `blog_enabled` | `False` | ✅ "Optional modules" fieldset | Demo seed sets `True` |
+| `resume_enabled` | — | — | Not yet added; added when Resume ships |
+| `research_enabled` | — | — | Not yet added; added when Research ships |
+| `services_enabled` | — | — | Not yet added; added when Services ships |
+
+### Blog module
 
 | Property | Value |
 |---|---|
 | `SiteSettings.blog_enabled` | `BooleanField(default=False)` — off for all new builds |
+| Admin | "Optional modules" fieldset in Site Settings |
 | Nav/footer guard | Blog link only renders when `blog_enabled=True` |
 | Nav/footer label | **Blog** (not Writing) |
 | URL route | `/writing/` (internal URL namespace: `blog`) |
@@ -108,30 +139,22 @@ The readiness command has never included Blog-specific checks. Now that Blog is
 optional and gated, this omission is intentional and correct. If Blog checks are
 added in future, they must be guarded by `blog_enabled`.
 
-
-### 5. No scope documentation existed before this note
-
-There was no formal product-scope document in the repo. `docs/product/DOCTRINE.md`
-covers values, not surface area. This file (`SCOPE.md`) is the first explicit
-statement of what is required vs optional.
-
 ---
 
 ## Remaining next adjustments
 
-Items 1–3 from the original list were completed in v1.1.0. What remains:
-
 **1. Align the Blog URL route from `/writing/` to `/blog/`**  
 Deferred deliberately. The URL path does not match the product label. A future
 release should rename the route and update any hardcoded references or redirects.
-No code change is requested here.
 
 **2. Add Blog checks to `check_content_readiness` when Blog is enabled**  
 If future releases add Blog-specific readiness checks (e.g. "no published posts"),
-guard them behind `{% if site_settings.blog_enabled %}` / `if site.blog_enabled`.
-Currently there are no Blog checks to add.
+guard them behind `if site.blog_enabled`. Currently there are no Blog checks to add.
 
-**3. Update buyer docs to distinguish required core from optional modules**  
-`docs/admin/` and any buyer-facing README sections should explicitly call out
-which pages are always present and which require an enable step in admin.
+**3. Update buyer docs**  
+`docs/admin/` and any buyer-facing README sections should distinguish required core
+from optional modules and explain how to enable Blog in admin.
 
+**4. Implement optional modules in order**  
+Resume / CV → Research / Publications → Services. Each module ships with its own
+`_enabled` flag and admin fieldset entry in the same PR. No flags before the module.
