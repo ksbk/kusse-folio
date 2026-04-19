@@ -52,7 +52,7 @@ The `recommended action` column means:
 | Homepage hero image source | featured project ordering plus project cover image | `admin-managed` | medium | document clearly | Controlled indirectly through content and ordering, not explicit hero-image selection. |
 | Homepage hero CTA labels | homepage template | `code-only (simple editorial change)` | high | move to admin later | `View Projects` and `Start a Conversation`. |
 | Homepage hero CTA destinations | homepage template | `intentionally opinionated` | high | keep opinionated | Part of the site structure, not just copy. |
-| Homepage services strip content | `Service` records | `admin-managed` | low | leave as-is | Titles, summaries, order, and active state. |
+| Homepage services strip content | `ServiceItem` records | `admin-managed` | low | leave as-is | Titles, summaries, order, and display order. |
 | Homepage services strip action labels | homepage template | `code-only (simple editorial change)` | medium | document clearly | `All Services` and similar fixed labels. |
 | Homepage featured-project section headings | homepage template | `code-only (simple editorial change)` | medium | move to admin later | `Featured Projects`, `All Projects`, `View Project`. |
 | Homepage featured-project pool and counts | `Project.featured`, `Project.order`, `SiteSettings.homepage_projects_*_count` | `admin-managed` | low | leave as-is | Good current implementation. |
@@ -64,7 +64,7 @@ The `recommended action` column means:
 | About CTA invitation text | `AboutProfile.closing_invitation` | `admin-managed` | medium | document clearly | If the invitation is too long, the template behavior changes. |
 | About CTA button labels and routes | about template | `code-only (simple editorial change)` | medium | document clearly | `Get in Touch` and `View Projects` are fixed. |
 | About CTA fallback heading logic | about template plus length check | `code-only (behavior-coupled / risky)` | medium | document clearly | Over-80-character copy changes how the section is rendered. |
-| Services page service records | `Service` model | `admin-managed` | low | leave as-is | Titles, summaries, descriptions, value proposition, deliverables, and order. |
+| Services page service records | `ServiceItem` model | `admin-managed` | low | leave as-is | Titles, summaries, descriptions, and display order. |
 | Services page hero label, title, and subtitle | services template | `code-only (simple editorial change)` | high | move to admin later | High-visibility buyer-facing copy. |
 | Services page empty-state prose | services template | `code-only (simple editorial change)` | medium | document clearly | Only visible if no active services exist. |
 | Services end-strip copy | services template | `code-only (simple editorial change)` | medium | move to admin later | Closing editorial or trust copy is fixed. |

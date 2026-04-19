@@ -8,6 +8,110 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.4.1] — 2026-05-02
+
+### Fixed
+
+- `SETUP.md` Phase 3 (About Profile) and the pre-launch checklist table both
+  referenced stale field names from the v1.1.0 rename (`practice_structure`,
+  `one_line_practice_description`, `practice_summary`, `project_leadership`).
+  All corrected to current names (`professional_context`, `one_line_bio`,
+  `bio_summary`, `work_approach`).
+- `docs/admin/CUSTOMIZATION.md` referenced the removed `Service` model
+  (v1.0.x) instead of `ServiceItem` (v1.2.0) in two rows.
+- Admin index subtitle updated to include Brand Settings in the recommended
+  start-here sequence.
+- `scripts/onboarding_drill.py`: removed 7 unused imports, consolidated
+  mid-script imports to the top block, fixed `SIM118` (`.keys()` in dict
+  membership test) and `F541` (bare f-string). `E402`/`I001` suppressed via
+  `per-file-ignores` — structural constraint of the `django.setup()` pattern.
+  `ruff check .` now exits clean.
+
+---
+
+## [1.4.0] — 2026-04-30
+
+### Added
+
+- **Brand Customization System (`apps/site/models/brand.py`):** `BrandSettings`
+  singleton centralises all brand-level display decisions. Fields cover logo
+  upload (light, dark, icon variants), logo display mode
+  (`auto` / `transparent` / `safe_card`), responsive logo width, typography
+  preset (5 choices), color preset (6 choices including custom hex), visual
+  style (`crisp` / `balanced` / `soft`), and social links display format.
+  Custom accent hex is validated at the model layer.
+- `seed_demo` seeds a complete `BrandSettings` record so buyers see a
+  representative demo state from first boot.
+
+### Changed
+
+- Admin `index_title` updated to include Brand Settings in the start-here
+  sequence.
+
+---
+
+## [1.3.0] — 2026-04-26
+
+### Added
+
+- **Research surface (`apps/research`):** `ResearchProject` model with title,
+  description, status, year, tags, and external link. List view, admin, URL
+  routing, sitemap, and nav/footer links included. Controlled by
+  `SiteSettings.research_enabled`.
+- **Publications surface (`apps/publications`):** `Publication` model with
+  title, abstract, year, authors, venue, and external link. List view, admin,
+  URL routing, sitemap. Controlled by `SiteSettings.publications_enabled`.
+- **Resume surface (`apps/resume`):** `ResumeProfile` singleton with headline,
+  summary, and downloadable CV file. Page view, admin, URL routing. Controlled
+  by `SiteSettings.resume_enabled`.
+- `seed_demo` extended to seed representative records for all three new
+  surfaces.
+
+---
+
+## [1.2.0] — 2026-04-22
+
+### Added
+
+- **Services surface (`apps/services`):** `ServiceItem` model (replaces the
+  removed v1.1.0 `Service` model) with title, description, icon slug, and
+  display order. List view, admin, URL routing, sitemap, and nav/footer links.
+  Controlled by `SiteSettings.services_enabled`.
+- **Testimonials surface (`apps/testimonials`):** `Testimonial` model with
+  author, role, organisation, body, and display order. Homepage preview
+  section, admin, sitemap. Controlled by `SiteSettings.testimonials_enabled`.
+- **`ClientProfile` model:** Internal-only client tracking record (not shown
+  publicly). Admin registered with an "internal tracking only" notice.
+
+### Changed
+
+- `seed_demo` now seeds 4 `ServiceItem` records and 4 `Testimonial` records.
+  All optional module flags default to `True` after seeding so buyers see the
+  full site immediately.
+
+### Upgrade note (from v1.1.x)
+
+  The `apps/services` app was removed in v1.1.0 and re-added in v1.2.0 with a
+  new model (`ServiceItem`) and a fresh `0001_initial` migration. If you
+  applied v1.1.0 or v1.1.1 migrations on a live database, Django's migration
+  recorder may already have a `services.0001_initial` entry from the old app.
+  In that case `migrate` will skip the new initial migration and the
+  `services_serviceitem` table will be missing.
+
+  **Fix:** before running `migrate`, remove the stale records:
+
+  ```bash
+  uv run python manage.py shell -c "
+  from django.db import connection
+  cur = connection.cursor()
+  cur.execute(\"DELETE FROM django_migrations WHERE app='services'\")
+  print('Removed stale services migration records — safe to migrate now')
+  "
+  uv run python manage.py migrate
+  ```
+
+---
+
 ## [1.1.1] — 2026-04-18
 
 ### Fixed

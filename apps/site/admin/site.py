@@ -20,7 +20,7 @@ from ..models import AboutProfile, ClientProfile, SiteSettings, SocialLink
 
 admin.site.site_header = "Site Admin"
 admin.site.site_title = "Site Admin"
-admin.site.index_title = "Start here: Site Settings → About Profile → Services → Projects"
+admin.site.index_title = "Start here: Site Settings → Brand Settings → About Profile → Projects"
 
 # ---------------------------------------------------------------------------
 # SiteSettings

@@ -207,15 +207,15 @@ Start with the fields that shape the public identity of the practice:
 | `identity_mode` | `studio` or `person` | Choose whether the page introduces the studio or a named principal |
 | `principal_name` | Public principal name | Required only for person-led mode |
 | `principal_title` | Public role/title | Used in the hero meta line for person-led mode |
-| `practice_structure` | Truthful short descriptor | e.g. "Solo practice" or "Small studio" |
-| `one_line_practice_description` | Short public one-liner | Shown in the About hero |
+| `professional_context` | Truthful short descriptor | e.g. "Solo practitioner" or "Small studio" |
+| `one_line_bio` | Short public one-liner | Shown in the About hero |
 
 Then complete the main narrative:
 
 | Field | What to enter | Notes |
 | --- | --- | --- |
-| `practice_summary` | What the practice does and what kind of work it takes on | Main opening prose block |
-| `project_leadership` | How projects are led and where collaborators fit | Secondary narrative block |
+| `bio_summary` | What the practice does and what kind of work it takes on | Main opening prose block |
+| `work_approach` | How projects are led and where collaborators fit | Secondary narrative block |
 | `approach` | Short practical approach statement | 2–3 sentences is ideal |
 | `closing_invitation` | Short closing CTA copy | If kept under 80 characters it becomes the CTA heading |
 
@@ -445,8 +445,8 @@ The command exits with code `1` if any blocker is present (CI-friendly).
 | --- | --- |
 | `site_name` is still the demo value | Admin → Site Settings → Identity |
 | `contact_email` is still the demo value | Admin → Site Settings → Contact |
-| `one_line_practice_description` is blank or demo copy | Admin → About Profile → Identity |
-| `practice_summary` is blank or demo copy | Admin → About Profile → Content |
+| `one_line_bio` is blank or demo copy | Admin → About Profile → Identity |
+| `bio_summary` is blank or demo copy | Admin → About Profile → Content |
 | Demo project titles detected | Admin → Projects — replace or delete the seeded examples |
 
 ---
