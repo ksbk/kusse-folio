@@ -185,6 +185,29 @@ def collect_readiness_issues() -> tuple[list[str], list[str]]:
             "Update it or clear the field to fall back to the homepage meta description."
         )
 
+    optional_meta_fields = (
+        ("blog_enabled", "blog_meta_description", "Blog"),
+        ("services_enabled", "services_meta_description", "Services"),
+        ("research_enabled", "research_meta_description", "Research"),
+        ("publications_enabled", "publications_meta_description", "Publications"),
+        ("resume_enabled", "resume_meta_description", "Resume / CV"),
+    )
+    for enabled_field, meta_field, page_label in optional_meta_fields:
+        if not getattr(site, enabled_field):
+            continue
+        meta_value = getattr(site, meta_field)
+        if not meta_value:
+            warnings.append(
+                f"SiteSettings.{meta_field} is blank. "
+                f"The enabled {page_label} page will fall back to the homepage meta description."
+            )
+        elif stale_brand := _stale_meta_brand(meta_value, site.site_name):
+            blockers.append(
+                f"SiteSettings.{meta_field} still references '{stale_brand}', "
+                f"which does not match the current site name ('{site.site_name}'). "
+                "Update it or clear the field to fall back to the homepage meta description."
+            )
+
     if not site.projects_meta_description:
         warnings.append(
             "SiteSettings.projects_meta_description is blank. "
@@ -388,6 +411,56 @@ def collect_readiness_issues() -> tuple[list[str], list[str]]:
             + ", ".join(demo_testimonial_names)
             + ". Replace or delete them before launch."
         )
+
+    if site.research_enabled:
+        from apps.research.models import ResearchProject
+
+        visible_research = ResearchProject.objects.filter(is_active=True)
+        if not visible_research.exists():
+            blockers.append(
+                "Research is enabled, but no active Research Project records were found. "
+                "Add at least one visible research item or disable the Research module before launch."
+            )
+        elif not visible_research.filter(is_featured=True).exists():
+            warnings.append(
+                "Research is enabled, but no featured Research Project records are selected. "
+                "The homepage research preview will be empty until at least one active item is featured."
+            )
+
+    if site.publications_enabled:
+        from apps.publications.models import Publication
+
+        visible_publications = Publication.objects.filter(is_active=True)
+        if not visible_publications.exists():
+            blockers.append(
+                "Publications is enabled, but no active Publication records were found. "
+                "Add at least one visible publication or disable the Publications module before launch."
+            )
+        elif not visible_publications.filter(is_featured=True).exists():
+            warnings.append(
+                "Publications is enabled, but no featured Publication records are selected. "
+                "The homepage publications preview will be empty until at least one active item is featured."
+            )
+
+    if site.resume_enabled:
+        from apps.resume.models import ResumeProfile
+
+        resume = ResumeProfile.load()
+        if not resume.is_active:
+            blockers.append(
+                "Resume / CV is enabled, but ResumeProfile.is_active is false. "
+                "Activate the Resume profile or disable the Resume / CV module before launch."
+            )
+        elif not (resume.headline.strip() or resume.summary.strip() or resume.cv_file):
+            blockers.append(
+                "Resume / CV is enabled, but no resume headline, summary, or CV file is present. "
+                "Add visible Resume / CV content or disable the module before launch."
+            )
+        elif not resume.cv_file:
+            warnings.append(
+                "Resume / CV is enabled, but no downloadable CV file is uploaded. "
+                "This is allowed, but academic visitors often expect a CV download."
+            )
 
     return blockers, warnings
 

@@ -54,9 +54,13 @@ def test_research_detail_returns_404_when_disabled(client):
 @pytest.mark.django_db
 def test_research_list_returns_200_when_enabled(client, site_settings):
     site_settings.research_enabled = True
+    site_settings.research_meta_title = "Research Areas"
+    site_settings.research_meta_description = "Current research themes and projects."
     site_settings.save()
     response = client.get(reverse("research:list"))
     assert response.status_code == 200
+    assert b"<title>Research Areas" in response.content
+    assert b'content="Current research themes and projects."' in response.content
 
 
 @pytest.mark.django_db

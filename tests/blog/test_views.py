@@ -46,9 +46,13 @@ def _draft_post(**kwargs) -> Post:
 @pytest.mark.django_db
 def test_writing_list_returns_200(client, site_settings):
     site_settings.blog_enabled = True
+    site_settings.blog_meta_title = "Research Blog"
+    site_settings.blog_meta_description = "Notes, articles, and research updates."
     site_settings.save()
     response = client.get(reverse("blog:list"))
     assert response.status_code == 200
+    assert b"<title>Research Blog" in response.content
+    assert b'content="Notes, articles, and research updates."' in response.content
 
 
 @pytest.mark.django_db

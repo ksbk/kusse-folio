@@ -749,6 +749,60 @@ def test_nav_marks_blog_active_when_enabled(client, site_settings):
     assert b'class="nav__link is-active" aria-current="page">Blog</a>' in response.content
 
 
+@pytest.mark.django_db
+def test_academic_preset_prioritizes_academic_nav_items(client, site_settings):
+    site_settings.portfolio_preset = SiteSettings.PortfolioPreset.ACADEMIC
+    site_settings.research_enabled = True
+    site_settings.publications_enabled = True
+    site_settings.resume_enabled = True
+    site_settings.services_enabled = False
+    site_settings.save()
+
+    response = client.get(reverse("pages:home"))
+
+    assert response.status_code == 200
+    nav = response.content.decode().split('<ul class="nav__links" id="nav-menu">', 1)[1]
+    assert nav.index(">Research</a>") < nav.index(">Publications</a>")
+    assert nav.index(">Publications</a>") < nav.index(">Projects</a>")
+    assert nav.index(">Projects</a>") < nav.index(">About</a>")
+    assert nav.index(">About</a>") < nav.index(">CV</a>")
+    assert nav.index(">CV</a>") < nav.index(">Contact</a>")
+    assert ">Services</a>" not in nav
+
+
+@pytest.mark.django_db
+def test_academic_preset_homepage_primary_cta_points_to_research(client, site_settings):
+    site_settings.portfolio_preset = SiteSettings.PortfolioPreset.ACADEMIC
+    site_settings.research_enabled = True
+    site_settings.publications_enabled = True
+    site_settings.save()
+
+    response = client.get(reverse("pages:home"))
+
+    assert response.status_code == 200
+    assert response.context["homepage_primary_cta"] == {
+        "label": "View Research",
+        "url": reverse("research:list"),
+    }
+    assert b">View Research</a>" in response.content
+    assert b">Browse Publications</a>" in response.content
+
+
+@pytest.mark.django_db
+def test_generic_preset_homepage_primary_cta_remains_projects_first(client, site_settings):
+    site_settings.portfolio_preset = SiteSettings.PortfolioPreset.GENERIC
+    site_settings.research_enabled = True
+    site_settings.save()
+
+    response = client.get(reverse("pages:home"))
+
+    assert response.status_code == 200
+    assert response.context["homepage_primary_cta"] == {
+        "label": "View Projects",
+        "url": reverse("projects:list"),
+    }
+
+
 # ---------------------------------------------------------------------------
 # Navbar brand — logo override (N-01)
 # ---------------------------------------------------------------------------

@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.views.generic import TemplateView
 
 from apps.projects.models import Project, Testimonial
@@ -33,6 +34,15 @@ class HomeView(TemplateView):
             site.homepage_closing_text
             or "Ready to discuss a project? Bring a brief, a question, or an early idea."
         )
+        primary_cta = {
+            "label": "View Projects",
+            "url": reverse("projects:list"),
+        }
+        secondary_cta = {
+            "label": "Start a Conversation",
+            "url": reverse("contact:contact"),
+        }
+        ctx["homepage_primary_section_id"] = "featured"
 
         if site.services_enabled:
             from apps.services.models import ServiceItem
@@ -52,6 +62,12 @@ class HomeView(TemplateView):
             ctx["homepage_research"] = list(
                 ResearchProject.objects.filter(is_active=True, is_featured=True).order_by("order")[:4]
             )
+            if site.portfolio_preset == SiteSettings.PortfolioPreset.ACADEMIC:
+                primary_cta = {
+                    "label": "View Research",
+                    "url": reverse("research:list"),
+                }
+                ctx["homepage_primary_section_id"] = "research"
         else:
             ctx["homepage_research"] = []
 
@@ -60,9 +76,25 @@ class HomeView(TemplateView):
             ctx["homepage_publications"] = list(
                 Publication.objects.filter(is_active=True, is_featured=True).order_by("-year", "order")[:4]
             )
+            if (
+                site.portfolio_preset == SiteSettings.PortfolioPreset.ACADEMIC
+                and not site.research_enabled
+            ):
+                primary_cta = {
+                    "label": "View Publications",
+                    "url": reverse("publications:list"),
+                }
+                ctx["homepage_primary_section_id"] = "publications"
+            elif site.portfolio_preset == SiteSettings.PortfolioPreset.ACADEMIC:
+                secondary_cta = {
+                    "label": "Browse Publications",
+                    "url": reverse("publications:list"),
+                }
         else:
             ctx["homepage_publications"] = []
 
+        ctx["homepage_primary_cta"] = primary_cta
+        ctx["homepage_secondary_cta"] = secondary_cta
         return ctx
 
 

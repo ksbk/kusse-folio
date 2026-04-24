@@ -28,6 +28,16 @@
     </button>
 
     <ul class="nav__links" id="nav-menu">
+      {% if site_settings.portfolio_preset == "academic" %}
+      {% if site_settings.research_enabled %}<li><a href="{% url 'research:list' %}" class="nav__link {% if request.resolver_match.app_name == 'research' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'research' %} aria-current="page"{% endif %}>Research</a></li>{% endif %}
+      {% if site_settings.publications_enabled %}<li><a href="{% url 'publications:list' %}" class="nav__link {% if request.resolver_match.app_name == 'publications' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'publications' %} aria-current="page"{% endif %}>Publications</a></li>{% endif %}
+      <li><a href="{% url 'projects:list' %}" class="nav__link {% if request.resolver_match.app_name == 'projects' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'projects' %} aria-current="page"{% endif %}>Projects</a></li>
+      {% if site_settings.services_enabled %}<li><a href="{% url 'services:list' %}" class="nav__link {% if request.resolver_match.app_name == 'services' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'services' %} aria-current="page"{% endif %}>Services</a></li>{% endif %}
+      <li><a href="{% url 'pages:about' %}" class="nav__link {% if request.resolver_match.url_name == 'about' %}is-active{% endif %}"{% if request.resolver_match.url_name == 'about' %} aria-current="page"{% endif %}>About</a></li>
+      {% if site_settings.resume_enabled %}<li><a href="{% url 'resume:page' %}" class="nav__link {% if request.resolver_match.app_name == 'resume' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'resume' %} aria-current="page"{% endif %}>CV</a></li>{% endif %}
+      {% if site_settings.blog_enabled %}<li><a href="{% url 'blog:list' %}" class="nav__link {% if request.resolver_match.app_name == 'blog' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'blog' %} aria-current="page"{% endif %}>Blog</a></li>{% endif %}
+      <li><a href="{% url 'contact:contact' %}" class="nav__link nav__cta {% if request.resolver_match.app_name == 'contact' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'contact' %} aria-current="page"{% endif %}>Contact</a></li>
+      {% else %}
       <li><a href="{% url 'projects:list' %}" class="nav__link {% if request.resolver_match.app_name == 'projects' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'projects' %} aria-current="page"{% endif %}>Projects</a></li>
       {% if site_settings.services_enabled %}<li><a href="{% url 'services:list' %}" class="nav__link {% if request.resolver_match.app_name == 'services' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'services' %} aria-current="page"{% endif %}>Services</a></li>{% endif %}
       {% if site_settings.research_enabled %}<li><a href="{% url 'research:list' %}" class="nav__link {% if request.resolver_match.app_name == 'research' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'research' %} aria-current="page"{% endif %}>Research</a></li>{% endif %}
@@ -36,6 +46,7 @@
       {% if site_settings.blog_enabled %}<li><a href="{% url 'blog:list' %}" class="nav__link {% if request.resolver_match.app_name == 'blog' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'blog' %} aria-current="page"{% endif %}>Blog</a></li>{% endif %}
       {% if site_settings.resume_enabled %}<li><a href="{% url 'resume:page' %}" class="nav__link {% if request.resolver_match.app_name == 'resume' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'resume' %} aria-current="page"{% endif %}>CV</a></li>{% endif %}
       <li><a href="{% url 'contact:contact' %}" class="nav__link nav__cta {% if request.resolver_match.app_name == 'contact' %}is-active{% endif %}"{% if request.resolver_match.app_name == 'contact' %} aria-current="page"{% endif %}>Contact</a></li>
+      {% endif %}
     </ul>
   </nav>
 </header>

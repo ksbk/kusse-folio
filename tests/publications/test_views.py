@@ -45,9 +45,13 @@ def test_publications_list_returns_404_when_disabled(client):
 @pytest.mark.django_db
 def test_publications_list_returns_200_when_enabled(client, site_settings):
     site_settings.publications_enabled = True
+    site_settings.publications_meta_title = "Selected Publications"
+    site_settings.publications_meta_description = "Journal articles and public research outputs."
     site_settings.save()
     response = client.get(reverse("publications:list"))
     assert response.status_code == 200
+    assert b"<title>Selected Publications" in response.content
+    assert b'content="Journal articles and public research outputs."' in response.content
 
 
 # ---------------------------------------------------------------------------

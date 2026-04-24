@@ -37,9 +37,13 @@ def test_services_list_returns_404_when_disabled(client):
 @pytest.mark.django_db
 def test_services_list_returns_200_when_enabled(client, site_settings):
     site_settings.services_enabled = True
+    site_settings.services_meta_title = "Advisory Services"
+    site_settings.services_meta_description = "Consulting and advisory services."
     site_settings.save()
     response = client.get(reverse("services:list"))
     assert response.status_code == 200
+    assert b"<title>Advisory Services" in response.content
+    assert b'content="Consulting and advisory services."' in response.content
 
 
 # ---------------------------------------------------------------------------

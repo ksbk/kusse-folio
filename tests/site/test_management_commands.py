@@ -359,6 +359,84 @@ def test_readiness_warns_when_homepage_hero_project_has_no_cover_image():
     assert any("homepage hero project ('Featured Without Cover') has no cover image" in warning for warning in warnings)
 
 
+@pytest.mark.django_db
+def test_readiness_does_not_warn_for_disabled_academic_modules(project):
+    _populate_minimum_ready_site_and_about()
+
+    blockers, warnings = collect_readiness_issues()
+
+    all_messages = blockers + warnings
+    assert not any("Research is enabled" in message for message in all_messages)
+    assert not any("Publications is enabled" in message for message in all_messages)
+    assert not any("Resume / CV is enabled" in message for message in all_messages)
+
+
+@pytest.mark.django_db
+def test_readiness_blocks_when_research_enabled_without_visible_content(project):
+    site, _ = _populate_minimum_ready_site_and_about()
+    site.research_enabled = True
+    site.save()
+
+    blockers, _ = collect_readiness_issues()
+
+    assert any("Research is enabled, but no active Research Project records" in blocker for blocker in blockers)
+
+
+@pytest.mark.django_db
+def test_readiness_warns_when_research_enabled_without_featured_content(project):
+    from apps.research.models import ResearchProject
+
+    site, _ = _populate_minimum_ready_site_and_about()
+    site.research_enabled = True
+    site.save()
+    ResearchProject.objects.create(title="Active Research", is_active=True, is_featured=False)
+
+    _, warnings = collect_readiness_issues()
+
+    assert any("no featured Research Project records" in warning for warning in warnings)
+
+
+@pytest.mark.django_db
+def test_readiness_blocks_when_publications_enabled_without_visible_content(project):
+    site, _ = _populate_minimum_ready_site_and_about()
+    site.publications_enabled = True
+    site.save()
+
+    blockers, _ = collect_readiness_issues()
+
+    assert any("Publications is enabled, but no active Publication records" in blocker for blocker in blockers)
+
+
+@pytest.mark.django_db
+def test_readiness_blocks_when_resume_enabled_without_profile_content(project):
+    site, _ = _populate_minimum_ready_site_and_about()
+    site.resume_enabled = True
+    site.save()
+
+    blockers, _ = collect_readiness_issues()
+
+    assert any("Resume / CV is enabled, but no resume headline" in blocker for blocker in blockers)
+
+
+@pytest.mark.django_db
+def test_readiness_warns_when_resume_enabled_without_downloadable_cv(project):
+    from apps.resume.models import ResumeProfile
+
+    site, _ = _populate_minimum_ready_site_and_about()
+    site.resume_enabled = True
+    site.save()
+    resume = ResumeProfile.load()
+    resume.headline = "Researcher"
+    resume.summary = "Academic profile."
+    resume.is_active = True
+    resume.save()
+
+    blockers, warnings = collect_readiness_issues()
+
+    assert not any("Resume / CV is enabled" in blocker for blocker in blockers)
+    assert any("no downloadable CV file is uploaded" in warning for warning in warnings)
+
+
 def test_seed_demo_auto_discovers_tracked_bundled_media(tmp_path):
     bundled = _discover_demo_media_dir(tmp_path)
 
@@ -424,6 +502,36 @@ def test_seed_demo_aligns_enabled_blog_and_homepage_testimonials_with_visible_de
         project__isnull=True,
         active=True,
     ).count() == 1
+
+
+@pytest.mark.django_db
+def test_seed_demo_academic_profile_sets_academic_preset_and_content():
+    from apps.publications.models import Publication
+    from apps.research.models import ResearchProject
+    from apps.resume.models import ResumeProfile
+
+    call_command("seed_demo", profile="academic")
+    call_command("seed_demo", profile="academic")
+
+    site = SiteSettings.load()
+    about = AboutProfile.load()
+    resume = ResumeProfile.load()
+
+    assert site.portfolio_preset == SiteSettings.PortfolioPreset.ACADEMIC
+    assert site.research_enabled is True
+    assert site.publications_enabled is True
+    assert site.resume_enabled is True
+    assert site.services_enabled is False
+    assert site.blog_enabled is False
+    assert about.identity_mode == AboutProfile.IdentityMode.PERSON
+    assert about.principal_name == "Demo Researcher"
+    assert resume.headline == "Researcher, Lecturer & Technical Specialist"
+    assert ResearchProject.objects.filter(is_active=True, is_featured=True).exists()
+    assert Publication.objects.filter(
+        title="Translating Specialist Evidence for Public Decision-Making",
+        is_featured=True,
+    ).count() == 1
+    assert Project.objects.filter(slug="community-research-methods-toolkit").count() == 1
 
 
 @pytest.mark.django_db

@@ -27,10 +27,24 @@ class SingletonModel(models.Model):
 
 
 class SiteSettings(SingletonModel):
+    class PortfolioPreset(models.TextChoices):
+        GENERIC = "generic", "Generic portfolio"
+        SERVICE = "service", "Service / consultant portfolio"
+        ACADEMIC = "academic", "Academic / research portfolio"
+
     site_name = models.CharField(
         max_length=120,
         default="",
         help_text="Your studio's display name. Shorter names (under 40 characters) work best in the homepage hero.",
+    )
+    portfolio_preset = models.CharField(
+        max_length=20,
+        choices=PortfolioPreset.choices,
+        default=PortfolioPreset.GENERIC,
+        help_text=(
+            "Controls reusable homepage and navigation emphasis. "
+            "Use Academic / research portfolio for researchers, PhD students, lecturers, scientists, consultants, and technical experts."
+        ),
     )
     tagline = models.CharField(
         max_length=220,
@@ -120,10 +134,60 @@ class SiteSettings(SingletonModel):
         blank=True,
         help_text="Meta description for the About page. Keep under 160 characters.",
     )
+    blog_meta_title = models.CharField(
+        max_length=120,
+        blank=True,
+        help_text="Optional meta title for the Blog list page. Falls back to the page label.",
+    )
+    blog_meta_description = models.CharField(
+        max_length=160,
+        blank=True,
+        help_text="Meta description for the Blog list page. Falls back to the homepage meta description.",
+    )
     projects_meta_description = models.CharField(
         max_length=160,
         blank=True,
         help_text="Meta description for the Projects list page. Keep under 160 characters.",
+    )
+    services_meta_title = models.CharField(
+        max_length=120,
+        blank=True,
+        help_text="Optional meta title for the Services page. Falls back to the page label.",
+    )
+    services_meta_description = models.CharField(
+        max_length=160,
+        blank=True,
+        help_text="Meta description for the Services page. Falls back to the homepage meta description.",
+    )
+    research_meta_title = models.CharField(
+        max_length=120,
+        blank=True,
+        help_text="Optional meta title for the Research page. Falls back to the page label.",
+    )
+    research_meta_description = models.CharField(
+        max_length=160,
+        blank=True,
+        help_text="Meta description for the Research page. Falls back to the homepage meta description.",
+    )
+    publications_meta_title = models.CharField(
+        max_length=120,
+        blank=True,
+        help_text="Optional meta title for the Publications page. Falls back to the page label.",
+    )
+    publications_meta_description = models.CharField(
+        max_length=160,
+        blank=True,
+        help_text="Meta description for the Publications page. Falls back to the homepage meta description.",
+    )
+    resume_meta_title = models.CharField(
+        max_length=120,
+        blank=True,
+        help_text="Optional meta title for the Resume / CV page. Falls back to the page label.",
+    )
+    resume_meta_description = models.CharField(
+        max_length=160,
+        blank=True,
+        help_text="Meta description for the Resume / CV page. Falls back to the homepage meta description.",
     )
     contact_meta_description = models.CharField(
         max_length=160,

@@ -47,7 +47,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         (
             "Identity",
             {
-                "fields": ("site_name", "tagline", "hero_label", "hero_compact", "nav_name", "logo", "og_image"),
+                "fields": ("site_name", "portfolio_preset", "tagline", "hero_label", "hero_compact", "nav_name", "logo", "og_image"),
                 "description": (
                     "These fields shape the homepage hero, the navbar brand path, the footer identity, "
                     "and the default social share image."
@@ -92,7 +92,17 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                 "fields": (
                     "meta_description",
                     "about_meta_description",
+                    "blog_meta_title",
+                    "blog_meta_description",
                     "projects_meta_description",
+                    "services_meta_title",
+                    "services_meta_description",
+                    "research_meta_title",
+                    "research_meta_description",
+                    "publications_meta_title",
+                    "publications_meta_description",
+                    "resume_meta_title",
+                    "resume_meta_description",
                     "contact_meta_description",
                     "google_analytics_id",
                 )

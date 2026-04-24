@@ -164,6 +164,12 @@ def test_site_settings_nav_name_defaults_blank():
 
 
 @pytest.mark.django_db
+def test_site_settings_portfolio_preset_defaults_generic():
+    s = SiteSettings.load()
+    assert s.portfolio_preset == SiteSettings.PortfolioPreset.GENERIC
+
+
+@pytest.mark.django_db
 def test_site_settings_blog_enabled_defaults_false():
     s = SiteSettings.load()
     assert s.blog_enabled is False
@@ -311,4 +317,3 @@ def test_site_settings_show_location_can_be_disabled():
     s.show_location = False
     s.save()
     assert SiteSettings.load().show_location is False
-

@@ -23,6 +23,7 @@ This file is a table-first reference for the current admin surfaces. It document
 | Field | Public effect | Constraints / notes |
 | --- | --- | --- |
 | `site_name` | Practice name in homepage hero, page title fallback, footer, and brand accessibility label | Max length `120`. Blank triggers an admin warning. Shorter names fit the homepage hero better. |
+| `portfolio_preset` | Reusable homepage and navigation emphasis | `generic` keeps projects-first behavior. `academic` prioritizes Research and Publications when those modules are enabled. |
 | `tagline` | Homepage subtitle and footer tagline | Max length `220`. Omitted from the hero/footer when blank. |
 | `hero_label` | Small label above the homepage hero title | Max length `60`. Omitted when blank. |
 | `hero_compact` | Switches the homepage hero into the compact title scale | Boolean. Use when long name/tagline makes the hero crowded. |
@@ -62,7 +63,17 @@ prefers active `Social Link` entries over these inline fields when they exist.
 | --- | --- | --- |
 | `meta_description` | Homepage meta description and fallback meta description for other pages | Max length `160`. |
 | `about_meta_description` | About page meta description | Falls back to `meta_description` when blank. |
+| `blog_meta_title` | Blog list page meta title | Falls back to `Blog` when blank. |
+| `blog_meta_description` | Blog list page meta description | Falls back to `meta_description` when blank. Only readiness-checked when Blog is enabled. |
 | `projects_meta_description` | Projects list page meta description | Falls back to `meta_description` when blank. |
+| `services_meta_title` | Services page meta title | Falls back to `Services` when blank. |
+| `services_meta_description` | Services page meta description | Falls back to `meta_description` when blank. Only readiness-checked when Services is enabled. |
+| `research_meta_title` | Research page meta title | Falls back to `Research` when blank. |
+| `research_meta_description` | Research page meta description | Falls back to `meta_description` when blank. Only readiness-checked when Research is enabled. |
+| `publications_meta_title` | Publications page meta title | Falls back to `Publications` when blank. |
+| `publications_meta_description` | Publications page meta description | Falls back to `meta_description` when blank. Only readiness-checked when Publications is enabled. |
+| `resume_meta_title` | Resume / CV page meta title | Falls back to `Resume / CV` when blank. |
+| `resume_meta_description` | Resume / CV page meta description | Falls back to `meta_description` when blank. Only readiness-checked when Resume / CV is enabled. |
 | `contact_meta_description` | Contact page meta description | Falls back to `meta_description` when blank. |
 | `google_analytics_id` | Loads GA4 tracking script in the base template | Max length `30`. Script is omitted when blank. |
 

@@ -30,9 +30,13 @@ def test_resume_page_returns_404_when_disabled(client):
 @pytest.mark.django_db
 def test_resume_page_returns_200_when_enabled(client, site_settings):
     site_settings.resume_enabled = True
+    site_settings.resume_meta_title = "Academic CV"
+    site_settings.resume_meta_description = "Academic background and selected CV details."
     site_settings.save()
     response = client.get(reverse("resume:page"))
     assert response.status_code == 200
+    assert b"<title>Academic CV" in response.content
+    assert b'content="Academic background and selected CV details."' in response.content
 
 
 # ---------------------------------------------------------------------------

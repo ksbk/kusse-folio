@@ -423,6 +423,70 @@ PROJECTS = [
     },
 ]
 
+ACADEMIC_PROJECTS = [
+    {
+        "slug": "community-research-methods-toolkit",
+        "title": "Community Research Methods Toolkit",
+        "short_description": (
+            "A public-facing toolkit translating qualitative research methods into practical "
+            "workshop formats for community and policy partners."
+        ),
+        "tags": "research, methods, engagement",
+        "status": "completed",
+        "location": "Open access",
+        "year": 2024,
+        "overview": (
+            "This example project shows how the portfolio can present applied research work "
+            "without requiring a full publication record or a visual design case study."
+        ),
+        "challenge": (
+            "Academic and technical work often needs to reach people outside the original "
+            "research team. The challenge was to make methods legible without removing the "
+            "care and limits that make them useful."
+        ),
+        "concept": (
+            "The toolkit turns recurring research activities into structured prompts, session "
+            "plans, and plain-language notes that can be adapted by collaborators."
+        ),
+        "outcome": (
+            "The output demonstrates how a researcher, lecturer, scientist, consultant, or "
+            "technical expert might present a practical research contribution."
+        ),
+        "featured": True,
+        "order": 1,
+    },
+    {
+        "slug": "technical-evidence-briefing-series",
+        "title": "Technical Evidence Briefing Series",
+        "short_description": (
+            "A concise briefing series that synthesises technical evidence for decision-makers, "
+            "students, and cross-disciplinary collaborators."
+        ),
+        "tags": "evidence, briefing, translation",
+        "status": "completed",
+        "location": "Research communication",
+        "year": 2023,
+        "overview": (
+            "This example case study is designed for academics and experts whose work includes "
+            "public communication, policy advice, consultancy, or professional education."
+        ),
+        "challenge": (
+            "Specialist evidence can be difficult to reuse when it is trapped in long reports "
+            "or narrow disciplinary language."
+        ),
+        "concept": (
+            "Each briefing follows a consistent structure: question, evidence, limits, practical "
+            "implications, and recommended next steps."
+        ),
+        "outcome": (
+            "The series gives visitors a concrete example of expertise in action while keeping "
+            "the content generic enough to replace with real work."
+        ),
+        "featured": True,
+        "order": 2,
+    },
+]
+
 TESTIMONIALS: list[dict[str, str | int | None]] = [
     {
         "name": "Sarah & Mark L.",
@@ -505,6 +569,15 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
+            "--profile",
+            choices=("portfolio", "academic"),
+            default="portfolio",
+            help=(
+                "Demo content profile to seed. "
+                "'portfolio' shows the broad template demo; 'academic' shows the reusable academic/research variant."
+            ),
+        )
+        parser.add_argument(
             "--media-dir",
             metavar="PATH",
             default=None,
@@ -516,12 +589,13 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        profile = options["profile"]
         media_dir: Path | None = None
         if options["media_dir"]:
             media_dir = Path(options["media_dir"]).resolve()
             if not media_dir.is_dir():
                 raise CommandError(f"--media-dir does not exist or is not a directory: {media_dir}")
-        else:
+        elif profile != "academic":
             # Auto-discover bundled demo media when --media-dir is not given
             from django.conf import settings
             _candidate = _discover_demo_media_dir(settings.MEDIA_ROOT)
@@ -529,15 +603,18 @@ class Command(BaseCommand):
                 media_dir = _candidate
                 self.stdout.write(f"Auto-discovered demo media: {media_dir}")
 
-        self._seed_settings()
-        self._seed_about()
-        self._seed_services()
+        self._seed_settings(profile)
+        self._seed_about(profile)
+        if profile != "academic":
+            self._seed_services()
         self._seed_research()
-        self._seed_publications()
-        self._seed_resume()
-        self._seed_blog()
-        self._seed_projects()
-        self._seed_testimonials()
+        self._seed_publications(profile)
+        self._seed_resume(profile)
+        if profile != "academic":
+            self._seed_blog()
+        self._seed_projects(profile)
+        if profile != "academic":
+            self._seed_testimonials()
 
         # ---------- media attachment ----------
         portrait_attached = False
@@ -570,26 +647,67 @@ class Command(BaseCommand):
     # Text content seeders
     # ------------------------------------------------------------------
 
-    def _seed_settings(self):
+    def _seed_settings(self, profile: str):
         settings, created = SiteSettings.objects.get_or_create(pk=1)
-        settings.site_name = "Demo Portfolio Studio"
-        settings.tagline = "Creative work shaped by context, clarity, and craft."
-        settings.contact_email = "hello@demo-portfolio.example"
-        settings.location = "Your City, Your Country"
-        settings.meta_description = (
-            "A studio whose work combines thoughtful craft, "
-            "contextual sensitivity, and clear thinking to create outcomes with identity, "
-            "purpose, and lasting value."
-        )
-        settings.about_meta_description = (
-            "About Demo Portfolio Studio, the studio approach, experience, and professional profile."
-        )
-        settings.blog_enabled = True
-        settings.services_enabled = True
-        settings.research_enabled = True
-        settings.publications_enabled = True
-        settings.resume_enabled = True
-        settings.testimonials_enabled = True
+        if profile == "academic":
+            settings.site_name = "Demo Research Portfolio"
+            settings.portfolio_preset = SiteSettings.PortfolioPreset.ACADEMIC
+            settings.tagline = "Research, publications, teaching, and technical expertise."
+            settings.hero_label = "Academic / Research Portfolio"
+            settings.contact_email = "hello@demo-research.example"
+            settings.location = "Your City, Your Country"
+            settings.meta_description = (
+                "A researcher portfolio presenting areas of inquiry, publications, projects, "
+                "and a concise academic CV."
+            )
+            settings.about_meta_description = (
+                "About the researcher, academic background, areas of expertise, and public profile."
+            )
+            settings.research_meta_title = "Research"
+            settings.research_meta_description = (
+                "Selected research themes, projects, and current areas of inquiry."
+            )
+            settings.publications_meta_title = "Publications"
+            settings.publications_meta_description = (
+                "Selected journal articles, conference papers, reports, and scholarly outputs."
+            )
+            settings.resume_meta_title = "CV"
+            settings.resume_meta_description = (
+                "Academic CV summary, professional background, and downloadable profile material."
+            )
+            settings.projects_meta_description = (
+                "Selected projects, applied research work, and public-facing case studies."
+            )
+            settings.contact_meta_description = (
+                "Contact details for research collaboration, speaking, consulting, and advisory enquiries."
+            )
+            settings.blog_enabled = False
+            settings.services_enabled = False
+            settings.research_enabled = True
+            settings.publications_enabled = True
+            settings.resume_enabled = True
+            settings.testimonials_enabled = False
+        else:
+            settings.site_name = "Demo Portfolio Studio"
+            settings.portfolio_preset = SiteSettings.PortfolioPreset.GENERIC
+            settings.tagline = "Creative work shaped by context, clarity, and craft."
+            settings.hero_label = ""
+            settings.contact_email = "hello@demo-portfolio.example"
+            settings.location = "Your City, Your Country"
+            settings.meta_description = (
+                "A studio whose work combines thoughtful craft, "
+                "contextual sensitivity, and clear thinking to create outcomes with identity, "
+                "purpose, and lasting value."
+            )
+            settings.about_meta_description = (
+                "About Demo Portfolio Studio, the studio approach, experience, and professional profile."
+            )
+            settings.blog_enabled = True
+            settings.services_enabled = True
+            settings.research_enabled = True
+            settings.publications_enabled = True
+            settings.resume_enabled = True
+            settings.testimonials_enabled = True
         settings.show_email = True
         settings.show_phone = False
         settings.show_location = True
@@ -705,8 +823,8 @@ class Command(BaseCommand):
         if existing:
             self.stdout.write(f"  Skipped {existing} ResearchProject(s) (already exist)")
 
-    def _seed_publications(self):
-        DEMO_PUBLICATIONS = [
+    def _seed_publications(self, demo_profile: str):
+        portfolio_publications = [
             {
                 "title": "Craft, Context, and the Durable Brief",
                 "authors": "Studio Author",
@@ -744,6 +862,46 @@ class Command(BaseCommand):
                 "is_featured": False,
             },
         ]
+        academic_publications = [
+            {
+                "title": "Translating Specialist Evidence for Public Decision-Making",
+                "authors": "Demo Researcher",
+                "venue": "Journal of Applied Research Communication",
+                "year": 2024,
+                "abstract": (
+                    "A generic example article showing how an academic portfolio can present "
+                    "research outputs with clear summaries and useful links."
+                ),
+                "doi_url": "https://doi.org/10.0000/demo-academic-001",
+                "order": 1,
+                "is_featured": True,
+            },
+            {
+                "title": "Methods Notes for Cross-Disciplinary Research Collaboration",
+                "authors": "Demo Researcher and Collaborator A.",
+                "venue": "Research Practice Review",
+                "year": 2023,
+                "abstract": (
+                    "A sample publication record for researchers, lecturers, scientists, "
+                    "consultants, and technical experts adapting the academic variant."
+                ),
+                "paper_url": "https://example.com/demo-paper",
+                "order": 2,
+                "is_featured": True,
+            },
+            {
+                "title": "Teaching Technical Concepts Through Public Case Studies",
+                "authors": "Demo Researcher",
+                "venue": "Proceedings of the Open Teaching Symposium",
+                "year": 2022,
+                "abstract": (
+                    "An example conference paper used to populate the reusable academic demo profile."
+                ),
+                "order": 3,
+                "is_featured": False,
+            },
+        ]
+        DEMO_PUBLICATIONS = academic_publications if demo_profile == "academic" else portfolio_publications
         created_count = 0
         for item in DEMO_PUBLICATIONS:
             _, created = Publication.objects.get_or_create(
@@ -758,18 +916,26 @@ class Command(BaseCommand):
         if existing:
             self.stdout.write(f"  Skipped {existing} Publication(s) (already exist)")
 
-    def _seed_resume(self):
-        profile, created = ResumeProfile.objects.get_or_create(pk=1)
-        profile.headline = "Researcher, Designer & Educator"
-        profile.summary = (
-            "An independent practitioner working at the intersection of spatial practice, "
-            "research, and education. Over a decade of project experience across civic, "
-            "residential, and institutional contexts, combined with ongoing research "
-            "activity and academic contribution.\n\n"
-            "Available for commissions, research collaborations, and advisory roles."
-        )
-        profile.is_active = True
-        profile.save()
+    def _seed_resume(self, demo_profile: str):
+        resume, created = ResumeProfile.objects.get_or_create(pk=1)
+        if demo_profile == "academic":
+            resume.headline = "Researcher, Lecturer & Technical Specialist"
+            resume.summary = (
+                "A concise academic profile for a researcher or technical expert, summarising "
+                "research interests, teaching experience, advisory work, and selected outputs.\n\n"
+                "Use this page as a readable public CV and attach a full PDF CV when available."
+            )
+        else:
+            resume.headline = "Researcher, Designer & Educator"
+            resume.summary = (
+                "An independent practitioner working at the intersection of spatial practice, "
+                "research, and education. Over a decade of project experience across civic, "
+                "residential, and institutional contexts, combined with ongoing research "
+                "activity and academic contribution.\n\n"
+                "Available for commissions, research collaborations, and advisory roles."
+            )
+        resume.is_active = True
+        resume.save()
         action = "Created" if created else "Updated"
         self.stdout.write(f"  {action} ResumeProfile")
 
@@ -792,54 +958,94 @@ class Command(BaseCommand):
         if existing:
             self.stdout.write(f"  Skipped {existing} Post(s) (already exist)")
 
-    def _seed_about(self):
-        profile, created = AboutProfile.objects.get_or_create(pk=1)
-        profile.identity_mode = AboutProfile.IdentityMode.STUDIO
-        profile.principal_name = ""
-        profile.principal_title = ""
-        profile.professional_context = "Independent studio"
-        profile.one_line_bio = (
-            "Creative work shaped by context, use, and materials."
-        )
-        profile.bio_summary = (
-            "Demo Portfolio Studio works across a range of commissioned projects, "
-            "led by a compact team with a clear approach to materials, process, and outcome. "
-            "The work is defined by craft, durability, and care for the brief."
-            "\n\n"
-            "Rather than chasing a recognisable style, the emphasis is on fit: "
-            "how a project responds to its conditions, and how that thinking is held across the work."
-        )
-        profile.work_approach = (
-            "Projects are led directly, with specialist collaborators involved as "
-            "needed for technical, production, and coordination work."
-        )
-        profile.professional_standing = "Independent studio"
-        profile.education = (
-            "BA (Hons) Design\n"
-            "MA Creative Practice"
-        )
-        profile.supporting_facts = (
-            "Commissioned projects across multiple disciplines\n"
-            "Technical, production, and client coordination experience\n"
-            "New commissions and ongoing client relationships"
-        )
-        profile.approach = (
-            "Good work requires genuine attention to the problem — not a formula applied in advance.\n\n"
-            "The focus is on fit: how an outcome serves its conditions, how decisions hold together "
-            "across the project, and how the work stands up over time."
-        )
-        profile.experience_years = 12
-        profile.closing_invitation = (
-            "Get in touch with a short outline of your project, whether the brief is developed "
-            "or still taking shape."
-        )
-        profile.portrait_mode = AboutProfile.PortraitMode.TEXT_ONLY
-        profile.save()
+    def _seed_about(self, demo_profile: str):
+        about, created = AboutProfile.objects.get_or_create(pk=1)
+        if demo_profile == "academic":
+            about.identity_mode = AboutProfile.IdentityMode.PERSON
+            about.principal_name = "Demo Researcher"
+            about.principal_title = "Researcher, Lecturer & Technical Specialist"
+            about.professional_context = "Academic and applied research practice"
+            about.one_line_bio = (
+                "Research, teaching, and advisory work across applied technical questions."
+            )
+            about.bio_summary = (
+                "Demo Researcher is a generic academic portfolio profile for researchers, "
+                "PhD students, lecturers, scientists, consultants, and technical experts.\n\n"
+                "Use this content to preview the academic variant, then replace it with real "
+                "biographical details, research areas, institutional context, and public credentials."
+            )
+            about.work_approach = (
+                "Work is organised around clear research questions, transparent methods, "
+                "collaboration where useful, and outputs that can be understood by academic "
+                "and non-specialist audiences."
+            )
+            about.professional_standing = "Researcher and educator"
+            about.education = (
+                "PhD or doctoral research programme\n"
+                "MSc or MA in a relevant field"
+            )
+            about.supporting_facts = (
+                "Peer-reviewed and public-facing research outputs\n"
+                "Teaching, supervision, or workshop experience\n"
+                "Advisory or consulting work with technical stakeholders"
+            )
+            about.approach = (
+                "The work connects rigorous inquiry with clear public communication.\n\n"
+                "Research pages explain the questions being explored; publications provide "
+                "evidence of outputs; the CV gives visitors a concise view of experience."
+            )
+            about.experience_years = 8
+            about.closing_invitation = (
+                "Get in touch about research collaboration, speaking, consulting, or advisory work."
+            )
+        else:
+            about.identity_mode = AboutProfile.IdentityMode.STUDIO
+            about.principal_name = ""
+            about.principal_title = ""
+            about.professional_context = "Independent studio"
+            about.one_line_bio = (
+                "Creative work shaped by context, use, and materials."
+            )
+            about.bio_summary = (
+                "Demo Portfolio Studio works across a range of commissioned projects, "
+                "led by a compact team with a clear approach to materials, process, and outcome. "
+                "The work is defined by craft, durability, and care for the brief."
+                "\n\n"
+                "Rather than chasing a recognisable style, the emphasis is on fit: "
+                "how a project responds to its conditions, and how that thinking is held across the work."
+            )
+            about.work_approach = (
+                "Projects are led directly, with specialist collaborators involved as "
+                "needed for technical, production, and coordination work."
+            )
+            about.professional_standing = "Independent studio"
+            about.education = (
+                "BA (Hons) Design\n"
+                "MA Creative Practice"
+            )
+            about.supporting_facts = (
+                "Commissioned projects across multiple disciplines\n"
+                "Technical, production, and client coordination experience\n"
+                "New commissions and ongoing client relationships"
+            )
+            about.approach = (
+                "Good work requires genuine attention to the problem — not a formula applied in advance.\n\n"
+                "The focus is on fit: how an outcome serves its conditions, how decisions hold together "
+                "across the project, and how the work stands up over time."
+            )
+            about.experience_years = 12
+            about.closing_invitation = (
+                "Get in touch with a short outline of your project, whether the brief is developed "
+                "or still taking shape."
+            )
+        about.portrait_mode = AboutProfile.PortraitMode.TEXT_ONLY
+        about.save()
         action = "Created" if created else "Updated"
         self.stdout.write(f"  {action} AboutProfile")
 
-    def _seed_projects(self):
-        for data in PROJECTS:
+    def _seed_projects(self, profile: str):
+        projects = ACADEMIC_PROJECTS if profile == "academic" else PROJECTS
+        for data in projects:
             slug = data["slug"]
             obj, created = Project.objects.get_or_create(slug=slug, defaults={"title": data["title"]})
             for key, value in data.items():

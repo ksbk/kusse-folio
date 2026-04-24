@@ -2,7 +2,7 @@
 {% load static %}
 {% load core_tags %}
 
-{% block full_title %}{{ site_settings.site_name|default:"Studio Name" }} — Professional Portfolio{% endblock %}
+{% block full_title %}{{ site_settings.site_name|default:"Studio Name" }} — {% if site_settings.portfolio_preset == "academic" %}Academic Portfolio{% else %}Professional Portfolio{% endif %}{% endblock %}
 {% block body_class %}home{% endblock %}
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/project-cards.css' %}">
@@ -26,11 +26,11 @@
     <h1 class="hero__title">{{ site_settings.site_name|default:"Studio Name" }}</h1>
     {% if site_settings.tagline %}<p class="hero__subtitle">{{ site_settings.tagline }}</p>{% endif %}
     <div class="hero__cta">
-      <a href="{% url 'projects:list' %}" class="btn btn--primary">View Projects</a>
-      <a href="{% url 'contact:contact' %}" class="btn btn--ghost-light">Start a Conversation</a>
+      <a href="{{ homepage_primary_cta.url }}" class="btn btn--primary">{{ homepage_primary_cta.label }}</a>
+      <a href="{{ homepage_secondary_cta.url }}" class="btn btn--ghost-light">{{ homepage_secondary_cta.label }}</a>
     </div>
   </div>
-  <a href="#featured" class="hero__scroll" aria-label="Scroll to featured work">
+  <a href="#{{ homepage_primary_section_id }}" class="hero__scroll" aria-label="Scroll to featured work">
     <span class="hero__scroll-line"></span>
   </a>
 </section>
