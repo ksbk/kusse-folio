@@ -328,3 +328,13 @@
     justify-content: center;
   }
 }
+
+@media (max-width: 420px) {
+  .cta-section .btn,
+  .page-hero--service .btn {
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+}
