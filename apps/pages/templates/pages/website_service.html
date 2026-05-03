@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Website Service{% endblock %}
+{% block og_title %}Professional Website Setup Service — {{ site_settings.site_name }}{% endblock %}
+{% block meta_description %}Get a clean, modern, mobile-friendly website — built and deployed for you. Clear pricing, fast delivery, real results.{% endblock %}
+{% block og_description %}Get a clean, modern, mobile-friendly website — built and deployed for you. Clear pricing, fast delivery, real results.{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/website_service.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="page-hero page-hero--short page-hero--service">
+  <div class="container">
+    <p class="page-hero__label">Website Service</p>
+    <h1 class="page-hero__title">Professional Website Setup</h1>
+    <p class="page-hero__subtitle">Get a clean, modern, mobile-friendly website — built and deployed for you.</p>
+  </div>
+</section>
+
+<!-- Intro -->
+<section class="section ws-intro">
+  <div class="container ws-intro__layout">
+    <div class="ws-intro__body prose">
+      <p class="ws-intro__lead">This is a service, not just a template.</p>
+      <p>You don't need to learn code, hosting, or design. I handle everything and deliver a working site.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Who this is for -->
+<section class="section section--tinted ws-audience">
+  <div class="container">
+    <header class="section__header">
+      <p class="section__label">Who this is for</p>
+      <h2 class="section__title">Built for professionals who need results, not complexity</h2>
+    </header>
+    <ul class="ws-audience__list">
+      <li>Researchers and academics building a professional online presence</li>
+      <li>Consultants and freelancers who need a credible website</li>
+      <li>Small businesses with no website or an outdated one</li>
+      <li>Architects, designers, and creative professionals</li>
+      <li>Service-based businesses needing visibility and contact</li>
+    </ul>
+  </div>
+</section>
+
+<!-- What you get -->
+<section class="section ws-deliverables">
+  <div class="container">
+    <header class="section__header">
+      <p class="section__label">What you get</p>
+      <h2 class="section__title">Everything to go live</h2>
+    </header>
+    <ul class="ws-deliverables__grid">
+      <li class="ws-deliverable">
+        <span class="ws-deliverable__title">Clean, professional design</span>
+        <span class="ws-deliverable__desc">Desktop and mobile</span>
+      </li>
+      <li class="ws-deliverable">
+        <span class="ws-deliverable__title">About page</span>
+        <span class="ws-deliverable__desc">Your story, profile, credentials</span>
+      </li>
+      <li class="ws-deliverable">
+        <span class="ws-deliverable__title">Projects or services section</span>
+        <span class="ws-deliverable__desc">Showcase what you do</span>
+      </li>
+      <li class="ws-deliverable">
+        <span class="ws-deliverable__title">Contact form</span>
+        <span class="ws-deliverable__desc">With email notifications and admin tracking</span>
+      </li>
+      <li class="ws-deliverable">
+        <span class="ws-deliverable__title">Basic SEO</span>
+        <span class="ws-deliverable__desc">Titles, meta descriptions, sitemap, robots.txt</span>
+      </li>
+      <li class="ws-deliverable">
+        <span class="ws-deliverable__title">Full deployment</span>
+        <span class="ws-deliverable__desc">Your site is live, not just built</span>
+      </li>
+      <li class="ws-deliverable">
+        <span class="ws-deliverable__title">Admin access</span>
+        <span class="ws-deliverable__desc">Update content yourself</span>
+      </li>
+      <li class="ws-deliverable">
+        <span class="ws-deliverable__title">One revision after launch</span>
+        <span class="ws-deliverable__desc">Included</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="section section--tinted ws-pricing">
+  <div class="container">
+    <header class="section__header">
+      <p class="section__label">Pricing</p>
+      <h2 class="section__title">Transparent, fixed pricing</h2>
+      <p class="section__subheading">All prices in ISK, excluding VAT. Final quote confirmed before work begins.</p>
+    </header>
+    <div class="ws-tiers">
+
+      <article class="ws-tier">
+        <p class="ws-tier__label">Small fixes</p>
+        <p class="ws-tier__price">From 25,000 ISK</p>
+        <p class="ws-tier__desc">Update or improve an existing site</p>
+      </article>
+
+      <article class="ws-tier ws-tier--featured">
+        <p class="ws-tier__label">Starter website</p>
+        <p class="ws-tier__price">From 150,000 ISK</p>
+        <p class="ws-tier__desc">Full simple website — home, about, contact, basic content</p>
+      </article>
+
+      <article class="ws-tier">
+        <p class="ws-tier__label">Custom website</p>
+        <p class="ws-tier__price">From 300,000 ISK</p>
+        <p class="ws-tier__desc">Tailored design, advanced sections, portfolio, academic modules</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- What to expect -->
+<section class="section ws-expectations">
+  <div class="container">
+    <header class="section__header">
+      <p class="section__label">What to expect</p>
+      <h2 class="section__title">No surprises</h2>
+    </header>
+    <ul class="ws-expectations__list">
+      <li><strong>Fast delivery</strong> — typically 1–2 weeks after content is ready</li>
+      <li><strong>Professional result</strong> — built to represent you clearly and credibly</li>
+      <li><strong>Mobile-ready</strong> — works on all devices</li>
+      <li><strong>Real functionality</strong> — contact form, admin panel, structured content</li>
+      <li><strong>Search-ready</strong> — basic SEO included</li>
+      <li><strong>Guided deployment</strong> — you go live with support</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Proof -->
+<section class="section section--tinted ws-proof">
+  <div class="container">
+    <header class="section__header">
+      <p class="section__label">Proof</p>
+      <h2 class="section__title">Live work</h2>
+    </header>
+    <div class="ws-proof__cards">
+
+      <div class="ws-proof-card ws-proof-card--live">
+        <p class="ws-proof-card__status">Live</p>
+        <p class="ws-proof-card__name">Jat21.com</p>
+        <p class="ws-proof-card__desc">Architectural business website — live and in use.</p>
+        <a href="https://jat21.com" class="btn btn--outline" target="_blank" rel="noopener noreferrer">Visit site</a>
+      </div>
+
+      <div class="ws-proof-card ws-proof-card--progress">
+        <p class="ws-proof-card__status">In progress</p>
+        <p class="ws-proof-card__name">drkusse.com</p>
+        <p class="ws-proof-card__desc">Academic and research portfolio — publications, research, CV.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta-section">
+  <div class="container">
+    <div class="cta-section__inner">
+      <p class="section__label">Get started</p>
+      <h2 class="cta-section__title">Ready to build your website?</h2>
+      <p class="cta-section__body">
+        Send a message with your idea or current website and what you want to improve or build.
+        You will get a clear scope, a fixed price, and a simple timeline.
+        No retainer. No surprises. Clear delivery.
+      </p>
+      <div class="cta-section__actions">
+        <a href="{% url 'contact:contact' %}" class="btn btn--primary btn--large">Get in touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

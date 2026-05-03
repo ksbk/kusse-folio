@@ -14,6 +14,7 @@ class StaticViewSitemap(Sitemap):
             "projects:list",
             "pages:about",
             "contact:contact",
+            "pages:website_service",
         ]
         if SiteSettings.load().blog_enabled:
             items.append("blog:list")

@@ -109,3 +109,7 @@ class AboutView(TemplateView):
 
 class PrivacyView(TemplateView):
     template_name = "pages/privacy.html"
+
+
+class WebsiteServiceView(TemplateView):
+    template_name = "pages/website_service.html"

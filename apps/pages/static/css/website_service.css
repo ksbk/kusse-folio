@@ -1,0 +1,202 @@
+/* ---------------------------------------------------------
+   Website Service page
+   Scoped to .ws-* classes — no shared patterns overridden.
+   --------------------------------------------------------- */
+
+/* ── Hero ─────────────────────────────────────────────── */
+.page-hero--service .page-hero__title {
+  max-width: 20ch;
+}
+
+/* ── Intro ────────────────────────────────────────────── */
+.ws-intro__layout {
+  max-width: 640px;
+}
+
+.ws-intro__lead {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  font-weight: 300;
+  margin-block-end: 0.75rem;
+}
+
+/* ── Audience list ────────────────────────────────────── */
+.ws-audience__list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 600px;
+}
+
+.ws-audience__list li {
+  padding-inline-start: 1.25rem;
+  position: relative;
+  color: var(--color-text-secondary);
+}
+
+.ws-audience__list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+}
+
+/* ── Deliverables grid ────────────────────────────────── */
+.ws-deliverables__grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--border-subtle);
+}
+
+.ws-deliverable {
+  background-color: var(--surface-base, var(--color-white));
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ws-deliverable__title {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.ws-deliverable__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ── Pricing tiers ────────────────────────────────────── */
+.ws-tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.ws-tier {
+  background-color: var(--surface-base, var(--color-white));
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ws-tier--featured {
+  border-color: var(--accent-primary);
+  position: relative;
+}
+
+.ws-tier--featured::before {
+  content: "Most popular";
+  position: absolute;
+  top: -1px;
+  right: 1.5rem;
+  background-color: var(--accent-primary);
+  color: var(--color-text-inverse);
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0 0 2px 2px;
+}
+
+.ws-tier__label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+}
+
+.ws-tier__price {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  font-weight: 300;
+  margin-block: 0.25rem;
+}
+
+.ws-tier__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Expectations list ────────────────────────────────── */
+.ws-expectations__list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 600px;
+}
+
+.ws-expectations__list li {
+  padding-inline-start: 1.25rem;
+  position: relative;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.ws-expectations__list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+}
+
+/* ── Proof cards ──────────────────────────────────────── */
+.ws-proof__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.ws-proof-card {
+  background-color: var(--surface-base, var(--color-white));
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ws-proof-card__status {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ws-proof-card--live .ws-proof-card__status {
+  color: #3a7a4a;
+}
+
+.ws-proof-card--progress .ws-proof-card__status {
+  color: var(--accent-primary);
+}
+
+.ws-proof-card__name {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2.5vw, 1.75rem);
+  font-weight: 300;
+}
+
+.ws-proof-card__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-block-end: 0.5rem;
+}
