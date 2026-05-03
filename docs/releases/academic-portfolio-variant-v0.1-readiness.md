@@ -24,9 +24,10 @@ Date: 2026-05-03
 - `uv run python manage.py check`: PASS (`no issues, 0 silenced`)
 - `uv run python manage.py makemigrations --check --dry-run`: PASS (`No changes detected`)
 
-## Known Limitation
+## Known Limitations
 
 - Local preflight depends on a valid `.env` file that sets `SECRET_KEY`.
+- `make smoke` under `DEBUG=True` will fail the branded 404 check. Django replaces custom 404 templates with its own debug page when `DEBUG=True`. This is expected local-dev behaviour, not a code defect. Full branded 404 validation requires `DEBUG=False` and must be confirmed via `DEPLOY_URL=https://... make smoke-prod` against a deployed instance.
 
 ## Staging Smoke Test
 
