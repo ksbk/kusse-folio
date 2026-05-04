@@ -4,6 +4,11 @@
    --------------------------------------------------------- */
 
 /* ── Hero ─────────────────────────────────────────────── */
+.page-hero--service {
+  background: linear-gradient(135deg, var(--color-stone) 0%, #E8DDD0 60%, #D9C9B5 100%);
+  padding-block-end: var(--space-md);
+}
+
 .ws-hero__layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -138,6 +143,14 @@
 .ws-tier--featured {
   border-color: var(--accent-primary);
   border-top-width: 3px;
+  background-color: rgba(122, 99, 71, 0.08);
+}
+
+.ws-tier__trust {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  font-style: italic;
+  margin-block-start: 0.25rem;
 }
 
 .ws-tier__badge {
@@ -277,6 +290,51 @@
   margin-block-start: var(--space-sm);
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
+}
+
+/* ── Dark proof section ───────────────────────────────── */
+.ws-proof--dark {
+  background-color: var(--surface-inverse);
+}
+
+.ws-proof--dark .section__label {
+  color: var(--accent-on-dark);
+}
+
+.ws-proof--dark .section__title {
+  color: var(--color-text-inverse);
+}
+
+.ws-proof--dark .ws-proof-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.ws-proof--dark .ws-proof-card__name {
+  color: var(--color-text-inverse);
+}
+
+.ws-proof--dark .ws-proof-card__desc {
+  color: var(--color-text-inverse-muted);
+}
+
+.ws-proof--dark .ws-proof-card--live .ws-proof-card__status {
+  color: #6dbb80;
+}
+
+.ws-proof--dark .ws-proof__identity,
+.ws-proof--dark .ws-proof__in-progress {
+  color: var(--color-text-inverse-muted);
+}
+
+.ws-proof--dark .btn--outline {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: var(--color-text-inverse);
+}
+
+.ws-proof--dark .btn--outline:hover {
+  border-color: var(--color-white);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .ws-pricing__cta {
