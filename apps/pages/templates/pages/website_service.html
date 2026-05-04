@@ -104,41 +104,33 @@
       <p class="section__subheading">All prices in ISK, excluding VAT. Final quote confirmed before work begins.</p>
       <p class="section__subheading">Most clients start with the Starter Website.</p>
     </header>
+    <div class="ws-review-banner">
+      <span class="ws-review-banner__tag">Free</span>
+      Not sure where to start? I'll review your current website or idea — no cost, no commitment.
+      <a href="{% url 'contact:contact' %}" class="ws-review-banner__link">Request a free review →</a>
+    </div>
+
     <div class="ws-tiers">
 
-      <article class="ws-tier ws-tier--entry">
-        <p class="ws-tier__label">Free website review</p>
-        <p class="ws-tier__price ws-tier__price--free">Free</p>
-        <p class="ws-tier__desc">Quick review of your current website or website idea. No commitment.</p>
-        <a href="{% url 'contact:contact' %}" class="btn btn--outline btn--small ws-tier__cta">Request free review</a>
-      </article>
-
       <article class="ws-tier">
-        <p class="ws-tier__label">Small fixes</p>
+        <p class="ws-tier__label">Website fixes</p>
         <p class="ws-tier__price">From 25,000 ISK</p>
-        <p class="ws-tier__desc">Update or improve an existing site</p>
+        <p class="ws-tier__desc">For existing websites that need updates, fixes, layout improvements, or small additions.</p>
         <p class="ws-tier__trust">Fixed scope. Clear price.</p>
       </article>
 
       <article class="ws-tier ws-tier--featured">
-        <p class="ws-tier__label">Starter website <span class="ws-tier__badge">Best start</span></p>
+        <p class="ws-tier__label">Starter website <span class="ws-tier__badge">Most popular</span></p>
         <p class="ws-tier__price">From 150,000 ISK</p>
-        <p class="ws-tier__desc">Full simple website — home, about, contact, basic content</p>
+        <p class="ws-tier__desc">A complete professional website built from scratch — home, about, contact, and deployment.</p>
         <p class="ws-tier__trust">Fixed scope. Clear price.</p>
       </article>
 
       <article class="ws-tier">
         <p class="ws-tier__label">Custom website</p>
         <p class="ws-tier__price">From 300,000 ISK</p>
-        <p class="ws-tier__desc">Tailored design, advanced sections, portfolio, academic modules</p>
+        <p class="ws-tier__desc">For larger, academic, business, or advanced websites. If the scope is unclear, I'll give a custom quote.</p>
         <p class="ws-tier__trust">Fixed scope. Clear price.</p>
-      </article>
-
-      <article class="ws-tier ws-tier--quote">
-        <p class="ws-tier__label">Custom quote</p>
-        <p class="ws-tier__price ws-tier__price--contact">Contact us</p>
-        <p class="ws-tier__desc">Unclear scope, academic sites, business sites, or special requirements</p>
-        <a href="{% url 'contact:contact' %}" class="btn btn--outline btn--small ws-tier__cta">Get a quote</a>
       </article>
 
     </div>

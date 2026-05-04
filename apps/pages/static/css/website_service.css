@@ -124,15 +124,51 @@
 }
 
 /* ── Pricing tiers ────────────────────────────────────── */
+/* ── Free review banner ───────────────────────────────── */
+.ws-review-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  background-color: var(--color-stone);
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+  padding: 0.85rem 1.25rem;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-block-end: 1.5rem;
+}
+
+.ws-review-banner__tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: #3a7a4a;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.ws-review-banner__link {
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+
 .ws-tiers {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1.25rem;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 900px) {
   .ws-tiers {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -156,32 +192,6 @@
   border-color: var(--accent-primary);
   border-top-width: 3px;
   background-color: rgba(122, 99, 71, 0.08);
-}
-
-.ws-tier--entry {
-  border-style: solid;
-  border-color: var(--border-subtle);
-  background-color: var(--color-stone);
-}
-
-.ws-tier--quote {
-  border-style: dashed;
-  border-color: var(--border-subtle);
-  background-color: transparent;
-}
-
-.ws-tier__price--free {
-  color: #3a7a4a;
-}
-
-.ws-tier__price--contact {
-  font-size: clamp(1.4rem, 2.5vw, 1.75rem);
-  color: var(--color-text-secondary);
-}
-
-.ws-tier__cta {
-  margin-block-start: auto;
-  align-self: flex-start;
 }
 
 .ws-tier__trust {
