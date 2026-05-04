@@ -106,6 +106,13 @@
     </header>
     <div class="ws-tiers">
 
+      <article class="ws-tier ws-tier--entry">
+        <p class="ws-tier__label">Free website review</p>
+        <p class="ws-tier__price ws-tier__price--free">Free</p>
+        <p class="ws-tier__desc">Quick review of your current website or website idea. No commitment.</p>
+        <a href="{% url 'contact:contact' %}" class="btn btn--outline btn--small ws-tier__cta">Request free review</a>
+      </article>
+
       <article class="ws-tier">
         <p class="ws-tier__label">Small fixes</p>
         <p class="ws-tier__price">From 25,000 ISK</p>
@@ -125,6 +132,13 @@
         <p class="ws-tier__price">From 300,000 ISK</p>
         <p class="ws-tier__desc">Tailored design, advanced sections, portfolio, academic modules</p>
         <p class="ws-tier__trust">Fixed scope. Clear price.</p>
+      </article>
+
+      <article class="ws-tier ws-tier--quote">
+        <p class="ws-tier__label">Custom quote</p>
+        <p class="ws-tier__price ws-tier__price--contact">Contact us</p>
+        <p class="ws-tier__desc">Unclear scope, academic sites, business sites, or special requirements</p>
+        <a href="{% url 'contact:contact' %}" class="btn btn--outline btn--small ws-tier__cta">Get a quote</a>
       </article>
 
     </div>
